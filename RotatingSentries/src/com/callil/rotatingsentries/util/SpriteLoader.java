@@ -34,6 +34,12 @@ public class SpriteLoader {
 	//##############
 	// TEXTURES
 	
+	/** BACROUND. */
+	protected TextureRegion mBackgroundRegion;
+	public TextureRegion getBackgroundRegion() {
+		return mBackgroundRegion;
+	}
+	
 	/** PLAYER. */
 	protected TextureRegion mPlayerTextureRegion;
 	public TextureRegion getPlayerTextureRegion() {
@@ -110,6 +116,12 @@ public class SpriteLoader {
 	 * @param context
 	 */
 	private void init() {
+		
+		//Background
+		BitmapTextureAtlas backgroundTexture = new BitmapTextureAtlas(this.tm, 1080, 1080);
+		mBackgroundRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(backgroundTexture, this.context, "background.png", 0, 0);
+		backgroundTexture.load();
+		
 		//Player
 		BitmapTextureAtlas playerTexture = new BitmapTextureAtlas(this.tm, 64, 64);
 		mPlayerTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(playerTexture, this.context, "player.jpg", 0, 0);

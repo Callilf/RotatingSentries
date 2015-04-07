@@ -26,7 +26,7 @@ public class GameActivity extends BaseGameActivity {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-	public static int CAMERA_WIDTH = 1024;
+	public static int CAMERA_WIDTH = 1080;
 	public static int CAMERA_HEIGHT = 1920;
 
 	// ===========================================================
@@ -108,9 +108,11 @@ public class GameActivity extends BaseGameActivity {
 	public void onPopulateScene(Scene pScene,
 			OnPopulateSceneCallback pOnPopulateSceneCallback) throws Exception {
 		Log.d("RS", "onPopulateScene");
-
 		
-		this.entityFactory.generatePlayer(CAMERA_WIDTH/2 - 32 , CAMERA_HEIGHT/2 - 32);
+		final Sprite background = new Sprite(CAMERA_WIDTH/2 - 540 , CAMERA_HEIGHT/2 - 540, this.spriteLoader.getBackgroundRegion(), this.mEngine.getVertexBufferObjectManager());
+		this.mScene.attachChild(background);
+		
+//		this.entityFactory.generatePlayer(CAMERA_WIDTH/2 - 32 , CAMERA_HEIGHT/2 - 32);
 //		this.entityFactory.generateItemRock(200, 200);
 //		this.entityFactory.generateItemScissors(400, 450);
 		
