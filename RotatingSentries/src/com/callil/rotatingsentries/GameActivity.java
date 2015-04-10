@@ -9,6 +9,7 @@ import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
+import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.ui.activity.BaseGameActivity;
@@ -111,6 +112,18 @@ public class GameActivity extends BaseGameActivity {
 		
 		final Sprite background = new Sprite(CAMERA_WIDTH/2 - 540 , CAMERA_HEIGHT/2 - 540, this.spriteLoader.getBackgroundRegion(), this.mEngine.getVertexBufferObjectManager());
 		this.mScene.attachChild(background);
+		
+		//final Sprite enemy = new Sprite(CAMERA_WIDTH/2, CAMERA_HEIGHT/2 - 740, this.spriteLoader.getEnemyRobberTextureRegion(), this.mEngine.getVertexBufferObjectManager());
+		final AnimatedSprite enemy = new AnimatedSprite(CAMERA_WIDTH/2 + 100, CAMERA_HEIGHT/2 - 400, this.spriteLoader.getEnemyRobberTextureRegion(), this.getVertexBufferObjectManager());
+		this.mScene.attachChild(enemy);
+		enemy.setRotation(20);
+		enemy.animate(100, true);
+		
+		//final Sprite enemy = new Sprite(CAMERA_WIDTH/2, CAMERA_HEIGHT/2 - 740, this.spriteLoader.getEnemyRobberTextureRegion(), this.mEngine.getVertexBufferObjectManager());
+		final AnimatedSprite enemy2 = new AnimatedSprite(CAMERA_WIDTH/2 - 200, CAMERA_HEIGHT/2 - 100, this.spriteLoader.getEnemyRobberTextureRegion(), this.getVertexBufferObjectManager());
+		this.mScene.attachChild(enemy2);
+		enemy2.setRotation(300);
+		enemy2.animate(100, true);
 		
 //		this.entityFactory.generatePlayer(CAMERA_WIDTH/2 - 32 , CAMERA_HEIGHT/2 - 32);
 //		this.entityFactory.generateItemRock(200, 200);
