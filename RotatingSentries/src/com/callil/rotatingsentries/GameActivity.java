@@ -9,6 +9,7 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.ui.activity.BaseGameActivity;
 
@@ -111,9 +112,17 @@ public class GameActivity extends BaseGameActivity {
 		final Sprite background = new Sprite(CAMERA_WIDTH/2 - 540 , CAMERA_HEIGHT/2 - 540, this.spriteLoader.getBackgroundRegion(), this.mEngine.getVertexBufferObjectManager());
 		this.mScene.attachChild(background);
 
-		final Sprite diamond = new Sprite(0 , 0, this.spriteLoader.getDiamondTextureRegion(), this.mEngine.getVertexBufferObjectManager());
+		final Sprite diamond = new Sprite(0 , 0, this.spriteLoader.getDiamondTextureRegion(), this.mEngine.getVertexBufferObjectManager()) {
+			@Override
+			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
+				this.setPosition(pSceneTouchEvent.getX() - this.getWidth() / 2, pSceneTouchEvent.getY() - this.getHeight() / 2);
+				return true;
+			}
+		};
 		diamond.setX(CAMERA_WIDTH/2 - diamond.getWidth()/2);
 		diamond.setY(CAMERA_HEIGHT/2 - diamond.getHeight()/2);
+		this.mScene.registerTouchArea(diamond);
+		this.mScene.setTouchAreaBindingOnActionDownEnabled(true);
 		this.mScene.attachChild(diamond);
 		
 		this.entityFactory.generateRobber(CAMERA_WIDTH/2 - 600, CAMERA_HEIGHT/2 - 400, 5, diamond);
