@@ -72,10 +72,25 @@ public class RenderSystem extends System {
 	    for (Entity entity : entities) {
 	    	
 	    	SelfRotationComponent rotationComponent = (SelfRotationComponent) this.entityManager.getComponent(SelfRotationComponent.class.getName(), entity);
-	    	SpriteComponent spriteComponent = (SpriteComponent) this.entityManager.getComponent(SpriteComponent.class.getName(), entity);
-	    	if (rotationComponent != null && spriteComponent != null) {
-	    		rotationComponent.setCurrentRotation( (rotationComponent.getCurrentRotation() + rotationComponent.getRotationSpeed()) % 360);
-	    		spriteComponent.getSprite().setRotation(rotationComponent.getCurrentRotation());
+	    	if (rotationComponent.isActive()) {
+	    		if (rotationComponent.isAffectedByButton()) {
+	    			// define the direction of rotate if a button is active
+	    			if (rotationComponent.isLastLeftPressed()) {
+	    				rotationComponent.setClockwise(false);
+	    			}
+	    			else if (rotationComponent.isLastRightPressed()) {
+	    				rotationComponent.setClockwise(true);
+	    			}
+	    			else {
+	    				continue;
+	    			}
+	    		}
+		    	SpriteComponent spriteComponent = (SpriteComponent) this.entityManager.getComponent(SpriteComponent.class.getName(), entity);
+		    	float speed = rotationComponent.getRotationSpeed() * (rotationComponent.isClockwise()? 1 : -1);
+		    	if (rotationComponent != null && spriteComponent != null) {
+		    		rotationComponent.setCurrentRotation( (rotationComponent.getCurrentRotation() + speed) % 360);
+		    		spriteComponent.getSprite().setRotation(rotationComponent.getCurrentRotation());
+		    	}
 	    	}
 	    	
 	    }

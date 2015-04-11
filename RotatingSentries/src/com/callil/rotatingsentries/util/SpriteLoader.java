@@ -42,6 +42,18 @@ public class SpriteLoader {
 		return mBackgroundRegion;
 	}
 	
+	/** ARROW : left */
+	protected TextureRegion mArrowLeftTextureRegion;
+	public TextureRegion getArrowLeftTextureRegion() {
+		return mArrowLeftTextureRegion;
+	}
+	
+	/** ARROW : right */
+	protected TextureRegion mArrowRightTextureRegion;
+	public TextureRegion getArrowRightTextureRegion() {
+		return mArrowRightTextureRegion;
+	}
+	
 	/** DIAMOND. */
 	protected TextureRegion mdiamondTextureRegion;
 	public TextureRegion getDiamondTextureRegion() {
@@ -106,7 +118,17 @@ public class SpriteLoader {
 		mBackgroundRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(backgroundTexture, this.context, "background.png", 0, 0);
 		backgroundTexture.load();
 		
-		//Background
+		//Left button
+		BitmapTextureAtlas leftButtonTexture = new BitmapTextureAtlas(this.tm, 420, 1080);
+		mArrowLeftTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(leftButtonTexture, this.context, "left_button.png", 0, 0);
+		leftButtonTexture.load();
+		
+		//Right button
+		BitmapTextureAtlas rightButtonTexture = new BitmapTextureAtlas(this.tm, 420, 1080);
+		mArrowRightTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(rightButtonTexture, this.context, "right_button.png", 0, 0);
+		rightButtonTexture.load();
+				
+		//Diamond
 		BitmapTextureAtlas diamondTexture = new BitmapTextureAtlas(this.tm, 100, 100);
 		mdiamondTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(diamondTexture, this.context, "diamond.png", 0, 0);
 		diamondTexture.load();

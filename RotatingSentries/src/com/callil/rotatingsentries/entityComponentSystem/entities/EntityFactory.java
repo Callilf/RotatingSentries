@@ -89,9 +89,10 @@ public class EntityFactory {
 		TextureRegion sentryTexture = spriteLoader.getSentryTextureRegion();
 		final Sprite sSentry = new Sprite((CAMERA_WIDTH - sentryTexture.getWidth())/2, (CAMERA_HEIGHT - sentryTexture.getHeight())/2, 
 				sentryTexture, this.vertextBufferObjectManager);
+		sSentry.setRotation(rotation);
 		Entity sentry = this.em.createEntity();
 		this.em.addComponentToEntity(new SpriteComponent(sSentry, true), sentry);
-		this.em.addComponentToEntity(new SelfRotationComponent(5, rotation, true), sentry);
+		this.em.addComponentToEntity(new SelfRotationComponent(5, rotation, true, true), sentry);
 		
 		return sentry;
 	}

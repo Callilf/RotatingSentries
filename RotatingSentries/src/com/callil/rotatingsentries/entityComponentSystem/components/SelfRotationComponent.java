@@ -10,6 +10,12 @@ package com.callil.rotatingsentries.entityComponentSystem.components;
  */
 public class SelfRotationComponent extends Component {
 
+	/** 0 if the left button is pressed */
+	public static int leftPressed = 0;
+	/** 0 if the right button is pressed */
+	public static int rightPressed = 0;
+	
+	
 	/** The speed of the rotation. */
 	private float rotationSpeed;
 
@@ -22,6 +28,9 @@ public class SelfRotationComponent extends Component {
 	/** if the rotation is active or not */
 	private boolean active;
 	
+	/** if the rotation is active or not */
+	private boolean affectedByButton;
+	
 	/**
 	 * Constructor.
 	 * @param rotationSpeed the speed of rotation. Positive for trigo rotation, negative for time rotation.
@@ -31,6 +40,7 @@ public class SelfRotationComponent extends Component {
 		this.setCurrentRotation(0);
 		this.clockwise = true;
 		this.active = true;
+		this.affectedByButton = false;
 	}
 	
 	/**
@@ -39,10 +49,11 @@ public class SelfRotationComponent extends Component {
 	 * @param currentRotation the initial rotation
 	 * @param active if the rotation is active or not
 	 */
-	public SelfRotationComponent(float rotationSpeed, float currentRotation, boolean active) {
+	public SelfRotationComponent(float rotationSpeed, float currentRotation, boolean active, boolean affectedByButton) {
 		this(rotationSpeed);
 		this.currentRotation = currentRotation;
 		this.active = active;
+		this.affectedByButton = affectedByButton;
 	}
 	
 	/**
@@ -87,6 +98,22 @@ public class SelfRotationComponent extends Component {
 
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+
+	public boolean isAffectedByButton() {
+		return affectedByButton;
+	}
+
+	public void setAffectedByButton(boolean affectedByButton) {
+		this.affectedByButton = affectedByButton;
+	}
+	
+	public boolean isLastLeftPressed() {
+		return leftPressed > rightPressed;
+	}
+
+	public boolean isLastRightPressed() {
+		return rightPressed > leftPressed;
 	}
 
 

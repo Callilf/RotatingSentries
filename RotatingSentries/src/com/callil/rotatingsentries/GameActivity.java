@@ -7,14 +7,15 @@ import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
-import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
+import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
 
 import android.util.Log;
 
+import com.callil.rotatingsentries.entityComponentSystem.components.SelfRotationComponent;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityFactory;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityManager;
 import com.callil.rotatingsentries.entityComponentSystem.systems.DamageSystem;
@@ -26,8 +27,8 @@ public class GameActivity extends BaseGameActivity {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-	public static int CAMERA_WIDTH = 1080;
-	public static int CAMERA_HEIGHT = 1920;
+	public static final int CAMERA_WIDTH = 1920;
+	public static final int CAMERA_HEIGHT = 1080;
 
 	// ===========================================================
 	// Fields
@@ -56,7 +57,9 @@ public class GameActivity extends BaseGameActivity {
 	public EngineOptions onCreateEngineOptions() {
 		Log.d("RS", "onCreateEngineOptions");
 		this.mCamera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
-		return new EngineOptions(true, ScreenOrientation.PORTRAIT_FIXED, new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), this.mCamera);
+		EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), this.mCamera);
+		engineOptions.getTouchOptions().setNeedsMultiTouch(true);
+		return engineOptions;
 	}
 	
 
@@ -109,9 +112,58 @@ public class GameActivity extends BaseGameActivity {
 			OnPopulateSceneCallback pOnPopulateSceneCallback) throws Exception {
 		Log.d("RS", "onPopulateScene");
 		
-		final Sprite background = new Sprite(CAMERA_WIDTH/2 - 540 , CAMERA_HEIGHT/2 - 540, this.spriteLoader.getBackgroundRegion(), this.mEngine.getVertexBufferObjectManager());
+		TextureRegion backgroundTexture = spriteLoader.getBackgroundRegion();
+		final Sprite background = new Sprite((CAMERA_WIDTH-backgroundTexture.getWidth())/2, (CAMERA_HEIGHT-backgroundTexture.getHeight())/2, backgroundTexture, this.mEngine.getVertexBufferObjectManager());
 		this.mScene.attachChild(background);
 
+		// CREATE BUTTON
+		final Sprite arrowLeft = new Sprite(0, 0, spriteLoader.getArrowLeftTextureRegion(), this.mEngine.getVertexBufferObjectManager()) {
+			@Override
+			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
+				Log.d("BUTTON", "Left : " + pSceneTouchEvent.getAction());
+				switch (pSceneTouchEvent.getAction()) {
+				case TouchEvent.ACTION_UP:
+				case TouchEvent.ACTION_OUTSIDE:
+					SelfRotationComponent.leftPressed = 0;
+					break;
+				case TouchEvent.ACTION_MOVE:
+					if (SelfRotationComponent.leftPressed > 0) break;
+				case TouchEvent.ACTION_DOWN:
+					SelfRotationComponent.leftPressed = SelfRotationComponent.rightPressed + 1;
+					break;
+				default:
+					break;
+				}
+				return true;
+			}
+		};
+		// CREATE BUTTON
+		TextureRegion trArrowRight = spriteLoader.getArrowRightTextureRegion();
+		final Sprite arrowRight = new Sprite(CAMERA_WIDTH - trArrowRight.getWidth(), 0, trArrowRight, this.mEngine.getVertexBufferObjectManager()) {
+			@Override
+			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
+				Log.d("BUTTON", "Right : " + pSceneTouchEvent.getAction());
+				switch (pSceneTouchEvent.getAction()) {
+				case TouchEvent.ACTION_UP:
+				case TouchEvent.ACTION_OUTSIDE:
+					SelfRotationComponent.rightPressed = 0;
+					break;
+				case TouchEvent.ACTION_MOVE:
+					if (SelfRotationComponent.rightPressed > 0) break;
+				case TouchEvent.ACTION_DOWN:
+					SelfRotationComponent.rightPressed = SelfRotationComponent.leftPressed + 1;
+					break;
+				default:
+					break;
+				}
+				return true;
+			}
+		};
+		this.mScene.registerTouchArea(arrowLeft);
+		this.mScene.registerTouchArea(arrowRight);
+		this.mScene.attachChild(arrowLeft);
+		this.mScene.attachChild(arrowRight);
+		
 		final Sprite diamond = new Sprite(0 , 0, this.spriteLoader.getDiamondTextureRegion(), this.mEngine.getVertexBufferObjectManager()) {
 			@Override
 			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
