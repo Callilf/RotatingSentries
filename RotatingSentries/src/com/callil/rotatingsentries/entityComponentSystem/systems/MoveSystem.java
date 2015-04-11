@@ -14,6 +14,8 @@ import com.callil.rotatingsentries.entityComponentSystem.components.MoveTowardsC
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
 import com.callil.rotatingsentries.entityComponentSystem.entities.Entity;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityManager;
+import com.callil.rotatingsentries.util.Couple;
+import com.callil.rotatingsentries.util.MathUtil;
 
 
 /**
@@ -52,23 +54,16 @@ public class MoveSystem extends System {
 		    		if (moveTowardsComponent.getTarget() != null) {
 		    			// Move towards a TARGET
 		    			Sprite target = moveTowardsComponent.getTarget();
-		    			Point targetCenter = new Point((int)(target.getX() + target.getWidth()/2), (int)(target.getY() + target.getHeight()/2));
-		    			Point spriteCenter = new Point((int)(sprite.getX() + sprite.getWidth()/2), (int)(sprite.getY() + sprite.getHeight()/2));
-		    			float vx = targetCenter.x - spriteCenter.x;
-		    			float vy = targetCenter.y - spriteCenter.y;
-		    			if (vx != 0 && vy != 0) {
-		    				float xMove = vx/(Math.abs(vx) + Math.abs(vy));
-		    				float yMove = vy/(Math.abs(vx) + Math.abs(vy));
-		    				float speedFactor = (float) ((Math.abs(xMove) + Math.abs(yMove))/Math.sqrt(xMove*xMove + yMove*yMove));
-		    				xMove = xMove * speedFactor;
-		    				yMove = yMove * speedFactor;
+		    			Couple<Float> targetCenter = new Couple<Float>(target.getX() + target.getWidth()/2, target.getY() + target.getHeight()/2);
+		    			Couple<Float> spriteCenter = new Couple<Float>(sprite.getX() + sprite.getWidth()/2, sprite.getY() + sprite.getHeight()/2);
 		    			
-		    				sprite.setX(sprite.getX() + (xMove * moveTowardsComponent.getSpeed()));
-			    			sprite.setY(sprite.getY() + (yMove * moveTowardsComponent.getSpeed()));
+		    			Couple<Float> directionalVector = MathUtil.computeDirectionalVector(spriteCenter, targetCenter);
+		    			if (directionalVector.getX() != 0 && directionalVector.getY() != 0) {
+		    				sprite.setX(sprite.getX() + (directionalVector.getX() * moveTowardsComponent.getSpeed()));
+			    			sprite.setY(sprite.getY() + (directionalVector.getY() * moveTowardsComponent.getSpeed()));
 			    			
-			    			double angle = Math.atan2(yMove, xMove);
-			    			double angleInDegree = ((angle > 0 ? angle : (2*Math.PI + angle)) * 360 / (2*Math.PI) + 270) % 360;
-			    			sprite.setRotation((float) angleInDegree);
+			    			float angle = MathUtil.computeOrientationAngleFromDirectionalVector(directionalVector);
+			    			sprite.setRotation(angle);
 		    			}
 		    		} else {
 		    			// Move straight in a specific DIRECTION

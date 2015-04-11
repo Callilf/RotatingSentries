@@ -175,15 +175,12 @@ public class GameActivity extends BaseGameActivity {
 		diamond.setY(CAMERA_HEIGHT/2 - diamond.getHeight()/2);
 		this.mScene.registerTouchArea(diamond);
 		this.mScene.setTouchAreaBindingOnActionDownEnabled(true);
-		this.mScene.attachChild(diamond);
-//		
-//		this.entityFactory.generateRobber(CAMERA_WIDTH/2 - 600, CAMERA_HEIGHT/2 - 400, 2, diamond);
-//		this.entityFactory.generateRobber(CAMERA_WIDTH/2 - 500, CAMERA_HEIGHT/2 + 200, 2, diamond);
-//		this.entityFactory.generateRobber(CAMERA_WIDTH/2 + 300, CAMERA_HEIGHT/2 - 900, 2, diamond);
-//		this.entityFactory.generateRobber(CAMERA_WIDTH/2 + 300, CAMERA_HEIGHT/2 + 300, 2, diamond);
+		this.mScene.attachChild(diamond);	
 
-		this.entityFactory.generateRobber(trArrowRight.getWidth(), 0, 2, diamond);
-		this.entityFactory.generateRobber(CAMERA_WIDTH/2, 0, 2, diamond);
+		this.entityFactory.generateRobber(background.getX(), background.getY(), 2, diamond);
+		this.entityFactory.generateRobber(background.getX() + background.getWidth() - 96, background.getY(), 2, diamond);
+		this.entityFactory.generateRobber(background.getX(), background.getHeight() - 96, 2, diamond);
+		this.entityFactory.generateRobber(background.getX() + background.getWidth() - 96, background.getHeight() - 96, 2, diamond);
 		
 		entityFactory.generateSentry(30);
 		
