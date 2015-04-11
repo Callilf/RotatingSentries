@@ -16,6 +16,11 @@ public class SelfRotationComponent extends Component {
 	/** the current value of the rotation. */
 	private float currentRotation;
 	
+	/** the direction of the rotation */
+	private boolean clockwise;
+	
+	/** if the rotation is active or not */
+	private boolean active;
 	
 	/**
 	 * Constructor.
@@ -24,6 +29,20 @@ public class SelfRotationComponent extends Component {
 	public SelfRotationComponent(float rotationSpeed) {
 		this.setRotationSpeed(rotationSpeed);
 		this.setCurrentRotation(0);
+		this.clockwise = true;
+		this.active = true;
+	}
+	
+	/**
+	 * Constructor.
+	 * @param rotationSpeed the speed of rotation. Positive for trigo rotation, negative for time rotation.
+	 * @param currentRotation the initial rotation
+	 * @param active if the rotation is active or not
+	 */
+	public SelfRotationComponent(float rotationSpeed, float currentRotation, boolean active) {
+		this(rotationSpeed);
+		this.currentRotation = currentRotation;
+		this.active = active;
 	}
 	
 	/**
@@ -38,33 +57,36 @@ public class SelfRotationComponent extends Component {
 	
 	//Getters & Setters
 	
-	/**
-	 * @return the rotationSpeed
-	 */
 	public float getRotationSpeed() {
 		return rotationSpeed;
 	}
 
-	/**
-	 * @param rotationSpeed the rotationSpeed to set
-	 */
 	public void setRotationSpeed(float rotationSpeed) {
 		this.rotationSpeed = rotationSpeed;
 	}
 
-	/**
-	 * @return the currentRotation
-	 */
 	public float getCurrentRotation() {
 		return currentRotation;
 	}
 
-
-	/**
-	 * @param currentRotation the currentRotation to set
-	 */
 	public void setCurrentRotation(float currentRotation) {
 		this.currentRotation = currentRotation;
+	}
+
+	public boolean isClockwise() {
+		return clockwise;
+	}
+
+	public void setClockwise(boolean isClockwise) {
+		this.clockwise = isClockwise;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
 

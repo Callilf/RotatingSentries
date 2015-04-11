@@ -3,10 +3,15 @@
  */
 package com.callil.rotatingsentries.entityComponentSystem.entities;
 
+import static com.callil.rotatingsentries.GameActivity.CAMERA_HEIGHT;
+import static com.callil.rotatingsentries.GameActivity.CAMERA_WIDTH;
+
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
+import com.callil.rotatingsentries.entityComponentSystem.components.SelfRotationComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
 import com.callil.rotatingsentries.util.SpriteLoader;
 
@@ -50,6 +55,22 @@ public class EntityFactory {
 		this.em.addComponentToEntity(new SpriteComponent(sPlayer, true), player);
 		
 		return player;
+	}
+	
+	/**
+	 * Generate a sentry at the middle of the screen.
+	 * @param rotation the start rotation of the sentry
+	 * @return The entity corresponding to the created sentry.
+	 */
+	public Entity generateSentry(int rotation) {
+		TextureRegion sentryTexture = spriteLoader.getSentryTextureRegion();
+		final Sprite sSentry = new Sprite((CAMERA_WIDTH - sentryTexture.getWidth())/2, (CAMERA_HEIGHT - sentryTexture.getHeight())/2, 
+				sentryTexture, this.vertextBufferObjectManager);
+		Entity sentry = this.em.createEntity();
+		this.em.addComponentToEntity(new SpriteComponent(sSentry, true), sentry);
+		this.em.addComponentToEntity(new SelfRotationComponent(5, rotation, true), sentry);
+		
+		return sentry;
 	}
 //	
 //	/**

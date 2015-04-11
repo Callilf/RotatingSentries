@@ -1,7 +1,5 @@
 package com.callil.rotatingsentries;
 
-import java.util.List;
-
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
@@ -14,14 +12,14 @@ import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.ui.activity.BaseGameActivity;
 
+import android.util.Log;
+
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityFactory;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityManager;
 import com.callil.rotatingsentries.entityComponentSystem.systems.DamageSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.MoveSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.RenderSystem;
 import com.callil.rotatingsentries.util.SpriteLoader;
-
-import android.util.Log;
 
 public class GameActivity extends BaseGameActivity {
 	// ===========================================================
@@ -124,6 +122,8 @@ public class GameActivity extends BaseGameActivity {
 		this.mScene.attachChild(enemy2);
 		enemy2.setRotation(300);
 		enemy2.animate(100, true);
+		
+		entityFactory.generateSentry(30);
 		
 //		this.entityFactory.generatePlayer(CAMERA_WIDTH/2 - 32 , CAMERA_HEIGHT/2 - 32);
 //		this.entityFactory.generateItemRock(200, 200);

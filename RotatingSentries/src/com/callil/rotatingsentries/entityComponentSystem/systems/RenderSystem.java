@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.andengine.entity.scene.Scene;
 
+import com.callil.rotatingsentries.entityComponentSystem.components.SelfRotationComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
 import com.callil.rotatingsentries.entityComponentSystem.entities.Entity;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityManager;
@@ -67,17 +68,17 @@ public class RenderSystem extends System {
 		
 		
 		// MANAGE SELF ROTATIONS
-//		entities = this.entityManager.getAllEntitiesPosessingComponentOfClass(SelfRotationComponent.class.getName());
-//	    for (Entity entity : entities) {
-//	    	
-//	    	SelfRotationComponent rotationComponent = (SelfRotationComponent) this.entityManager.getComponent(SelfRotationComponent.class.getName(), entity);
-//	    	SpriteComponent spriteComponent = (SpriteComponent) this.entityManager.getComponent(SpriteComponent.class.getName(), entity);
-//	    	if (rotationComponent != null && spriteComponent != null) {
-//	    		rotationComponent.setCurrentRotation( (rotationComponent.getCurrentRotation() + rotationComponent.getRotationSpeed()) % 360);
-//	    		spriteComponent.getSprite().setRotation(rotationComponent.getCurrentRotation());
-//	    	}
-//	    	
-//	    }
+		entities = this.entityManager.getAllEntitiesPosessingComponentOfClass(SelfRotationComponent.class.getName());
+	    for (Entity entity : entities) {
+	    	
+	    	SelfRotationComponent rotationComponent = (SelfRotationComponent) this.entityManager.getComponent(SelfRotationComponent.class.getName(), entity);
+	    	SpriteComponent spriteComponent = (SpriteComponent) this.entityManager.getComponent(SpriteComponent.class.getName(), entity);
+	    	if (rotationComponent != null && spriteComponent != null) {
+	    		rotationComponent.setCurrentRotation( (rotationComponent.getCurrentRotation() + rotationComponent.getRotationSpeed()) % 360);
+	    		spriteComponent.getSprite().setRotation(rotationComponent.getCurrentRotation());
+	    	}
+	    	
+	    }
 	    
 	    // MANAGER ENEMY RECOVERY BLINK
 //	    entities = 

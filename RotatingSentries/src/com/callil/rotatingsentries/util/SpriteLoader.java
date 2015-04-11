@@ -10,10 +10,6 @@ import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
-import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
-import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
-import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
-import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder.TextureAtlasBuilderException;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
@@ -57,7 +53,12 @@ public class SpriteLoader {
 	public TiledTextureRegion getEnemyRobberTextureRegion() {
 		return mEnemyRobberTextureRegion;
 	}
-
+	
+	/** SENTRY. */
+	protected TextureRegion mSentryTextureRegion;
+	public TextureRegion getSentryTextureRegion() {
+		return mSentryTextureRegion;
+	}
 	
 	
 	//##############
@@ -109,6 +110,12 @@ public class SpriteLoader {
 		mEnemyRobberTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(enemyRobberTexture, this.context, "enemy_robber_standard.png", 0, 0, 4, 2);
 		//mEnemyRobberTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(enemyRobberTexture, this.context, "enemy_robber_standard.png", 0, 0);
 		enemyRobberTexture.load();
+		
+		//Sentry
+		BitmapTextureAtlas sentryTexture = new BitmapTextureAtlas(this.tm, 275, 275, TextureOptions.NEAREST);
+		mSentryTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(sentryTexture, this.context, "sentry_standard.png", 0, 0);
+		sentryTexture.load();
+
 		
 		
 		//Font for player HPs
