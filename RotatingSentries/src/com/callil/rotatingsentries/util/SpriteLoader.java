@@ -139,8 +139,8 @@ public class SpriteLoader {
 		playerTexture.load();
 		
 		//Enemy Robber
-		BitmapTextureAtlas enemyRobberTexture = new BitmapTextureAtlas(this.tm, 384, 192, TextureOptions.NEAREST);
-		mEnemyRobberTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(enemyRobberTexture, this.context, "enemy_robber_standard.png", 0, 0, 4, 2);
+		BitmapTextureAtlas enemyRobberTexture = new BitmapTextureAtlas(this.tm, 384, 384, TextureOptions.NEAREST);
+		mEnemyRobberTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(enemyRobberTexture, this.context, "enemy_robber_standard.png", 0, 0, 4, 4);
 		//mEnemyRobberTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(enemyRobberTexture, this.context, "enemy_robber_standard.png", 0, 0);
 		enemyRobberTexture.load();
 		
