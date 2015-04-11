@@ -42,6 +42,12 @@ public class SpriteLoader {
 		return mBackgroundRegion;
 	}
 	
+	/** DIAMOND. */
+	protected TextureRegion mdiamondTextureRegion;
+	public TextureRegion getDiamondTextureRegion() {
+		return mdiamondTextureRegion;
+	}
+	
 	/** PLAYER. */
 	protected TextureRegion mPlayerTextureRegion;
 	public TextureRegion getPlayerTextureRegion() {
@@ -99,6 +105,11 @@ public class SpriteLoader {
 		BitmapTextureAtlas backgroundTexture = new BitmapTextureAtlas(this.tm, 1080, 1080);
 		mBackgroundRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(backgroundTexture, this.context, "background.png", 0, 0);
 		backgroundTexture.load();
+		
+		//Background
+		BitmapTextureAtlas diamondTexture = new BitmapTextureAtlas(this.tm, 100, 100);
+		mdiamondTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(diamondTexture, this.context, "diamond.png", 0, 0);
+		diamondTexture.load();
 		
 		//Player
 		BitmapTextureAtlas playerTexture = new BitmapTextureAtlas(this.tm, 64, 64);

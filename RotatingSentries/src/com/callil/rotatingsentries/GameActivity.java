@@ -110,25 +110,22 @@ public class GameActivity extends BaseGameActivity {
 		
 		final Sprite background = new Sprite(CAMERA_WIDTH/2 - 540 , CAMERA_HEIGHT/2 - 540, this.spriteLoader.getBackgroundRegion(), this.mEngine.getVertexBufferObjectManager());
 		this.mScene.attachChild(background);
+
+		final Sprite diamond = new Sprite(0 , 0, this.spriteLoader.getDiamondTextureRegion(), this.mEngine.getVertexBufferObjectManager());
+		diamond.setX(CAMERA_WIDTH/2 - diamond.getWidth()/2);
+		diamond.setY(CAMERA_HEIGHT/2 - diamond.getHeight()/2);
+		this.mScene.attachChild(diamond);
 		
-		//final Sprite enemy = new Sprite(CAMERA_WIDTH/2, CAMERA_HEIGHT/2 - 740, this.spriteLoader.getEnemyRobberTextureRegion(), this.mEngine.getVertexBufferObjectManager());
-		final AnimatedSprite enemy = new AnimatedSprite(CAMERA_WIDTH/2 + 100, CAMERA_HEIGHT/2 - 400, this.spriteLoader.getEnemyRobberTextureRegion(), this.getVertexBufferObjectManager());
-		this.mScene.attachChild(enemy);
-		enemy.setRotation(20);
-		enemy.animate(100, true);
-		
-		//final Sprite enemy = new Sprite(CAMERA_WIDTH/2, CAMERA_HEIGHT/2 - 740, this.spriteLoader.getEnemyRobberTextureRegion(), this.mEngine.getVertexBufferObjectManager());
-		final AnimatedSprite enemy2 = new AnimatedSprite(CAMERA_WIDTH/2 - 200, CAMERA_HEIGHT/2 - 100, this.spriteLoader.getEnemyRobberTextureRegion(), this.getVertexBufferObjectManager());
-		this.mScene.attachChild(enemy2);
-		enemy2.setRotation(300);
-		enemy2.animate(100, true);
-		
+		this.entityFactory.generateRobber(CAMERA_WIDTH/2 - 600, CAMERA_HEIGHT/2 - 400, 5, diamond);
+		this.entityFactory.generateRobber(CAMERA_WIDTH/2 - 500, CAMERA_HEIGHT/2 + 200, 5, diamond);
+		this.entityFactory.generateRobber(CAMERA_WIDTH/2 + 300, CAMERA_HEIGHT/2 - 900, 5, diamond);
+		this.entityFactory.generateRobber(CAMERA_WIDTH/2 + 300, CAMERA_HEIGHT/2 + 300, 5, diamond);
+
 		entityFactory.generateSentry(30);
 		
 //		this.entityFactory.generatePlayer(CAMERA_WIDTH/2 - 32 , CAMERA_HEIGHT/2 - 32);
 //		this.entityFactory.generateItemRock(200, 200);
 //		this.entityFactory.generateItemScissors(400, 450);
-		
 //		this.mScene.registerUpdateHandler(this.enemyGenerator);
 		
 

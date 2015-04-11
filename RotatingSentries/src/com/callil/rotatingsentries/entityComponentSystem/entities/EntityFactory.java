@@ -7,10 +7,12 @@ import static com.callil.rotatingsentries.GameActivity.CAMERA_HEIGHT;
 import static com.callil.rotatingsentries.GameActivity.CAMERA_WIDTH;
 
 import org.andengine.engine.camera.Camera;
+import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
+import com.callil.rotatingsentries.entityComponentSystem.components.MoveTowardsComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SelfRotationComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
 import com.callil.rotatingsentries.util.SpriteLoader;
@@ -55,6 +57,27 @@ public class EntityFactory {
 		this.em.addComponentToEntity(new SpriteComponent(sPlayer, true), player);
 		
 		return player;
+	}
+	
+	/**
+	 * Generate an standard robber at the desired position.
+	 * @param x the x position
+	 * @param y the y position
+	 * @param speed the speed of the movement
+	 * @param target the target of the movement (the robber will go towards the center of it's target)
+	 * @return The entity corresponding to the created robber.
+	 */
+	public Entity generateRobber(float x, float y, float speed, Sprite target) {
+		final AnimatedSprite sRobber = new AnimatedSprite(x, y, this.spriteLoader.getEnemyRobberTextureRegion(), this.vertextBufferObjectManager);
+		sRobber.animate(100, true);
+		
+		Entity robber = this.em.createEntity();
+		this.em.addComponentToEntity(new SpriteComponent(sRobber, true), robber);
+		// Component used to make the enemy move towards the center of it's target
+		this.em.addComponentToEntity(new MoveTowardsComponent(speed, target), robber);
+		
+		
+		return robber;
 	}
 	
 	/**
