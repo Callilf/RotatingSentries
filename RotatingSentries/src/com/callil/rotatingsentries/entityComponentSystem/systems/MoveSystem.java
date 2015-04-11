@@ -62,6 +62,10 @@ public class MoveSystem extends System {
 		    			
 		    				sprite.setX(sprite.getX() + (xMove * moveTowardsComponent.getSpeed()));
 			    			sprite.setY(sprite.getY() + (yMove * moveTowardsComponent.getSpeed()));
+			    			
+			    			double angle = Math.atan2(yMove, xMove);
+			    			double angleInDegree = ((angle > 0 ? angle : (2*Math.PI + angle)) * 360 / (2*Math.PI) + 270) % 360;
+			    			sprite.setRotation((float) angleInDegree);
 		    			}
 		    		} else {
 		    			// Move straight in a specific DIRECTION
