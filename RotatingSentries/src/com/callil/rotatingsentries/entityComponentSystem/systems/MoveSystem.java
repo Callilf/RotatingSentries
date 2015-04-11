@@ -59,6 +59,9 @@ public class MoveSystem extends System {
 		    			if (vx != 0 && vy != 0) {
 		    				float xMove = vx/(Math.abs(vx) + Math.abs(vy));
 		    				float yMove = vy/(Math.abs(vx) + Math.abs(vy));
+		    				float speedFactor = (float) ((Math.abs(xMove) + Math.abs(yMove))/Math.sqrt(xMove*xMove + yMove*yMove));
+		    				xMove = xMove * speedFactor;
+		    				yMove = yMove * speedFactor;
 		    			
 		    				sprite.setX(sprite.getX() + (xMove * moveTowardsComponent.getSpeed()));
 			    			sprite.setY(sprite.getY() + (yMove * moveTowardsComponent.getSpeed()));
