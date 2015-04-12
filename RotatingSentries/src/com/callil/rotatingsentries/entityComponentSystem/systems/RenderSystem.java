@@ -7,10 +7,14 @@ import java.util.List;
 
 import org.andengine.entity.scene.Scene;
 
+import com.callil.rotatingsentries.GameSingleton;
 import com.callil.rotatingsentries.entityComponentSystem.components.SelfRotationComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.ShootingComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.ShootingComponent.ProjectileType;
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
 import com.callil.rotatingsentries.entityComponentSystem.entities.Entity;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityManager;
+import com.callil.rotatingsentries.util.TmpGlobal;
 
 
 /**
@@ -95,6 +99,18 @@ public class RenderSystem extends System {
 	    	
 	    }
 	    
+	    // MANAGE CREATING PROJECTILES
+	    entities = this.entityManager.getAllEntitiesPosessingComponentOfClass(ShootingComponent.class.getName());
+	    for (Entity entity : entities) {
+	    	ShootingComponent shootingComponent = (ShootingComponent) this.entityManager.getComponent(ShootingComponent.class.getName(), entity);
+	    	float nextGeneratingTime = shootingComponent.getFrequency() + shootingComponent.getLastGenerateTime();
+	    	float currentDuration = GameSingleton.getInstance().getTotalTime();
+	    	if (nextGeneratingTime < currentDuration) {
+	    		shootingComponent.setLastGenerateTime(currentDuration);
+	    		SpriteComponent spriteComponent = (SpriteComponent) this.entityManager.getComponent(SpriteComponent.class.getName(), entity);
+	    		TmpGlobal.entityFactory.generateProjectile(ProjectileType.STANDARD, spriteComponent.getSprite());
+	    	}
+	    }
 	    // MANAGER ENEMY RECOVERY BLINK
 //	    entities = 
 //				this.entityManager.getAllEntitiesPosessingComponentOfClass(HitableComponent.class.getName());

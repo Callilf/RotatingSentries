@@ -78,6 +78,12 @@ public class SpriteLoader {
 		return mSentryTextureRegion;
 	}
 	
+	/** PROJECTILE : Standard */
+	protected TextureRegion mProjStdTextureRegion;
+	public TextureRegion getProjStdTextureRegion() {
+		return mProjStdTextureRegion;
+	}
+	
 	
 	//##############
 	// FONTS
@@ -148,6 +154,11 @@ public class SpriteLoader {
 		BitmapTextureAtlas sentryTexture = new BitmapTextureAtlas(this.tm, 275, 275, TextureOptions.NEAREST);
 		mSentryTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(sentryTexture, this.context, "sentry_standard.png", 0, 0);
 		sentryTexture.load();
+		
+		//Standard projectile
+		BitmapTextureAtlas projStdTexture = new BitmapTextureAtlas(this.tm, 4, 12, TextureOptions.NEAREST);
+		mProjStdTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(projStdTexture, this.context, "projectile_std.png", 0, 0);
+		projStdTexture.load();
 
 		
 		

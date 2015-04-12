@@ -8,8 +8,7 @@ import java.util.List;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 
-import android.graphics.Point;
-
+import com.callil.rotatingsentries.GameActivity;
 import com.callil.rotatingsentries.entityComponentSystem.components.MoveTowardsComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
 import com.callil.rotatingsentries.entityComponentSystem.entities.Entity;
@@ -78,6 +77,13 @@ public class MoveSystem extends System {
 //			    		}
 			    		sprite.setX(sprite.getX() + (moveTowardsComponent.getDirectionX() * moveTowardsComponent.getSpeed()));
 			    		sprite.setY(sprite.getY() + (moveTowardsComponent.getDirectionY() * moveTowardsComponent.getSpeed()));
+			    		
+			    		// test if a straight forward entity is out of screen
+			    		if (sprite.getX() < 0 || sprite.getX() > GameActivity.CAMERA_WIDTH + sprite.getWidth() ||
+			    				sprite.getY() < 0 || sprite.getY() > GameActivity.CAMERA_HEIGHT + sprite.getHeight()) {
+			    			//Log.d("MoveSystem", "Removing entity out of screen : x=" + sprite.getX() + ", Y=" + sprite.getY());
+			    			entityManager.removeEntity(entity);
+			    		}
 		    		}
 		    	}
 		    	

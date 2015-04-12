@@ -14,6 +14,8 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import com.callil.rotatingsentries.entityComponentSystem.components.MoveTowardsComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SelfRotationComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.ShootingComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.ShootingComponent.ProjectileType;
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
 import com.callil.rotatingsentries.util.SpriteLoader;
 
@@ -93,8 +95,38 @@ public class EntityFactory {
 		Entity sentry = this.em.createEntity();
 		this.em.addComponentToEntity(new SpriteComponent(sSentry, true), sentry);
 		this.em.addComponentToEntity(new SelfRotationComponent(5, rotation, true, true), sentry);
+		this.em.addComponentToEntity(new ShootingComponent(ProjectileType.STANDARD, 0.5f), sentry);
 		
 		return sentry;
+	}
+	
+	/**
+	 * Generate a projectile
+	 * @param projectileType the type of projectile
+	 * @param sentry the sprite of the sentry which generate the projectile
+	 */
+	public Entity generateProjectile(ProjectileType projectileType, Sprite sentry) {
+		float rotationDegre = sentry.getRotation();
+		double rotationRad = rotationDegre * Math.PI / 180d;
+		int centerX = CAMERA_WIDTH / 2;
+		int centerY = CAMERA_HEIGHT / 2;
+		float rayonSentry = sentry.getWidth() / 2;
+		float startX = (float) Math.sin(rotationRad);
+		float startY = (float) Math.cos(rotationRad) * -1;
+		
+		switch (projectileType) {
+		case STANDARD:
+			TextureRegion projectileTexture = spriteLoader.getProjStdTextureRegion();
+			final Sprite sProjectile = new Sprite(centerX + startX * rayonSentry - projectileTexture.getWidth()/2f, 
+					centerY + startY * rayonSentry - projectileTexture.getHeight()/2f, projectileTexture, this.vertextBufferObjectManager);
+			sProjectile.setRotation(rotationDegre);
+			Entity projectile = this.em.createEntity();
+			this.em.addComponentToEntity(new SpriteComponent(sProjectile, true), projectile);
+			this.em.addComponentToEntity(new MoveTowardsComponent(15, startX, startY), projectile);
+			return projectile;
+		default:
+			throw new IllegalArgumentException("Undefined projectile " + projectileType);
+		}
 	}
 //	
 //	/**

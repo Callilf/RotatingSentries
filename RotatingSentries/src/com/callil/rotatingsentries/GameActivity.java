@@ -22,6 +22,7 @@ import com.callil.rotatingsentries.entityComponentSystem.systems.DamageSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.MoveSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.RenderSystem;
 import com.callil.rotatingsentries.util.SpriteLoader;
+import com.callil.rotatingsentries.util.TmpGlobal;
 
 public class GameActivity extends BaseGameActivity {
 	// ===========================================================
@@ -88,7 +89,9 @@ public class GameActivity extends BaseGameActivity {
 		this.renderSystem = new RenderSystem(this.entityManager, this.mScene);
 		this.moveSystem = new MoveSystem(this.entityManager, this.mScene);
 		this.damageSystem = new DamageSystem(this.entityManager, this.mScene);
-				
+			
+		TmpGlobal.entityFactory = entityFactory;
+		
 		//Set the game time in the singleton
 		this.mScene.registerUpdateHandler(new IUpdateHandler() {
 			@Override
@@ -120,7 +123,6 @@ public class GameActivity extends BaseGameActivity {
 		final Sprite arrowLeft = new Sprite(0, 0, spriteLoader.getArrowLeftTextureRegion(), this.mEngine.getVertexBufferObjectManager()) {
 			@Override
 			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-				Log.d("BUTTON", "Left : " + pSceneTouchEvent.getAction());
 				switch (pSceneTouchEvent.getAction()) {
 				case TouchEvent.ACTION_UP:
 				case TouchEvent.ACTION_OUTSIDE:
@@ -142,7 +144,6 @@ public class GameActivity extends BaseGameActivity {
 		final Sprite arrowRight = new Sprite(CAMERA_WIDTH - trArrowRight.getWidth(), 0, trArrowRight, this.mEngine.getVertexBufferObjectManager()) {
 			@Override
 			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-				Log.d("BUTTON", "Right : " + pSceneTouchEvent.getAction());
 				switch (pSceneTouchEvent.getAction()) {
 				case TouchEvent.ACTION_UP:
 				case TouchEvent.ACTION_OUTSIDE:
