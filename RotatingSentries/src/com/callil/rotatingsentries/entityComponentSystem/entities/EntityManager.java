@@ -131,8 +131,10 @@ public class EntityManager {
 	public List<Entity> getAllEntitiesPosessingComponentOfClass(String componentClassName) {
 		List<Entity> results = new ArrayList<Entity>();
 		SparseArray<Component> components = this.getComponentsByClass().get(componentClassName);
-		for(int i = 0; i < components.size(); i++) {
-		   results.add(new Entity(components.keyAt(i)));
+		if (components != null) {
+			for(int i = 0; i < components.size(); i++) {
+			   results.add(new Entity(components.keyAt(i)));
+			}
 		}
 		return results;
 	}
