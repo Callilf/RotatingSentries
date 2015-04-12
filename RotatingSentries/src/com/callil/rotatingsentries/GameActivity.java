@@ -27,6 +27,7 @@ import com.callil.rotatingsentries.entityComponentSystem.systems.GenerationSyste
 import com.callil.rotatingsentries.entityComponentSystem.systems.MoveSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.RenderSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.System;
+import com.callil.rotatingsentries.generators.EnemyGenerator;
 import com.callil.rotatingsentries.util.SpriteLoader;
 
 public class GameActivity extends BaseGameActivity {
@@ -42,11 +43,13 @@ public class GameActivity extends BaseGameActivity {
 
 	public Camera mCamera;
 	protected Scene mScene;
+	public Sprite background;
+	public Sprite diamond;
 	
 	private EntityManager entityManager;
 	private SpriteLoader spriteLoader;
 	private EntityFactory entityFactory;
-//	private EnemyGenerator enemyGenerator;
+	private EnemyGenerator enemyGenerator;
 	
 	//Systems
 	private List<System> systems;
@@ -86,7 +89,7 @@ public class GameActivity extends BaseGameActivity {
 		//EntityManager & systems
 		this.entityManager = new EntityManager();
 		this.entityFactory = new EntityFactory(this.entityManager, this.mCamera, this.spriteLoader, this.mEngine.getVertexBufferObjectManager());
-//		this.enemyGenerator = new EnemyGenerator(this.entityManager, this.entityFactory, 3.0f);
+		this.enemyGenerator = new EnemyGenerator(this, this.entityFactory, 3.0f);
 
 		RenderSystem renderSystem = new RenderSystem(this.entityManager, this.mScene);
 		MoveSystem moveSystem = new MoveSystem(this.entityManager, this.mScene);
@@ -126,7 +129,7 @@ public class GameActivity extends BaseGameActivity {
 		Log.d("RS", "onPopulateScene");
 		
 		TextureRegion backgroundTexture = spriteLoader.getBackgroundRegion();
-		final Sprite background = new Sprite((CAMERA_WIDTH-backgroundTexture.getWidth())/2, (CAMERA_HEIGHT-backgroundTexture.getHeight())/2, backgroundTexture, this.mEngine.getVertexBufferObjectManager());
+		background = new Sprite((CAMERA_WIDTH-backgroundTexture.getWidth())/2, (CAMERA_HEIGHT-backgroundTexture.getHeight())/2, backgroundTexture, this.mEngine.getVertexBufferObjectManager());
 		this.mScene.attachChild(background);
 
 		// CREATE BUTTON
@@ -175,7 +178,7 @@ public class GameActivity extends BaseGameActivity {
 		this.mScene.attachChild(arrowLeft);
 		this.mScene.attachChild(arrowRight);
 		
-		final Sprite diamond = new Sprite(0 , 0, this.spriteLoader.getDiamondTextureRegion(), this.mEngine.getVertexBufferObjectManager()) {
+		diamond = new Sprite(0 , 0, this.spriteLoader.getDiamondTextureRegion(), this.mEngine.getVertexBufferObjectManager()) {
 			// TODO TO DELETE
 			@Override
 			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
@@ -189,18 +192,15 @@ public class GameActivity extends BaseGameActivity {
 		this.mScene.setTouchAreaBindingOnActionDownEnabled(true);
 		this.mScene.attachChild(diamond);	
 
-		this.entityFactory.generateRobber(background.getX() + 100, background.getY(), 2, diamond, 0);
-		this.entityFactory.generateRobber(background.getX() + background.getWidth() - 196, background.getY(), 2, diamond, 0);
-		this.entityFactory.generateRobber(background.getX() + 100, background.getHeight() - 96, 2, diamond, 180);
-		this.entityFactory.generateRobber(background.getX() + background.getWidth() - 196, background.getHeight() - 96, 2, diamond, 180);
+//		this.entityFactory.generateRobber(background.getX() + 100, background.getY(), 2, diamond, 0);
+//		this.entityFactory.generateRobber(background.getX() + background.getWidth() - 196, background.getY(), 2, diamond, 0);
+//		this.entityFactory.generateRobber(background.getX() + 100, background.getHeight() - 96, 2, diamond, 180);
+//		this.entityFactory.generateRobber(background.getX() + background.getWidth() - 196, background.getHeight() - 96, 2, diamond, 180);
 		
 		entityFactory.generateSentry(30);
 		
 		
-//		this.entityFactory.generatePlayer(CAMERA_WIDTH/2 - 32 , CAMERA_HEIGHT/2 - 32);
-//		this.entityFactory.generateItemRock(200, 200);
-//		this.entityFactory.generateItemScissors(400, 450);
-//		this.mScene.registerUpdateHandler(this.enemyGenerator);
+		this.mScene.registerUpdateHandler(this.enemyGenerator);
 		
 
 		// Systems
