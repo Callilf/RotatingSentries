@@ -12,6 +12,7 @@ import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
+import com.callil.rotatingsentries.entityComponentSystem.components.EnemyRobberComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.MoveTowardsComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SelfRotationComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.ShootingComponent;
@@ -72,13 +73,9 @@ public class EntityFactory {
 	 */
 	public Entity generateRobber(float x, float y, float speed, Sprite target) {
 		final AnimatedSprite sRobber = new AnimatedSprite(x, y, this.spriteLoader.getEnemyRobberTextureRegion(), this.vertextBufferObjectManager);
-		sRobber.animate(SpriteAnimationEnum.ENEMY_ROBBER_WALK.getFrameDurations(), SpriteAnimationEnum.ENEMY_ROBBER_WALK.getFrames(), true);
-		
 		Entity robber = this.em.createEntity();
 		this.em.addComponentToEntity(new SpriteComponent(sRobber, true), robber);
-		// Component used to make the enemy move towards the center of it's target
-		this.em.addComponentToEntity(new MoveTowardsComponent(speed, target), robber);
-		
+		this.em.addComponentToEntity(new EnemyRobberComponent(speed, target), robber);		
 		
 		return robber;
 	}
@@ -95,7 +92,7 @@ public class EntityFactory {
 		sSentry.setRotation(rotation);
 		Entity sentry = this.em.createEntity();
 		this.em.addComponentToEntity(new SpriteComponent(sSentry, true), sentry);
-		this.em.addComponentToEntity(new SelfRotationComponent(5, rotation, true, true), sentry);
+		this.em.addComponentToEntity(new SelfRotationComponent(3, rotation, true, true), sentry);
 		this.em.addComponentToEntity(new ShootingComponent(ProjectileType.STANDARD, 0.5f), sentry);
 		
 		return sentry;

@@ -19,6 +19,7 @@ import com.callil.rotatingsentries.entityComponentSystem.components.SelfRotation
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityFactory;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityManager;
 import com.callil.rotatingsentries.entityComponentSystem.systems.DamageSystem;
+import com.callil.rotatingsentries.entityComponentSystem.systems.EnemyRobberSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.MoveSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.RenderSystem;
 import com.callil.rotatingsentries.util.SpriteLoader;
@@ -47,6 +48,7 @@ public class GameActivity extends BaseGameActivity {
 	private RenderSystem renderSystem;
 	private MoveSystem moveSystem;
 	private DamageSystem damageSystem;
+	private EnemyRobberSystem enemyRobberSystem;
 	
 	
 	
@@ -89,6 +91,7 @@ public class GameActivity extends BaseGameActivity {
 		this.renderSystem = new RenderSystem(this.entityManager, this.mScene);
 		this.moveSystem = new MoveSystem(this.entityManager, this.mScene);
 		this.damageSystem = new DamageSystem(this.entityManager, this.mScene);
+		this.enemyRobberSystem = new EnemyRobberSystem(this.entityManager);
 			
 		TmpGlobal.entityFactory = entityFactory;
 		
@@ -199,6 +202,8 @@ public class GameActivity extends BaseGameActivity {
 		this.mScene.registerUpdateHandler(this.damageSystem);
 		this.moveSystem.onPopulateScene();
 		this.mScene.registerUpdateHandler(this.moveSystem);
+		this.enemyRobberSystem.onPopulateScene();
+		this.mScene.registerUpdateHandler(this.enemyRobberSystem);
 
 
 

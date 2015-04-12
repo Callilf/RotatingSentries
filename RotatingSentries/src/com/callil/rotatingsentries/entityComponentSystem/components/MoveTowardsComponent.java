@@ -38,10 +38,6 @@ public class MoveTowardsComponent extends Component {
 		this.speed = speed;
 		this.directionX = initialDirectionX;
 		this.directionY = initialDirectionY;
-		
-		if (initialDirectionX != 1 && initialDirectionY != 1) {
-			Log.e("TK", "StraintMoveComponent with both directions X and Y different than 1 !!!!");
-		}
 	}
 	
 	
