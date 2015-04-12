@@ -12,6 +12,7 @@ import org.andengine.entity.sprite.Sprite;
 public class EnemyRobberComponent extends Component {
 
 	public enum EnemyRobberStateType {
+		INITIALIZING,
 		ARRIVING,
 		WALKING,
 		ATTACKING;
@@ -31,22 +32,30 @@ public class EnemyRobberComponent extends Component {
 	 */
 	private Sprite target;
 	
+	/**
+	 * The rope.
+	 */
+	private Sprite rope;
+	private float ropeRotation;
+	
 	
 	
 	/**
 	 * Constructor.
 	 */
-	public EnemyRobberComponent(float speed, Sprite target) {
-		this(EnemyRobberStateType.ARRIVING, speed, target);
+	public EnemyRobberComponent(float speed, Sprite target, Sprite rope, float ropeRotation) {
+		this(EnemyRobberStateType.INITIALIZING, speed, target, rope, ropeRotation);
 	}
 	
 	/**
 	 * Constructor.
 	 */
-	public EnemyRobberComponent(EnemyRobberStateType state, float speed, Sprite target) {
+	public EnemyRobberComponent(EnemyRobberStateType state, float speed, Sprite target, Sprite rope, float ropeRotation) {
 		this.state = state;
 		this.speed = speed;
 		this.target = target;
+		this.rope = rope;
+		this.ropeRotation = ropeRotation;
 	}
 
 	
@@ -73,6 +82,34 @@ public class EnemyRobberComponent extends Component {
 
 	public void setTarget(Sprite target) {
 		this.target = target;
+	}
+
+	/**
+	 * @return the rope
+	 */
+	public Sprite getRope() {
+		return rope;
+	}
+
+	/**
+	 * @param rope the rope to set
+	 */
+	public void setRope(Sprite rope) {
+		this.rope = rope;
+	}
+
+	/**
+	 * @return the ropeRotation
+	 */
+	public float getRopeRotation() {
+		return ropeRotation;
+	}
+
+	/**
+	 * @param ropeRotation the ropeRotation to set
+	 */
+	public void setRopeRotation(float ropeRotation) {
+		this.ropeRotation = ropeRotation;
 	}
 
 

@@ -5,6 +5,7 @@ package com.callil.rotatingsentries.entityComponentSystem.systems;
 
 import java.util.List;
 
+import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 
@@ -22,12 +23,15 @@ import com.callil.rotatingsentries.util.SpriteUtil;
  * Handle the robbers cycle of life.
  */
 public class EnemyRobberSystem extends System {
+	
+	private Scene scene;
 
 	/**
 	 * @param em
 	 */
-	public EnemyRobberSystem(EntityManager em) {
+	public EnemyRobberSystem(EntityManager em, Scene scene) {
 		super(em);
+		this.scene = scene;
 	}
 
 
@@ -37,6 +41,7 @@ public class EnemyRobberSystem extends System {
 				this.entityManager.getAllEntitiesPosessingComponentOfClass(EnemyRobberComponent.class.getName());
 	    for (Entity entity : entities) {
 	    	EnemyRobberComponent enemyRobberComponent = (EnemyRobberComponent) this.entityManager.getComponent(EnemyRobberComponent.class.getName(), entity);
+	    	AnimatedSprite rope = (AnimatedSprite)enemyRobberComponent.getRope();
 	    	SpriteComponent spriteComponent = (SpriteComponent) this.entityManager.getComponent(SpriteComponent.class.getName(), entity);
 	    	AnimatedSprite sprite = (AnimatedSprite)spriteComponent.getSprite();
 	    	
@@ -45,11 +50,20 @@ public class EnemyRobberSystem extends System {
 	    	
 	    	// Switch on the different states of a robber
 	    	switch(enemyRobberComponent.getState()) {
+	    	
+	    	case INITIALIZING:
+	    		rope = (AnimatedSprite)enemyRobberComponent.getRope();
+	    		rope.animate(SpriteAnimationEnum.ENEMY_ROBBER_ROPE.getFrameDurations(), SpriteAnimationEnum.ENEMY_ROBBER_ROPE.getFrames(), false);
+	    		rope.setRotation(enemyRobberComponent.getRopeRotation());
+	    		scene.attachChild(rope);
+	    		enemyRobberComponent.setState(EnemyRobberStateType.ARRIVING);
+	    		sprite.setVisible(false);
+	    		break;
 
 	    	case ARRIVING:
-	    		//TODO animation ROPE CLIMBING
 	    		// If animation finished
-	    		if (true) {
+	    		if (!rope.isAnimationRunning()) {
+	    			sprite.setVisible(true);
 	    			enemyRobberComponent.setState(EnemyRobberStateType.WALKING);
 		    		//Add the move component
 	    			this.entityManager.addComponentToEntity(new MoveTowardsComponent(enemyRobberComponent.getSpeed(), enemyRobberComponent.getTarget()), entity);

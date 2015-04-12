@@ -71,6 +71,11 @@ public class SpriteLoader {
 	public TiledTextureRegion getEnemyRobberTextureRegion() {
 		return mEnemyRobberTextureRegion;
 	}
+	/** Enemy : ROBBER rope. */
+	protected TiledTextureRegion mEnemyRobberRopeTextureRegion;
+	public TiledTextureRegion getEnemyRobberRopeTextureRegion() {
+		return mEnemyRobberRopeTextureRegion;
+	}
 	
 	/** SENTRY. */
 	protected TextureRegion mSentryTextureRegion;
@@ -147,8 +152,12 @@ public class SpriteLoader {
 		//Enemy Robber
 		BitmapTextureAtlas enemyRobberTexture = new BitmapTextureAtlas(this.tm, 384, 480, TextureOptions.NEAREST);
 		mEnemyRobberTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(enemyRobberTexture, this.context, "enemy_robber_standard.png", 0, 0, 4, 5);
-		//mEnemyRobberTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(enemyRobberTexture, this.context, "enemy_robber_standard.png", 0, 0);
 		enemyRobberTexture.load();
+		
+		//Enemy Robber Rope
+		BitmapTextureAtlas enemyRobberRopeTexture = new BitmapTextureAtlas(this.tm, 512, 276, TextureOptions.NEAREST);
+		mEnemyRobberRopeTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(enemyRobberRopeTexture, this.context, "enemy_robber_rope.png", 0, 0, 5, 3);
+		enemyRobberRopeTexture.load();
 		
 		//Sentry
 		BitmapTextureAtlas sentryTexture = new BitmapTextureAtlas(this.tm, 275, 275, TextureOptions.NEAREST);

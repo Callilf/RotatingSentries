@@ -71,11 +71,13 @@ public class EntityFactory {
 	 * @param target the target of the movement (the robber will go towards the center of it's target)
 	 * @return The entity corresponding to the created robber.
 	 */
-	public Entity generateRobber(float x, float y, float speed, Sprite target) {
+	public Entity generateRobber(float x, float y, float speed, Sprite target, float ropeRotation) {
 		final AnimatedSprite sRobber = new AnimatedSprite(x, y, this.spriteLoader.getEnemyRobberTextureRegion(), this.vertextBufferObjectManager);
 		Entity robber = this.em.createEntity();
 		this.em.addComponentToEntity(new SpriteComponent(sRobber, true), robber);
-		this.em.addComponentToEntity(new EnemyRobberComponent(speed, target), robber);		
+		
+		final AnimatedSprite sRope = new AnimatedSprite(x, y, this.spriteLoader.getEnemyRobberRopeTextureRegion(), this.vertextBufferObjectManager);
+		this.em.addComponentToEntity(new EnemyRobberComponent(speed, target, sRope, ropeRotation), robber);		
 		
 		return robber;
 	}

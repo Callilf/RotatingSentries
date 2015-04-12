@@ -87,10 +87,11 @@ public class GameActivity extends BaseGameActivity {
 		this.entityManager = new EntityManager();
 		this.entityFactory = new EntityFactory(this.entityManager, this.mCamera, this.spriteLoader, this.mEngine.getVertexBufferObjectManager());
 //		this.enemyGenerator = new EnemyGenerator(this.entityManager, this.entityFactory, 3.0f);
+
 		RenderSystem renderSystem = new RenderSystem(this.entityManager, this.mScene);
 		MoveSystem moveSystem = new MoveSystem(this.entityManager, this.mScene);
 		DamageSystem damageSystem = new DamageSystem(this.entityManager, this.mScene);
-		EnemyRobberSystem enemyRobberSystem = new EnemyRobberSystem(this.entityManager);
+		EnemyRobberSystem enemyRobberSystem = new EnemyRobberSystem(this.entityManager, this.mScene);
 		GenerationSystem generationSystem = new GenerationSystem(entityManager, entityFactory);
 
 		// /!\ System : the latest added system will be the first one to be updated
@@ -188,12 +189,13 @@ public class GameActivity extends BaseGameActivity {
 		this.mScene.setTouchAreaBindingOnActionDownEnabled(true);
 		this.mScene.attachChild(diamond);	
 
-		this.entityFactory.generateRobber(background.getX(), background.getY(), 2, diamond);
-		this.entityFactory.generateRobber(background.getX() + background.getWidth() - 96, background.getY(), 2, diamond);
-		this.entityFactory.generateRobber(background.getX(), background.getHeight() - 96, 2, diamond);
-		this.entityFactory.generateRobber(background.getX() + background.getWidth() - 96, background.getHeight() - 96, 2, diamond);
+		this.entityFactory.generateRobber(background.getX() + 100, background.getY(), 2, diamond, 0);
+		this.entityFactory.generateRobber(background.getX() + background.getWidth() - 196, background.getY(), 2, diamond, 0);
+		this.entityFactory.generateRobber(background.getX() + 100, background.getHeight() - 96, 2, diamond, 180);
+		this.entityFactory.generateRobber(background.getX() + background.getWidth() - 196, background.getHeight() - 96, 2, diamond, 180);
 		
 		entityFactory.generateSentry(30);
+		
 		
 //		this.entityFactory.generatePlayer(CAMERA_WIDTH/2 - 32 , CAMERA_HEIGHT/2 - 32);
 //		this.entityFactory.generateItemRock(200, 200);
