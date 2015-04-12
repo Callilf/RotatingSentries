@@ -9,9 +9,11 @@ import static com.callil.rotatingsentries.GameActivity.CAMERA_WIDTH;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
+import com.callil.rotatingsentries.entityComponentSystem.components.DiamondComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.EnemyRobberComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.MoveTowardsComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SelfRotationComponent;
@@ -48,6 +50,27 @@ public class EntityFactory {
 		this.spriteLoader = spriteLoader;
 		this.vertextBufferObjectManager = vertextBufferObjectManager;
 	}
+	
+	
+	
+	/**
+	 * Generate a diamond centered on the desired position.
+	 * @param x the x position
+	 * @param y the y position
+	 * @return The entity corresponding to the created diamond.
+	 */
+	public Entity generateDiamond(float x, float y, float frequency) {
+		Sprite sDiamond = new Sprite(x , y, this.spriteLoader.getDiamondTextureRegion(), this.vertextBufferObjectManager);
+		sDiamond.setX(sDiamond.getX() - sDiamond.getWidth()/2);
+		sDiamond.setY(sDiamond.getY() - sDiamond.getHeight()/2);
+		Entity diamond = this.em.createEntity();
+		this.em.addComponentToEntity(new SpriteComponent(sDiamond, true), diamond);
+		this.em.addComponentToEntity(new DiamondComponent(frequency), diamond);
+		
+		return diamond;
+	}
+	
+
 	
 	/**
 	 * Generate a player at the desired position.

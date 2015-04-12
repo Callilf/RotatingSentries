@@ -27,8 +27,9 @@ import com.callil.rotatingsentries.entityComponentSystem.systems.GenerationSyste
 import com.callil.rotatingsentries.entityComponentSystem.systems.MoveSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.RenderSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.System;
-import com.callil.rotatingsentries.generators.EnemyGenerator;
+import com.callil.rotatingsentries.util.Couple;
 import com.callil.rotatingsentries.util.SpriteLoader;
+import com.callil.rotatingsentries.util.SpriteUtil;
 
 public class GameActivity extends BaseGameActivity {
 	// ===========================================================
@@ -36,6 +37,11 @@ public class GameActivity extends BaseGameActivity {
 	// ===========================================================
 	public static final int CAMERA_WIDTH = 1920;
 	public static final int CAMERA_HEIGHT = 1080;
+	
+	public static final int ROOM_X = 420;
+	public static final int ROOM_Y= 0;
+	public static final int ROOM_WIDTH = 1080;
+	public static final int ROOM_HEIGHT = 1080;
 
 	// ===========================================================
 	// Fields
@@ -43,13 +49,10 @@ public class GameActivity extends BaseGameActivity {
 
 	public Camera mCamera;
 	protected Scene mScene;
-	public Sprite background;
-	public Sprite diamond;
 	
 	private EntityManager entityManager;
 	private SpriteLoader spriteLoader;
 	private EntityFactory entityFactory;
-	private EnemyGenerator enemyGenerator;
 	
 	//Systems
 	private List<System> systems;
@@ -89,7 +92,6 @@ public class GameActivity extends BaseGameActivity {
 		//EntityManager & systems
 		this.entityManager = new EntityManager();
 		this.entityFactory = new EntityFactory(this.entityManager, this.mCamera, this.spriteLoader, this.mEngine.getVertexBufferObjectManager());
-		this.enemyGenerator = new EnemyGenerator(this, this.entityFactory, 3.0f);
 
 		RenderSystem renderSystem = new RenderSystem(this.entityManager, this.mScene);
 		MoveSystem moveSystem = new MoveSystem(this.entityManager, this.mScene);
@@ -129,7 +131,7 @@ public class GameActivity extends BaseGameActivity {
 		Log.d("RS", "onPopulateScene");
 		
 		TextureRegion backgroundTexture = spriteLoader.getBackgroundRegion();
-		background = new Sprite((CAMERA_WIDTH-backgroundTexture.getWidth())/2, (CAMERA_HEIGHT-backgroundTexture.getHeight())/2, backgroundTexture, this.mEngine.getVertexBufferObjectManager());
+		Sprite background = new Sprite((CAMERA_WIDTH-backgroundTexture.getWidth())/2, (CAMERA_HEIGHT-backgroundTexture.getHeight())/2, backgroundTexture, this.mEngine.getVertexBufferObjectManager());
 		this.mScene.attachChild(background);
 
 		// CREATE BUTTON
@@ -178,30 +180,10 @@ public class GameActivity extends BaseGameActivity {
 		this.mScene.attachChild(arrowLeft);
 		this.mScene.attachChild(arrowRight);
 		
-		diamond = new Sprite(0 , 0, this.spriteLoader.getDiamondTextureRegion(), this.mEngine.getVertexBufferObjectManager()) {
-			// TODO TO DELETE
-			@Override
-			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-				this.setPosition(pSceneTouchEvent.getX() - this.getWidth() / 2, pSceneTouchEvent.getY() - this.getHeight() / 2);
-				return true;
-			}
-		};
-		diamond.setX(CAMERA_WIDTH/2 - diamond.getWidth()/2);
-		diamond.setY(CAMERA_HEIGHT/2 - diamond.getHeight()/2);
-		this.mScene.registerTouchArea(diamond);
-		this.mScene.setTouchAreaBindingOnActionDownEnabled(true);
-		this.mScene.attachChild(diamond);	
-
-//		this.entityFactory.generateRobber(background.getX() + 100, background.getY(), 2, diamond, 0);
-//		this.entityFactory.generateRobber(background.getX() + background.getWidth() - 196, background.getY(), 2, diamond, 0);
-//		this.entityFactory.generateRobber(background.getX() + 100, background.getHeight() - 96, 2, diamond, 180);
-//		this.entityFactory.generateRobber(background.getX() + background.getWidth() - 196, background.getHeight() - 96, 2, diamond, 180);
-		
+		Couple<Float> backgroundCenter = SpriteUtil.getCenter(background);
+		entityFactory.generateDiamond(backgroundCenter.getX(), backgroundCenter.getY(), 3.0f);
 		entityFactory.generateSentry(30);
-		
-		
-		this.mScene.registerUpdateHandler(this.enemyGenerator);
-		
+				
 
 		// Systems
 		for (System system : systems) {
