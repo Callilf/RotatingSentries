@@ -9,7 +9,8 @@ package com.callil.rotatingsentries.enums;
  */
 public enum SpriteAnimationEnum {
 	
-	ENEMY_ROBBER_WALK(new int[]{0,1,2,3,4,5,6,7,8,9,10,11,12,13}, 100);
+	ENEMY_ROBBER_WALK(new int[]{0,1,2,3,4,5,6,7,8,9,10,11,12,13}, 100),
+	ENEMY_ROBBER_ATTACK(new int[]{12,14,15,16,15,14}, 100);
 
 	/** The frames to display. */
 	private int[] frames;

@@ -9,6 +9,7 @@ import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 
 import com.callil.rotatingsentries.entityComponentSystem.components.EnemyRobberComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.EnemyRobberComponent.EnemyRobberStateType;
 import com.callil.rotatingsentries.entityComponentSystem.components.MoveTowardsComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
 import com.callil.rotatingsentries.entityComponentSystem.entities.Entity;
@@ -45,11 +46,11 @@ public class EnemyRobberSystem extends System {
 	    	// Switch on the different states of a robber
 	    	switch(enemyRobberComponent.getState()) {
 
-	    	case EnemyRobberComponent.STATE_ARRIVING:
+	    	case ARRIVING:
 	    		//TODO animation ROPE CLIMBING
 	    		// If animation finished
 	    		if (true) {
-	    			enemyRobberComponent.setState(EnemyRobberComponent.STATE_WALKING);
+	    			enemyRobberComponent.setState(EnemyRobberStateType.WALKING);
 		    		//Add the move component
 	    			this.entityManager.addComponentToEntity(new MoveTowardsComponent(enemyRobberComponent.getSpeed(), enemyRobberComponent.getTarget()), entity);
 			    	//Start the walking animation
@@ -58,21 +59,21 @@ public class EnemyRobberSystem extends System {
 	    		break;
 
 
-	    	case EnemyRobberComponent.STATE_WALKING:
+	    	case WALKING:
 	    		
 		    	//If the robber is close enough to it's target, switch state
 		    	Sprite target = moveTowardsComponent.getTarget();
 		    	//Log.i("RS", "Distance between sprites : " + SpriteUtil.distanceBetweenCenters(sprite, target));
 		    	if (SpriteUtil.distanceBetweenCenters(sprite, target) <= 100) {
-		    		enemyRobberComponent.setState(EnemyRobberComponent.STATE_ATTACKING);
-		    		sprite.animate(new long[]{100}, new int[]{0}, false);
+		    		enemyRobberComponent.setState(EnemyRobberStateType.ATTACKING);
+		    		sprite.animate(SpriteAnimationEnum.ENEMY_ROBBER_ATTACK.getFrameDurations(), SpriteAnimationEnum.ENEMY_ROBBER_ATTACK.getFrames(), true);
 		    		this.entityManager.removeComponentFromEntity(MoveTowardsComponent.class.getName(), entity);
 		    	}
 		    	
 	    		break;
 
 
-	    	case EnemyRobberComponent.STATE_ATTACKING:
+	    	case ATTACKING:
 	    		//TODO : animation ATTACK
 	    		break;
 

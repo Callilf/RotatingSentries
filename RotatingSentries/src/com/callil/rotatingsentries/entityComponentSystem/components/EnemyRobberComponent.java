@@ -11,14 +11,16 @@ import org.andengine.entity.sprite.Sprite;
  */
 public class EnemyRobberComponent extends Component {
 
-	public static final int STATE_ARRIVING = 0;
-	public static final int STATE_WALKING = 1;
-	public static final int STATE_ATTACKING = 2;
+	public enum EnemyRobberStateType {
+		ARRIVING,
+		WALKING,
+		ATTACKING;
+	}
 	
 	/**
 	 * The state of the robber.
 	 */
-	private int state;
+	private EnemyRobberStateType state;
 	
 	/**
 	 * The speed of the robber when walking.
@@ -35,13 +37,13 @@ public class EnemyRobberComponent extends Component {
 	 * Constructor.
 	 */
 	public EnemyRobberComponent(float speed, Sprite target) {
-		this(0, speed, target);
+		this(EnemyRobberStateType.ARRIVING, speed, target);
 	}
 	
 	/**
 	 * Constructor.
 	 */
-	public EnemyRobberComponent(int state, float speed, Sprite target) {
+	public EnemyRobberComponent(EnemyRobberStateType state, float speed, Sprite target) {
 		this.state = state;
 		this.speed = speed;
 		this.target = target;
@@ -49,11 +51,11 @@ public class EnemyRobberComponent extends Component {
 
 	
 	
-	public int getState() {
+	public EnemyRobberStateType getState() {
 		return state;
 	}
 
-	public void setState(int state) {
+	public void setState(EnemyRobberStateType state) {
 		this.state = state;
 	}
 
