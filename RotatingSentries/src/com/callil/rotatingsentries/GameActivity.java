@@ -1,5 +1,8 @@
 package com.callil.rotatingsentries;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
@@ -20,10 +23,11 @@ import com.callil.rotatingsentries.entityComponentSystem.entities.EntityFactory;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityManager;
 import com.callil.rotatingsentries.entityComponentSystem.systems.DamageSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.EnemyRobberSystem;
+import com.callil.rotatingsentries.entityComponentSystem.systems.GenerationSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.MoveSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.RenderSystem;
+import com.callil.rotatingsentries.entityComponentSystem.systems.System;
 import com.callil.rotatingsentries.util.SpriteLoader;
-import com.callil.rotatingsentries.util.TmpGlobal;
 
 public class GameActivity extends BaseGameActivity {
 	// ===========================================================
@@ -45,12 +49,7 @@ public class GameActivity extends BaseGameActivity {
 //	private EnemyGenerator enemyGenerator;
 	
 	//Systems
-	private RenderSystem renderSystem;
-	private MoveSystem moveSystem;
-	private DamageSystem damageSystem;
-	private EnemyRobberSystem enemyRobberSystem;
-	
-	
+	private List<System> systems;
 	
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -88,12 +87,19 @@ public class GameActivity extends BaseGameActivity {
 		this.entityManager = new EntityManager();
 		this.entityFactory = new EntityFactory(this.entityManager, this.mCamera, this.spriteLoader, this.mEngine.getVertexBufferObjectManager());
 //		this.enemyGenerator = new EnemyGenerator(this.entityManager, this.entityFactory, 3.0f);
-		this.renderSystem = new RenderSystem(this.entityManager, this.mScene);
-		this.moveSystem = new MoveSystem(this.entityManager, this.mScene);
-		this.damageSystem = new DamageSystem(this.entityManager, this.mScene);
-		this.enemyRobberSystem = new EnemyRobberSystem(this.entityManager);
-			
-		TmpGlobal.entityFactory = entityFactory;
+		RenderSystem renderSystem = new RenderSystem(this.entityManager, this.mScene);
+		MoveSystem moveSystem = new MoveSystem(this.entityManager, this.mScene);
+		DamageSystem damageSystem = new DamageSystem(this.entityManager, this.mScene);
+		EnemyRobberSystem enemyRobberSystem = new EnemyRobberSystem(this.entityManager);
+		GenerationSystem generationSystem = new GenerationSystem(entityManager, entityFactory);
+
+		// /!\ System : the latest added system will be the first one to be updated
+		systems = new ArrayList<System>();
+		systems.add(renderSystem);
+		systems.add(moveSystem);
+		systems.add(damageSystem);
+		systems.add(enemyRobberSystem);
+		systems.add(generationSystem);
 		
 		//Set the game time in the singleton
 		this.mScene.registerUpdateHandler(new IUpdateHandler() {
@@ -169,6 +175,7 @@ public class GameActivity extends BaseGameActivity {
 		this.mScene.attachChild(arrowRight);
 		
 		final Sprite diamond = new Sprite(0 , 0, this.spriteLoader.getDiamondTextureRegion(), this.mEngine.getVertexBufferObjectManager()) {
+			// TODO TO DELETE
 			@Override
 			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
 				this.setPosition(pSceneTouchEvent.getX() - this.getWidth() / 2, pSceneTouchEvent.getY() - this.getHeight() / 2);
@@ -195,19 +202,10 @@ public class GameActivity extends BaseGameActivity {
 		
 
 		// Systems
-		// /!\ the latest added system will be the first one to be updated
-		this.renderSystem.onPopulateScene();
-		this.mScene.registerUpdateHandler(this.renderSystem);
-		this.damageSystem.onPopulateScene();
-		this.mScene.registerUpdateHandler(this.damageSystem);
-		this.moveSystem.onPopulateScene();
-		this.mScene.registerUpdateHandler(this.moveSystem);
-		this.enemyRobberSystem.onPopulateScene();
-		this.mScene.registerUpdateHandler(this.enemyRobberSystem);
-
-
-
-
+		for (System system : systems) {
+			system.onPopulateScene();
+			mScene.registerUpdateHandler(system);
+		}
 
 		pOnPopulateSceneCallback.onPopulateSceneFinished();
 

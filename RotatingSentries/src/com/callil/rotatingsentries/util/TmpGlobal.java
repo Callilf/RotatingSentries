@@ -1,7 +1,8 @@
 package com.callil.rotatingsentries.util;
 
-import com.callil.rotatingsentries.entityComponentSystem.entities.EntityFactory;
-
+/**
+ * Global static field which position is not decided yet
+ */
 public class TmpGlobal {
-	public static EntityFactory entityFactory;
+
 }
