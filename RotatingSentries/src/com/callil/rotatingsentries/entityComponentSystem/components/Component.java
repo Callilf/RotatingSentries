@@ -18,6 +18,9 @@ public abstract class Component {
 	public Component(String name) {
 		this.name = name;
 	}
+	
+	/** Call when the associated entity is destroy. To override if a destroy action is needed */
+	public void destroy() {}
 
 	/**
 	 * @return the name

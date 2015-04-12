@@ -4,15 +4,14 @@
 package com.callil.rotatingsentries.entityComponentSystem.entities;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
-import com.callil.rotatingsentries.entityComponentSystem.components.Component;
 
 import android.annotation.SuppressLint;
+
+import com.callil.rotatingsentries.entityComponentSystem.components.Component;
 
 /**
  * @author Callil
@@ -112,13 +111,14 @@ public class EntityManager {
 	 * @param entity the entity to remove
 	 */
 	public void removeEntity(Entity entity) {
-		Set<Entry<String, Map<Integer, Component>>> entrySet = this.getComponentsByClass().entrySet();
-		for (Entry<String, Map<Integer, Component>> entry : entrySet) {
+		Collection<Map<Integer, Component>> listeMapEntity = this.getComponentsByClass().values();
+		for (Map<Integer, Component> mapEntity : listeMapEntity) {
 			//For each component class, remove the entity's id from the map if it exists
-			entry.getValue().remove(entity.getEid());
+			Component remove = mapEntity.remove(entity.getEid());
+			if (remove != null) {
+				remove.destroy();
+			}
 		}
-		
-		//TODO : test this (it must not remove by index but by object)
 		entities.remove(Integer.valueOf(entity.getEid()));
 	}
 	

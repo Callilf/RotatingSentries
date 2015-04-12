@@ -42,7 +42,13 @@ public class SpriteComponent extends Component {
 		this.blinkModifier = new LoopEntityModifier(new SequenceEntityModifier(new FadeOutModifier(0.1f), new FadeInModifier(0.1f)));
 		this.blinking = false;
 	}
-
+	
+	@Override
+	public void destroy() {
+		if (sprite != null) {
+			sprite.detachSelf();
+		}
+	}
 	
 	//Getters & Setters
 	
