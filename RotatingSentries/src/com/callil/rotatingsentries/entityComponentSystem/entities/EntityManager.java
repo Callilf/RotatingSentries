@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import android.annotation.SuppressLint;
+import android.util.SparseArray;
 
 import com.callil.rotatingsentries.entityComponentSystem.components.Component;
 
@@ -28,7 +28,7 @@ public class EntityManager {
 	 * Map that gives, for a given component class name the map registering
 	 * for each entity id the component of this class it holds.
 	 */
-	private Map<String, Map<Integer, Component>> componentsByClass;
+	private Map<String, SparseArray<Component>> componentsByClass;
 
 	/**
 	 * The lowest eid that is yet to be assigned.
@@ -40,7 +40,7 @@ public class EntityManager {
 	 */
 	public EntityManager() {
 		this.entities = new ArrayList<Integer>();
-		this.componentsByClass = new HashMap<String, Map<Integer, Component>>();
+		this.componentsByClass = new HashMap<String, SparseArray<Component>>();
 		this.lowestUnassignedEid = 0;
 	}
 	
@@ -70,11 +70,10 @@ public class EntityManager {
 	 * @param component the component to add.
 	 * @param entity the entity to which the component will be added.
 	 */
-	@SuppressLint("UseSparseArrays")
 	public void addComponentToEntity(Component component, Entity entity) {
-		Map<Integer, Component> components = this.getComponentsByClass().get(component.getClass().getName());
+		SparseArray<Component> components = this.getComponentsByClass().get(component.getClass().getName());
 		if (components == null) {
-			components = new HashMap<Integer, Component>();
+			components = new SparseArray<Component>();
 			this.getComponentsByClass().put(component.getClass().getName(), components);
 		}
 		components.put(entity.getEid(), component);
@@ -86,7 +85,7 @@ public class EntityManager {
 	 * @param entity the entity
 	 */
 	public void removeComponentFromEntity(String componentClassName, Entity entity) {
-		Map<Integer, Component> components = this.getComponentsByClass().get(componentClassName);
+		SparseArray<Component> components = this.getComponentsByClass().get(componentClassName);
 		if (components != null) {
 			components.remove(entity.getEid());
 		}
@@ -99,7 +98,7 @@ public class EntityManager {
 	 * @return The component linked to this entity, null if there isn't any.
 	 */
 	public Component getComponent(String componentClassName, Entity entity) {
-		Map<Integer, Component> map = this.getComponentsByClass().get(componentClassName);
+		SparseArray<Component> map = this.getComponentsByClass().get(componentClassName);
 		if (map != null) {
 			return this.getComponentsByClass().get(componentClassName).get(entity.getEid());
 		}
@@ -111,12 +110,13 @@ public class EntityManager {
 	 * @param entity the entity to remove
 	 */
 	public void removeEntity(Entity entity) {
-		Collection<Map<Integer, Component>> listeMapEntity = this.getComponentsByClass().values();
-		for (Map<Integer, Component> mapEntity : listeMapEntity) {
+		Collection<SparseArray<Component>> listeMapEntity = this.getComponentsByClass().values();
+		for (SparseArray<Component> mapEntity : listeMapEntity) {
 			//For each component class, remove the entity's id from the map if it exists
-			Component remove = mapEntity.remove(entity.getEid());
-			if (remove != null) {
-				remove.destroy();
+			Component componentDelete = mapEntity.get(entity.getEid());
+			if (componentDelete != null) {
+				mapEntity.remove(entity.getEid());
+				componentDelete.destroy();
 			}
 		}
 		entities.remove(Integer.valueOf(entity.getEid()));
@@ -130,11 +130,9 @@ public class EntityManager {
 	 */
 	public List<Entity> getAllEntitiesPosessingComponentOfClass(String componentClassName) {
 		List<Entity> results = new ArrayList<Entity>();
-		Map<Integer, Component> components = this.getComponentsByClass().get(componentClassName);
-		if (components != null) {
-			for (int eid : components.keySet()) {
-				results.add(new Entity(eid));
-			}
+		SparseArray<Component> components = this.getComponentsByClass().get(componentClassName);
+		for(int i = 0; i < components.size(); i++) {
+		   results.add(new Entity(components.keyAt(i)));
 		}
 		return results;
 	}
@@ -160,14 +158,14 @@ public class EntityManager {
 	/**
 	 * @return the componentsByClass
 	 */
-	public Map<String, Map<Integer, Component>> getComponentsByClass() {
+	public Map<String, SparseArray<Component>> getComponentsByClass() {
 		return componentsByClass;
 	}
 
 	/**
 	 * @param componentsByClass the componentsByClass to set
 	 */
-	public void setComponentsByClass(Map<String, Map<Integer, Component>> componentsByClass) {
+	public void setComponentsByClass(Map<String, SparseArray<Component>> componentsByClass) {
 		this.componentsByClass = componentsByClass;
 	}
 
