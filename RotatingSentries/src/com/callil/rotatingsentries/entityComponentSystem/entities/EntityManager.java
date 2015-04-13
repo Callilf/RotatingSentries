@@ -28,7 +28,7 @@ public class EntityManager {
 	 * Map that gives, for a given component class name the map registering
 	 * for each entity id the component of this class it holds.
 	 */
-	private Map<String, SparseArray<Component>> componentsByClass;
+	private Map<Class<? extends Component>, SparseArray<Component>> componentsByClass;
 
 	/**
 	 * The lowest eid that is yet to be assigned.
@@ -40,7 +40,7 @@ public class EntityManager {
 	 */
 	public EntityManager() {
 		this.entities = new ArrayList<Integer>();
-		this.componentsByClass = new HashMap<String, SparseArray<Component>>();
+		this.componentsByClass = new HashMap<Class<? extends Component>, SparseArray<Component>>();
 		this.lowestUnassignedEid = 0;
 	}
 	
@@ -71,21 +71,21 @@ public class EntityManager {
 	 * @param entity the entity to which the component will be added.
 	 */
 	public void addComponentToEntity(Component component, Entity entity) {
-		SparseArray<Component> components = this.getComponentsByClass().get(component.getClass().getName());
+		SparseArray<Component> components = this.getComponentsByClass().get(component.getClass());
 		if (components == null) {
 			components = new SparseArray<Component>();
-			this.getComponentsByClass().put(component.getClass().getName(), components);
+			this.getComponentsByClass().put(component.getClass(), components);
 		}
 		components.put(entity.getEid(), component);
 	}
 	
 	/**
 	 * Remove a component from an entity.
-	 * @param componentClassName the class of the component.
+	 * @param componentClass the class of the component.
 	 * @param entity the entity
 	 */
-	public void removeComponentFromEntity(String componentClassName, Entity entity) {
-		SparseArray<Component> components = this.getComponentsByClass().get(componentClassName);
+	public void removeComponentFromEntity(Class<? extends Component> componentClass, Entity entity) {
+		SparseArray<Component> components = this.getComponentsByClass().get(componentClass);
 		if (components != null) {
 			components.remove(entity.getEid());
 		}
@@ -93,14 +93,14 @@ public class EntityManager {
 	
 	/**
 	 * For a given entity, retrieve the component of the given class.
-	 * @param componentClassName the name of the class of the component (getClass().getName()).
+	 * @param componentClass the class of the component.
 	 * @param entity the entity we want to retrieve the component from.
 	 * @return The component linked to this entity, null if there isn't any.
 	 */
-	public Component getComponent(String componentClassName, Entity entity) {
-		SparseArray<Component> map = this.getComponentsByClass().get(componentClassName);
+	public Component getComponent(Class<? extends Component> componentClass, Entity entity) {
+		SparseArray<Component> map = this.getComponentsByClass().get(componentClass);
 		if (map != null) {
-			return this.getComponentsByClass().get(componentClassName).get(entity.getEid());
+			return map.get(entity.getEid());
 		}
 		return null;
 	}
@@ -124,13 +124,13 @@ public class EntityManager {
 	
 	/**
 	 * For a given component class name, retrieve all entities that have a component of this class.
-	 * @param componentClassName the component class name (getClass().getName()).
+	 * @param componentClass the class of the component
 	 * @return A list of entities that have a component of this class. An empty list if no entity has this type
 	 * of component.
 	 */
-	public List<Entity> getAllEntitiesPosessingComponentOfClass(String componentClassName) {
+	public List<Entity> getAllEntitiesPosessingComponentOfClass(Class<? extends Component> componentClass) {
 		List<Entity> results = new ArrayList<Entity>();
-		SparseArray<Component> components = this.getComponentsByClass().get(componentClassName);
+		SparseArray<Component> components = this.getComponentsByClass().get(componentClass);
 		if (components != null) {
 			for(int i = 0; i < components.size(); i++) {
 			   results.add(new Entity(components.keyAt(i)));
@@ -160,14 +160,14 @@ public class EntityManager {
 	/**
 	 * @return the componentsByClass
 	 */
-	public Map<String, SparseArray<Component>> getComponentsByClass() {
+	public Map<Class<? extends Component>, SparseArray<Component>> getComponentsByClass() {
 		return componentsByClass;
 	}
 
 	/**
 	 * @param componentsByClass the componentsByClass to set
 	 */
-	public void setComponentsByClass(Map<String, SparseArray<Component>> componentsByClass) {
+	public void setComponentsByClass(Map<Class<? extends Component>, SparseArray<Component>> componentsByClass) {
 		this.componentsByClass = componentsByClass;
 	}
 

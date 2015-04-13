@@ -38,14 +38,14 @@ public class EnemyRobberSystem extends System {
 	@Override
 	public void onUpdate(float pSecondsElapsed) {
 		List<Entity> entities = 
-				this.entityManager.getAllEntitiesPosessingComponentOfClass(EnemyRobberComponent.class.getName());
+				this.entityManager.getAllEntitiesPosessingComponentOfClass(EnemyRobberComponent.class);
 	    for (Entity entity : entities) {
-	    	EnemyRobberComponent enemyRobberComponent = (EnemyRobberComponent) this.entityManager.getComponent(EnemyRobberComponent.class.getName(), entity);
+	    	EnemyRobberComponent enemyRobberComponent = (EnemyRobberComponent) this.entityManager.getComponent(EnemyRobberComponent.class, entity);
 	    	AnimatedSprite rope = (AnimatedSprite)enemyRobberComponent.getRope();
-	    	SpriteComponent spriteComponent = (SpriteComponent) this.entityManager.getComponent(SpriteComponent.class.getName(), entity);
+	    	SpriteComponent spriteComponent = (SpriteComponent) this.entityManager.getComponent(SpriteComponent.class, entity);
 	    	AnimatedSprite sprite = (AnimatedSprite)spriteComponent.getSprite();
 	    	
-	    	MoveTowardsComponent moveTowardsComponent = (MoveTowardsComponent) this.entityManager.getComponent(MoveTowardsComponent.class.getName(), entity);
+	    	MoveTowardsComponent moveTowardsComponent = (MoveTowardsComponent) this.entityManager.getComponent(MoveTowardsComponent.class, entity);
 	    	
 	    	
 	    	// Switch on the different states of a robber
@@ -81,7 +81,7 @@ public class EnemyRobberSystem extends System {
 		    	if (SpriteUtil.distanceBetweenCenters(sprite, target) <= 100) {
 		    		enemyRobberComponent.setState(EnemyRobberStateType.ATTACKING);
 		    		sprite.animate(SpriteAnimationEnum.ENEMY_ROBBER_ATTACK.getFrameDurations(), SpriteAnimationEnum.ENEMY_ROBBER_ATTACK.getFrames(), true);
-		    		this.entityManager.removeComponentFromEntity(MoveTowardsComponent.class.getName(), entity);
+		    		this.entityManager.removeComponentFromEntity(MoveTowardsComponent.class, entity);
 		    	}
 		    	
 	    		break;

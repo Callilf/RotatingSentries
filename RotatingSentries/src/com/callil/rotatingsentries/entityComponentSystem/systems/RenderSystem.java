@@ -35,10 +35,10 @@ public class RenderSystem extends System {
 		
 		//ATTACH SPRITES TO SCENE AND HEALTH TO SPRITES
 		List<Entity> entities = 
-				this.entityManager.getAllEntitiesPosessingComponentOfClass(SpriteComponent.class.getName());
+				this.entityManager.getAllEntitiesPosessingComponentOfClass(SpriteComponent.class);
 	    for (Entity entity : entities) {
 	    	
-	    	SpriteComponent spriteComponent = (SpriteComponent) this.entityManager.getComponent(SpriteComponent.class.getName(), entity);
+	    	SpriteComponent spriteComponent = (SpriteComponent) this.entityManager.getComponent(SpriteComponent.class, entity);
 	    	if (spriteComponent != null) {
 	    		this.scene.attachChild(spriteComponent.getSprite());
 	    		spriteComponent.setAttached(true);
@@ -57,9 +57,9 @@ public class RenderSystem extends System {
 	public void onUpdate(float pSecondsElapsed) {
 		
 		// ATTACH SPRITES
-		List<Entity> entities = this.entityManager.getAllEntitiesPosessingComponentOfClass(SpriteComponent.class.getName());
+		List<Entity> entities = this.entityManager.getAllEntitiesPosessingComponentOfClass(SpriteComponent.class);
 		for (Entity entity : entities) {
-			SpriteComponent spriteComponent = (SpriteComponent) this.entityManager.getComponent(SpriteComponent.class.getName(), entity);
+			SpriteComponent spriteComponent = (SpriteComponent) this.entityManager.getComponent(SpriteComponent.class, entity);
 			if (spriteComponent != null && !spriteComponent.isAttached()) {
 				this.scene.attachChild(spriteComponent.getSprite());
 				spriteComponent.setAttached(true);
@@ -68,10 +68,10 @@ public class RenderSystem extends System {
 		
 		
 		// MANAGE SELF ROTATIONS
-		entities = this.entityManager.getAllEntitiesPosessingComponentOfClass(SelfRotationComponent.class.getName());
+		entities = this.entityManager.getAllEntitiesPosessingComponentOfClass(SelfRotationComponent.class);
 	    for (Entity entity : entities) {
 	    	
-	    	SelfRotationComponent rotationComponent = (SelfRotationComponent) this.entityManager.getComponent(SelfRotationComponent.class.getName(), entity);
+	    	SelfRotationComponent rotationComponent = (SelfRotationComponent) this.entityManager.getComponent(SelfRotationComponent.class, entity);
 	    	if (rotationComponent.isActive()) {
 	    		if (rotationComponent.isAffectedByButton()) {
 	    			// define the direction of rotate if a button is active
@@ -85,7 +85,7 @@ public class RenderSystem extends System {
 	    				continue;
 	    			}
 	    		}
-		    	SpriteComponent spriteComponent = (SpriteComponent) this.entityManager.getComponent(SpriteComponent.class.getName(), entity);
+		    	SpriteComponent spriteComponent = (SpriteComponent) this.entityManager.getComponent(SpriteComponent.class, entity);
 		    	float speed = rotationComponent.getRotationSpeed() * (rotationComponent.isClockwise()? 1 : -1);
 		    	if (rotationComponent != null && spriteComponent != null) {
 		    		rotationComponent.setCurrentRotation( (rotationComponent.getCurrentRotation() + speed) % 360);

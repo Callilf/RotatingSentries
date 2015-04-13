@@ -28,11 +28,11 @@ public class GenerationSystem extends System {
 	public void onUpdate(float pSecondsElapsed) {
 		
 	    // MANAGE THE SPAWNING OF ENEMIES
-		List<Entity> entities = this.entityManager.getAllEntitiesPosessingComponentOfClass(DiamondComponent.class.getName());
+		List<Entity> entities = this.entityManager.getAllEntitiesPosessingComponentOfClass(DiamondComponent.class);
 	    for (Entity entity : entities) {
-	    	SpriteComponent spriteComponent = (SpriteComponent) this.entityManager.getComponent(SpriteComponent.class.getName(), entity);
+	    	SpriteComponent spriteComponent = (SpriteComponent) this.entityManager.getComponent(SpriteComponent.class, entity);
 	    	Sprite sprite = spriteComponent.getSprite();
-	    	DiamondComponent diamondComponent = (DiamondComponent) this.entityManager.getComponent(DiamondComponent.class.getName(), entity);
+	    	DiamondComponent diamondComponent = (DiamondComponent) this.entityManager.getComponent(DiamondComponent.class, entity);
 	    	float nextGeneratingTime = diamondComponent.getFrequency() + diamondComponent.getLastGenerateTime();
 	    	float currentDuration = GameSingleton.getInstance().getTotalTime();
 	    	if (nextGeneratingTime < currentDuration) {
@@ -74,14 +74,14 @@ public class GenerationSystem extends System {
 	    }
 	    
 	    // MANAGE GENERATION OF PROJECTILES
-		entities = this.entityManager.getAllEntitiesPosessingComponentOfClass(ShootingComponent.class.getName());
+		entities = this.entityManager.getAllEntitiesPosessingComponentOfClass(ShootingComponent.class);
 	    for (Entity entity : entities) {
-	    	ShootingComponent shootingComponent = (ShootingComponent) this.entityManager.getComponent(ShootingComponent.class.getName(), entity);
+	    	ShootingComponent shootingComponent = (ShootingComponent) this.entityManager.getComponent(ShootingComponent.class, entity);
 	    	float nextGeneratingTime = shootingComponent.getFrequency() + shootingComponent.getLastGenerateTime();
 	    	float currentDuration = GameSingleton.getInstance().getTotalTime();
 	    	if (nextGeneratingTime < currentDuration) {
 	    		shootingComponent.setLastGenerateTime(currentDuration);
-	    		SpriteComponent spriteComponent = (SpriteComponent) this.entityManager.getComponent(SpriteComponent.class.getName(), entity);
+	    		SpriteComponent spriteComponent = (SpriteComponent) this.entityManager.getComponent(SpriteComponent.class, entity);
 	    		entityFactory.generateProjectile(ProjectileType.STANDARD, spriteComponent.getSprite());
 	    	}
 	    }
