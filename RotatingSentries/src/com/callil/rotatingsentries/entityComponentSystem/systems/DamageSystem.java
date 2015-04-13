@@ -6,11 +6,13 @@ package com.callil.rotatingsentries.entityComponentSystem.systems;
 import java.util.List;
 
 import org.andengine.entity.scene.Scene;
+import org.andengine.entity.sprite.Sprite;
 
+import com.callil.rotatingsentries.entityComponentSystem.components.AttackComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.DefenseComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
 import com.callil.rotatingsentries.entityComponentSystem.entities.Entity;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityManager;
-
-import android.util.Log;
 
 /**
  * @author Callil
@@ -33,14 +35,40 @@ public class DamageSystem extends System {
 	@Override
 	public void onUpdate(float pSecondsElapsed) {
 		
+		List<Entity> hittables = this.entityManager.getAllEntitiesPosessingComponentOfClass(AttackComponent.class);
+		List<Entity> hitters = this.entityManager.getAllEntitiesPosessingComponentOfClass(DefenseComponent.class);
+		for (Entity hitter : hitters) {
+			Sprite sHitter = this.entityManager.getComponent(SpriteComponent.class, hitter).getSprite();
+			DefenseComponent cHitter = this.entityManager.getComponent(DefenseComponent.class, hitter);
+			for (Entity hittable : hittables) {
+				SpriteComponent scHittable = this.entityManager.getComponent(SpriteComponent.class, hittable);
+				if (scHittable != null) { // in case the entity is already dead
+					Sprite sHittable = this.entityManager.getComponent(SpriteComponent.class, hittable).getSprite();
+					if (sHitter.collidesWith(sHittable)) {
+						AttackComponent cHittable = this.entityManager.getComponent(AttackComponent.class, hittable);
+						// if dead should continue
+						boolean hitterDead = cHitter.hit(cHittable.getDamage());
+						boolean hittableDead = cHittable.hit(cHitter.getDamage());
+						if (hittableDead) {
+							entityManager.removeEntity(hittable);
+						}
+						if (hitterDead) {
+							entityManager.removeEntity(hitter);
+							break; // if dead, cannot kill another component
+						}
+					}
+				}
+			}
+		}
+		
 		// MANAGER HITABLE ENTITY COLLISIONS WITH ITEMS
 //		List<Entity> entities = 
-//				this.entityManager.getAllEntitiesPosessingComponentOfClass(HitableComponent.class.getName());
+//				this.entityManager.getAllEntitiesPosessingComponentOfClass(AttackComponent.class);
 //		for (Entity entity : entities) {
 //			
-//			HitableComponent hitableComponent = (HitableComponent) this.entityManager.getComponent(HitableComponent.class.getName(), entity);
-//			HealthComponent healthComponent = (HealthComponent) this.entityManager.getComponent(HealthComponent.class.getName(), entity);
-//			SpriteComponent spriteComponent = (SpriteComponent) this.entityManager.getComponent(SpriteComponent.class.getName(), entity);
+//			AttackComponent hitableComponent = (AttackComponent) this.entityManager.getComponent(AttackComponent.class, entity);
+//			HealthComponent healthComponent = (HealthComponent) this.entityManager.getComponent(HealthComponent.class, entity);
+//			SpriteComponent spriteComponent = (SpriteComponent) this.entityManager.getComponent(SpriteComponent.class, entity);
 //
 //			if (hitableComponent != null) {
 //				//Check whether the enemy is in recovery
@@ -52,12 +80,12 @@ public class DamageSystem extends System {
 //			
 //				//These entities can be hit. Check each items to see if they collide.
 //				List<Entity> items = 
-//						this.entityManager.getAllEntitiesPosessingComponentOfClass(LevitatingItemComponent.class.getName());
+//						this.entityManager.getAllEntitiesPosessingComponentOfClass(LevitatingItemComponent.class);
 //				for (Entity item : items) {
 //					
-//					LevitatingItemComponent itemItemComponent = (LevitatingItemComponent) this.entityManager.getComponent(LevitatingItemComponent.class.getName(), item);
+//					LevitatingItemComponent itemItemComponent = (LevitatingItemComponent) this.entityManager.getComponent(LevitatingItemComponent.class, item);
 //					if (itemItemComponent != null && itemItemComponent.isActive()) {
-//						SpriteComponent itemSprite = (SpriteComponent) this.entityManager.getComponent(SpriteComponent.class.getName(), item);
+//						SpriteComponent itemSprite = (SpriteComponent) this.entityManager.getComponent(SpriteComponent.class, item);
 //						if (itemSprite.getSprite() != null && itemSprite.getSprite().collidesWith(spriteComponent.getSprite())) {
 //							//Collision with an item
 //							Log.d("RS", "Enemy collides with item ! Takes " + itemItemComponent.getDamages() + " damages.");
@@ -85,11 +113,11 @@ public class DamageSystem extends System {
 		
 		// MANAGER COLLISIONS BETWEEN THE PLAYER AND THE ENEMIES
 //		entities = 
-//				this.entityManager.getAllEntitiesPosessingComponentOfClass(PlayerComponent.class.getName());
+//				this.entityManager.getAllEntitiesPosessingComponentOfClass(PlayerComponent.class);
 //		for (Entity player : entities) {
 //			
-//			PlayerComponent playerComponent = (PlayerComponent) this.entityManager.getComponent(PlayerComponent.class.getName(), player);
-//			SpriteComponent playerSprite = (SpriteComponent) this.entityManager.getComponent(SpriteComponent.class.getName(), player);
+//			PlayerComponent playerComponent = (PlayerComponent) this.entityManager.getComponent(PlayerComponent.class, player);
+//			SpriteComponent playerSprite = (SpriteComponent) this.entityManager.getComponent(SpriteComponent.class, player);
 //			
 //			//Check whether the player is in recovery
 //			if (playerComponent.getLastHitTime() != null && playerComponent.isInRecovery()) {
@@ -99,15 +127,15 @@ public class DamageSystem extends System {
 //			
 //			// Iterate over enemies
 //			List<Entity> enemies = 
-//					this.entityManager.getAllEntitiesPosessingComponentOfClass(EnemyComponent.class.getName());
+//					this.entityManager.getAllEntitiesPosessingComponentOfClass(EnemyComponent.class);
 //			for (Entity enemy : enemies) {
 //				
-//				SpriteComponent enemySprite = (SpriteComponent) this.entityManager.getComponent(SpriteComponent.class.getName(), enemy);
-//				EnemyComponent enemyEnemyComponent = (EnemyComponent) this.entityManager.getComponent(EnemyComponent.class.getName(), enemy);
+//				SpriteComponent enemySprite = (SpriteComponent) this.entityManager.getComponent(SpriteComponent.class, enemy);
+//				EnemyComponent enemyEnemyComponent = (EnemyComponent) this.entityManager.getComponent(EnemyComponent.class, enemy);
 //				if (enemySprite.getSprite().collidesWith(playerSprite.getSprite())) {
 //					// Enemy collides with player !
 //					Log.d("RS", "Enemy collides with player. Player looses " + enemyEnemyComponent.getDamages() + " hp.");
-//					HealthComponent playerHealth = (HealthComponent) this.entityManager.getComponent(HealthComponent.class.getName(), player);
+//					HealthComponent playerHealth = (HealthComponent) this.entityManager.getComponent(HealthComponent.class, player);
 //					playerHealth.takeDamage(enemyEnemyComponent.getDamages());
 //					
 //					if (playerHealth.isDead()) {

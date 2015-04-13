@@ -93,14 +93,16 @@ public class EntityManager {
 	
 	/**
 	 * For a given entity, retrieve the component of the given class.
+	 * @param <T> The component class
 	 * @param componentClass the class of the component.
 	 * @param entity the entity we want to retrieve the component from.
 	 * @return The component linked to this entity, null if there isn't any.
 	 */
-	public Component getComponent(Class<? extends Component> componentClass, Entity entity) {
+	@SuppressWarnings("unchecked")
+	public <T extends Component> T getComponent(Class<T> componentClass, Entity entity) {
 		SparseArray<Component> map = this.getComponentsByClass().get(componentClass);
 		if (map != null) {
-			return map.get(entity.getEid());
+			return (T) map.get(entity.getEid());
 		}
 		return null;
 	}

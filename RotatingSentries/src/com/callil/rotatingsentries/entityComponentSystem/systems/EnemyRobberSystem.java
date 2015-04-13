@@ -40,12 +40,12 @@ public class EnemyRobberSystem extends System {
 		List<Entity> entities = 
 				this.entityManager.getAllEntitiesPosessingComponentOfClass(EnemyRobberComponent.class);
 	    for (Entity entity : entities) {
-	    	EnemyRobberComponent enemyRobberComponent = (EnemyRobberComponent) this.entityManager.getComponent(EnemyRobberComponent.class, entity);
+	    	EnemyRobberComponent enemyRobberComponent = this.entityManager.getComponent(EnemyRobberComponent.class, entity);
 	    	AnimatedSprite rope = (AnimatedSprite)enemyRobberComponent.getRope();
-	    	SpriteComponent spriteComponent = (SpriteComponent) this.entityManager.getComponent(SpriteComponent.class, entity);
+	    	SpriteComponent spriteComponent = this.entityManager.getComponent(SpriteComponent.class, entity);
 	    	AnimatedSprite sprite = (AnimatedSprite)spriteComponent.getSprite();
 	    	
-	    	MoveTowardsComponent moveTowardsComponent = (MoveTowardsComponent) this.entityManager.getComponent(MoveTowardsComponent.class, entity);
+	    	MoveTowardsComponent moveTowardsComponent = this.entityManager.getComponent(MoveTowardsComponent.class, entity);
 	    	
 	    	
 	    	// Switch on the different states of a robber

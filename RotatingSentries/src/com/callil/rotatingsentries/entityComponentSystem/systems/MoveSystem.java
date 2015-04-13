@@ -40,14 +40,14 @@ public class MoveSystem extends System {
 		List<Entity> entities = 
 				this.entityManager.getAllEntitiesPosessingComponentOfClass(SpriteComponent.class);
 	    for (Entity entity : entities) {
-	    	SpriteComponent spriteComponent = (SpriteComponent) this.entityManager.getComponent(SpriteComponent.class, entity);
+	    	SpriteComponent spriteComponent = this.entityManager.getComponent(SpriteComponent.class, entity);
 	    	
 	    	if (spriteComponent != null) {
 	    		Sprite sprite = spriteComponent.getSprite();
 	    		
 	    		
 		    	//--Handle the straight movements
-		    	MoveTowardsComponent moveTowardsComponent = (MoveTowardsComponent) this.entityManager.getComponent(MoveTowardsComponent.class, entity);
+		    	MoveTowardsComponent moveTowardsComponent = this.entityManager.getComponent(MoveTowardsComponent.class, entity);
 		    	if (moveTowardsComponent != null && moveTowardsComponent.getSpeed() > 0) {
 		    		
 		    		if (moveTowardsComponent.getTarget() != null) {

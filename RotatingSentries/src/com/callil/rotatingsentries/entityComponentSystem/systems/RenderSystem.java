@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.callil.rotatingsentries.entityComponentSystem.systems;
 
 import java.util.List;
@@ -38,12 +35,12 @@ public class RenderSystem extends System {
 				this.entityManager.getAllEntitiesPosessingComponentOfClass(SpriteComponent.class);
 	    for (Entity entity : entities) {
 	    	
-	    	SpriteComponent spriteComponent = (SpriteComponent) this.entityManager.getComponent(SpriteComponent.class, entity);
+	    	SpriteComponent spriteComponent = this.entityManager.getComponent(SpriteComponent.class, entity);
 	    	if (spriteComponent != null) {
 	    		this.scene.attachChild(spriteComponent.getSprite());
 	    		spriteComponent.setAttached(true);
 	    		
-//	    		HealthComponent healthComponent = (HealthComponent) this.entityManager.getComponent(HealthComponent.class.getName(), entity);
+//	    		HealthComponent healthComponent = this.entityManager.getComponent(HealthComponent.class, entity);
 //	    		if (healthComponent != null && healthComponent.isDisplayHP()) {
 //	    			spriteComponent.getSprite().attachChild(healthComponent.getText());
 //	    			healthComponent.getText().setPosition(0, spriteComponent.getSprite().getHeight());
@@ -59,7 +56,7 @@ public class RenderSystem extends System {
 		// ATTACH SPRITES
 		List<Entity> entities = this.entityManager.getAllEntitiesPosessingComponentOfClass(SpriteComponent.class);
 		for (Entity entity : entities) {
-			SpriteComponent spriteComponent = (SpriteComponent) this.entityManager.getComponent(SpriteComponent.class, entity);
+			SpriteComponent spriteComponent = this.entityManager.getComponent(SpriteComponent.class, entity);
 			if (spriteComponent != null && !spriteComponent.isAttached()) {
 				this.scene.attachChild(spriteComponent.getSprite());
 				spriteComponent.setAttached(true);
@@ -71,7 +68,7 @@ public class RenderSystem extends System {
 		entities = this.entityManager.getAllEntitiesPosessingComponentOfClass(SelfRotationComponent.class);
 	    for (Entity entity : entities) {
 	    	
-	    	SelfRotationComponent rotationComponent = (SelfRotationComponent) this.entityManager.getComponent(SelfRotationComponent.class, entity);
+	    	SelfRotationComponent rotationComponent = this.entityManager.getComponent(SelfRotationComponent.class, entity);
 	    	if (rotationComponent.isActive()) {
 	    		if (rotationComponent.isAffectedByButton()) {
 	    			// define the direction of rotate if a button is active
@@ -85,7 +82,7 @@ public class RenderSystem extends System {
 	    				continue;
 	    			}
 	    		}
-		    	SpriteComponent spriteComponent = (SpriteComponent) this.entityManager.getComponent(SpriteComponent.class, entity);
+		    	SpriteComponent spriteComponent = this.entityManager.getComponent(SpriteComponent.class, entity);
 		    	float speed = rotationComponent.getRotationSpeed() * (rotationComponent.isClockwise()? 1 : -1);
 		    	if (rotationComponent != null && spriteComponent != null) {
 		    		rotationComponent.setCurrentRotation( (rotationComponent.getCurrentRotation() + speed) % 360);
@@ -97,11 +94,11 @@ public class RenderSystem extends System {
 	    
 	    // MANAGER ENEMY RECOVERY BLINK
 //	    entities = 
-//				this.entityManager.getAllEntitiesPosessingComponentOfClass(HitableComponent.class.getName());
+//				this.entityManager.getAllEntitiesPosessingComponentOfClass(AttackComponent.class);
 //		for (Entity entity : entities) {
 //			
-//			HitableComponent hitableComponent = (HitableComponent) this.entityManager.getComponent(HitableComponent.class.getName(), entity);
-//			SpriteComponent spriteComponent = (SpriteComponent) this.entityManager.getComponent(SpriteComponent.class.getName(), entity);
+//			AttackComponent hitableComponent = this.entityManager.getComponent(AttackComponent.class, entity);
+//			SpriteComponent spriteComponent = this.entityManager.getComponent(SpriteComponent.class, entity);
 //			if (hitableComponent != null && hitableComponent.getLastHitTime() != null) {
 //				//Check whether the enemy is in recovery
 //				if (hitableComponent.isInRecovery()) {
@@ -123,10 +120,10 @@ public class RenderSystem extends System {
 		
 		// MANAGER PLAYER RECOVERY BLINK
 //	    entities = 
-//				this.entityManager.getAllEntitiesPosessingComponentOfClass(PlayerComponent.class.getName());
+//				this.entityManager.getAllEntitiesPosessingComponentOfClass(PlayerComponent.class);
 //		for (Entity player : entities) {
-//			PlayerComponent playerComponent = (PlayerComponent) this.entityManager.getComponent(PlayerComponent.class.getName(), player);
-//			SpriteComponent playerSprite = (SpriteComponent) this.entityManager.getComponent(SpriteComponent.class.getName(), player);
+//			PlayerComponent playerComponent = this.entityManager.getComponent(PlayerComponent.class, player);
+//			SpriteComponent playerSprite = this.entityManager.getComponent(SpriteComponent.class, player);
 //			if (playerComponent != null && playerComponent.getLastHitTime() != null) {
 //				//Check whether the enemy is in recovery
 //				if (playerComponent.isInRecovery()) {

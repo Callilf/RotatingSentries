@@ -9,10 +9,11 @@ import static com.callil.rotatingsentries.GameActivity.CAMERA_WIDTH;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
+import com.callil.rotatingsentries.entityComponentSystem.components.AttackComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.DefenseComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.DiamondComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.EnemyRobberComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.MoveTowardsComponent;
@@ -20,7 +21,6 @@ import com.callil.rotatingsentries.entityComponentSystem.components.SelfRotation
 import com.callil.rotatingsentries.entityComponentSystem.components.ShootingComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.ShootingComponent.ProjectileType;
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
-import com.callil.rotatingsentries.enums.SpriteAnimationEnum;
 import com.callil.rotatingsentries.util.SpriteLoader;
 
 /**
@@ -66,6 +66,7 @@ public class EntityFactory {
 		Entity diamond = this.em.createEntity();
 		this.em.addComponentToEntity(new SpriteComponent(sDiamond, true), diamond);
 		this.em.addComponentToEntity(new DiamondComponent(frequency), diamond);
+		this.em.addComponentToEntity(new DefenseComponent(500, 0), diamond);
 		
 		return diamond;
 	}
@@ -100,7 +101,8 @@ public class EntityFactory {
 		this.em.addComponentToEntity(new SpriteComponent(sRobber, true), robber);
 		
 		final AnimatedSprite sRope = new AnimatedSprite(x, y, this.spriteLoader.getEnemyRobberRopeTextureRegion(), this.vertextBufferObjectManager);
-		this.em.addComponentToEntity(new EnemyRobberComponent(speed, target, sRope, ropeRotation), robber);		
+		this.em.addComponentToEntity(new EnemyRobberComponent(speed, target, sRope, ropeRotation), robber);
+		this.em.addComponentToEntity(new AttackComponent(1, 1), robber);
 		
 		return robber;
 	}
@@ -146,6 +148,7 @@ public class EntityFactory {
 			Entity projectile = this.em.createEntity();
 			this.em.addComponentToEntity(new SpriteComponent(sProjectile, true), projectile);
 			this.em.addComponentToEntity(new MoveTowardsComponent(15, startX, startY), projectile);
+			this.em.addComponentToEntity(new DefenseComponent(1, 2), projectile);
 			return projectile;
 		default:
 			throw new IllegalArgumentException("Undefined projectile " + projectileType);
@@ -202,7 +205,7 @@ public class EntityFactory {
 //		this.em.addComponentToEntity(pandaSC, panda);
 //		this.em.addComponentToEntity(new EnemyComponent(1), panda);
 //		this.em.addComponentToEntity(new HealthComponent(2, new Text(0, 0, this.spriteLoader.getHPFont(), "Placeholder", this.vertextBufferObjectManager), true), panda);
-//		this.em.addComponentToEntity(new HitableComponent(1), panda);
+//		this.em.addComponentToEntity(new AttackComponent(1), panda);
 //		this.em.addComponentToEntity(new StraightMoveComponent(4.0f, directionX, directionY), panda);
 //		return panda;
 //	}
