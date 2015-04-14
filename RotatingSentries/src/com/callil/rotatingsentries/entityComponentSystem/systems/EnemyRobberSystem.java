@@ -16,6 +16,7 @@ import com.callil.rotatingsentries.entityComponentSystem.components.SpriteCompon
 import com.callil.rotatingsentries.entityComponentSystem.entities.Entity;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityManager;
 import com.callil.rotatingsentries.enums.SpriteAnimationEnum;
+import com.callil.rotatingsentries.util.Couple;
 import com.callil.rotatingsentries.util.SpriteUtil;
 
 /**
@@ -52,18 +53,49 @@ public class EnemyRobberSystem extends System {
 	    	switch(enemyRobberComponent.getState()) {
 	    	
 	    	case INITIALIZING:
-	    		rope = (AnimatedSprite)enemyRobberComponent.getRope();
-	    		rope.animate(SpriteAnimationEnum.ENEMY_ROBBER_ROPE.getFrameDurations(), SpriteAnimationEnum.ENEMY_ROBBER_ROPE.getFrames(), false);
-	    		rope.setRotation(enemyRobberComponent.getRopeRotation());
-	    		scene.attachChild(rope);
-	    		enemyRobberComponent.setState(EnemyRobberStateType.ARRIVING);
-	    		sprite.setVisible(false);
+	    		if (!rope.isVisible()) {
+	    			rope.setVisible(true);
+		    		rope = (AnimatedSprite)enemyRobberComponent.getRope();
+		    		rope.animate(SpriteAnimationEnum.ENEMY_ROBBER_ROPE.getFrameDurations(), SpriteAnimationEnum.ENEMY_ROBBER_ROPE.getFrames(), false);
+		    		rope.setRotation(enemyRobberComponent.getRopeRotation());
+		    		scene.attachChild(rope);
+		    		sprite.setVisible(false);
+	    		} else if (!rope.isAnimationRunning()) {
+	    			enemyRobberComponent.setState(EnemyRobberStateType.ARRIVING);
+	    			sprite.setVisible(true);
+	    			float ropeRotation = enemyRobberComponent.getRopeRotation();
+	    			Couple<Float> couple = new Couple<Float>(sprite.getX(), sprite.getY());
+	    			enemyRobberComponent.setArrivingPosition(couple);
+	    			if (ropeRotation == 0) {
+	    				sprite.setY(sprite.getY() - sprite.getHeight());
+	    			} else if (ropeRotation == 90) {
+	    				sprite.setX(sprite.getX() + sprite.getWidth());
+	    			} else if (ropeRotation == 180) {
+	    				sprite.setY(sprite.getY() + sprite.getHeight());
+	    			} else {
+	    				sprite.setX(sprite.getX() - sprite.getWidth());
+	    			}
+	    			sprite.setRotation(ropeRotation);
+	    			sprite.animate(SpriteAnimationEnum.ENEMY_ROBBER_CLIMBING.getFrameDurations(), SpriteAnimationEnum.ENEMY_ROBBER_CLIMBING.getFrames(), true);
+	    		}
+	    		
+	    		
 	    		break;
 
 	    	case ARRIVING:
 	    		// If animation finished
-	    		if (!rope.isAnimationRunning()) {
-	    			sprite.setVisible(true);
+	    		float ropeRotation = enemyRobberComponent.getRopeRotation();
+	    		if (ropeRotation == 0) {
+    				sprite.setY(sprite.getY() + 2);
+    			} else if (ropeRotation == 90) {
+    				sprite.setX(sprite.getX() - 2);
+    			} else if (ropeRotation == 180) {
+    				sprite.setY(sprite.getY() -2 );
+    			} else {
+    				sprite.setX(sprite.getX() + 2);
+    			}
+	    		
+	    		if (sprite.getX() == enemyRobberComponent.getArrivingPosition().getX() && sprite.getY() == enemyRobberComponent.getArrivingPosition().getY()) {	
 	    			enemyRobberComponent.setState(EnemyRobberStateType.WALKING);
 		    		//Add the move component
 	    			this.entityManager.addComponentToEntity(new MoveTowardsComponent(enemyRobberComponent.getSpeed(), enemyRobberComponent.getTarget()), entity);

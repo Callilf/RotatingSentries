@@ -5,6 +5,8 @@ package com.callil.rotatingsentries.entityComponentSystem.components;
 
 import org.andengine.entity.sprite.Sprite;
 
+import com.callil.rotatingsentries.util.Couple;
+
 /**
  * @author Callil
  * Defines that this entity is a robber. This component is used to manage the workflow of a robber.
@@ -32,6 +34,9 @@ public class EnemyRobberComponent extends Component {
 	 */
 	private Sprite target;
 	
+	/** The position at which the robber will arrive in climbing and start walking. */
+	private Couple<Float> arrivingPosition;
+	
 	/**
 	 * The rope.
 	 */
@@ -55,6 +60,7 @@ public class EnemyRobberComponent extends Component {
 		this.speed = speed;
 		this.target = target;
 		this.rope = rope;
+		this.rope.setVisible(false);
 		this.ropeRotation = ropeRotation;
 	}
 
@@ -110,6 +116,14 @@ public class EnemyRobberComponent extends Component {
 	 */
 	public void setRopeRotation(float ropeRotation) {
 		this.ropeRotation = ropeRotation;
+	}
+
+	public Couple<Float> getArrivingPosition() {
+		return arrivingPosition;
+	}
+
+	public void setArrivingPosition(Couple<Float> arrivingPosition) {
+		this.arrivingPosition = arrivingPosition;
 	}
 
 
