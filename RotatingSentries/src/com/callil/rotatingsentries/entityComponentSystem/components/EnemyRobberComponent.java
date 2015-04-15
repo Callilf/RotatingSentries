@@ -64,6 +64,10 @@ public class EnemyRobberComponent extends Component {
 		this.ropeRotation = ropeRotation;
 	}
 
+	@Override
+	public void destroy() {
+		rope.detachSelf();
+	}
 	
 	
 	public EnemyRobberStateType getState() {

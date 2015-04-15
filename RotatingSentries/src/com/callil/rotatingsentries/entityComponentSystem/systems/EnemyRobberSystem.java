@@ -11,6 +11,7 @@ import org.andengine.entity.sprite.Sprite;
 
 import com.callil.rotatingsentries.entityComponentSystem.components.EnemyRobberComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.EnemyRobberComponent.EnemyRobberStateType;
+import com.callil.rotatingsentries.entityComponentSystem.components.AttackComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.MoveTowardsComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
 import com.callil.rotatingsentries.entityComponentSystem.entities.Entity;
@@ -42,6 +43,7 @@ public class EnemyRobberSystem extends System {
 				this.entityManager.getAllEntitiesPosessingComponentOfClass(EnemyRobberComponent.class);
 	    for (Entity entity : entities) {
 	    	EnemyRobberComponent enemyRobberComponent = this.entityManager.getComponent(EnemyRobberComponent.class, entity);
+	    	AttackComponent attackComponent = this.entityManager.getComponent(AttackComponent.class, entity);
 	    	AnimatedSprite rope = (AnimatedSprite)enemyRobberComponent.getRope();
 	    	SpriteComponent spriteComponent = this.entityManager.getComponent(SpriteComponent.class, entity);
 	    	AnimatedSprite sprite = (AnimatedSprite)spriteComponent.getSprite();
@@ -55,6 +57,7 @@ public class EnemyRobberSystem extends System {
 	    	case INITIALIZING:
 	    		if (!rope.isVisible()) {
 	    			rope.setVisible(true);
+	    			attackComponent.setActive(false);
 		    		rope = (AnimatedSprite)enemyRobberComponent.getRope();
 		    		rope.animate(SpriteAnimationEnum.ENEMY_ROBBER_ROPE.getFrameDurations(), SpriteAnimationEnum.ENEMY_ROBBER_ROPE.getFrames(), false);
 		    		rope.setRotation(enemyRobberComponent.getRopeRotation());
@@ -63,6 +66,7 @@ public class EnemyRobberSystem extends System {
 	    		} else if (!rope.isAnimationRunning()) {
 	    			enemyRobberComponent.setState(EnemyRobberStateType.ARRIVING);
 	    			sprite.setVisible(true);
+	    			attackComponent.setActive(true);
 	    			float ropeRotation = enemyRobberComponent.getRopeRotation();
 	    			Couple<Float> couple = new Couple<Float>(sprite.getX(), sprite.getY());
 	    			enemyRobberComponent.setArrivingPosition(couple);

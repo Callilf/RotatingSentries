@@ -135,7 +135,10 @@ public class EntityManager {
 		SparseArray<Component> components = this.getComponentsByClass().get(componentClass);
 		if (components != null) {
 			for(int i = 0; i < components.size(); i++) {
-			   results.add(new Entity(components.keyAt(i)));
+			    if (components.valueAt(i).isActive()) {
+			    	results.add(new Entity(components.keyAt(i)));
+			    }
+			   
 			}
 		}
 		return results;

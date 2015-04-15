@@ -13,6 +13,10 @@ public abstract class Component {
 	/** Name (debugging purpose). */
 	private String name;
 	
+	/** Whether this component is active or not. 
+	 * If not, the entity posessing this component will be considered like it doesn't have this component. */
+	private boolean active = true;
+	
 	public Component() {}
 	
 	public Component(String name) {
@@ -22,18 +26,21 @@ public abstract class Component {
 	/** Call when the associated entity is destroy. To override if a destroy action is needed */
 	public void destroy() {}
 
-	/**
-	 * @return the name
-	 */
+
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * @param name the name to set
-	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
 }

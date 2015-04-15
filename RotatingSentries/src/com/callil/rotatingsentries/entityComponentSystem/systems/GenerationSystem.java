@@ -37,6 +37,7 @@ public class GenerationSystem extends System {
 	    	float currentDuration = GameSingleton.getInstance().getTotalTime();
 	    	if (nextGeneratingTime < currentDuration) {
 	    		diamondComponent.setLastGenerateTime(currentDuration);
+	    		diamondComponent.setFrequency(Math.max(diamondComponent.getFrequency() - 0.1f, 1.0f));
 	    		
 	    		// Generate a new enemy
 				Random rand = new Random();
