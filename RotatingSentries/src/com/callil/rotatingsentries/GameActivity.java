@@ -35,6 +35,8 @@ public class GameActivity extends BaseGameActivity {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+	public static final boolean DEBUG_MODE = false;
+	
 	public static final int CAMERA_WIDTH = 1920;
 	public static final int CAMERA_HEIGHT = 1080;
 	
@@ -182,10 +184,16 @@ public class GameActivity extends BaseGameActivity {
 		this.mScene.attachChild(arrowLeft);
 		this.mScene.attachChild(arrowRight);
 		
+		//Place walls
+		entityFactory.generateWall(background.getX(), background.getY(), 0);
+		entityFactory.generateWall(background.getX() + background.getWidth()/2 - 20, background.getY() + background.getHeight()/2 - 20, 90);
+		entityFactory.generateWall(background.getX(), background.getY() + background.getHeight() - 40, 180);
+		entityFactory.generateWall(background.getX() - background.getWidth()/2 + 20, background.getY() + background.getHeight()/2 - 20, 270);
+		
+		//Place diamond and sentry
 		Couple<Float> backgroundCenter = SpriteUtil.getCenter(background);
 		entityFactory.generateDiamond(backgroundCenter.getX(), backgroundCenter.getY(), 3.0f);
 		entityFactory.generateSentry(30);
-				
 
 		// Systems
 		for (System system : systems) {

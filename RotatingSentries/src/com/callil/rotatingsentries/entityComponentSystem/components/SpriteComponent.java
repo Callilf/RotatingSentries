@@ -12,6 +12,8 @@ import org.andengine.entity.shape.IShape;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.util.color.Color;
 
+import com.callil.rotatingsentries.GameActivity;
+
 /**
  * @author Callil
  * Defines that the entity has a sprite.
@@ -78,12 +80,11 @@ public class SpriteComponent extends Component {
 		sprite.setColor(Color.RED);
 		hitbox = new Rectangle(xmin, ymin, width, height, sprite.getVertexBufferObjectManager());
 		
-		// TODO DEBUG
-		hitbox.setVisible(true); // to set to false
-		hitbox.setAlpha(10); // DON'T WORK
-		hitbox.setColor(Color.BLUE);
-		// FIN DEBUG
-		
+		if (GameActivity.DEBUG_MODE) {
+			hitbox.setVisible(true); // to set to false
+			hitbox.setAlpha(10); // DON'T WORK
+			hitbox.setColor(Color.BLUE);
+		}
 		sprite.attachChild(hitbox);
 		return this;
 	}

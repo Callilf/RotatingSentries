@@ -42,6 +42,12 @@ public class SpriteLoader {
 		return mBackgroundRegion;
 	}
 	
+	/** WALLS. */
+	protected TextureRegion mWall;
+	public TextureRegion getWallRegion() {
+		return mWall;
+	}
+	
 	/** ARROW : left */
 	protected TextureRegion mArrowLeftTextureRegion;
 	public TextureRegion getArrowLeftTextureRegion() {
@@ -128,6 +134,11 @@ public class SpriteLoader {
 		BitmapTextureAtlas backgroundTexture = new BitmapTextureAtlas(this.tm, 1080, 1080);
 		mBackgroundRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(backgroundTexture, this.context, "background.png", 0, 0);
 		backgroundTexture.load();
+		
+		//Wall
+		BitmapTextureAtlas wallTexture = new BitmapTextureAtlas(this.tm, 1080, 40);
+		mWall =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(wallTexture, this.context, "wall.png", 0, 0);
+		wallTexture.load();
 		
 		//Left button
 		BitmapTextureAtlas leftButtonTexture = new BitmapTextureAtlas(this.tm, 420, 1080);

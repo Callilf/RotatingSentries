@@ -21,6 +21,7 @@ import com.callil.rotatingsentries.entityComponentSystem.components.MoveTowardsC
 import com.callil.rotatingsentries.entityComponentSystem.components.SelfRotationComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.ShootingComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.ShootingComponent.ProjectileType;
+import com.callil.rotatingsentries.entityComponentSystem.components.SolidComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
 import com.callil.rotatingsentries.util.SpriteLoader;
 
@@ -52,6 +53,24 @@ public class EntityFactory {
 		this.vertextBufferObjectManager = vertextBufferObjectManager;
 	}
 	
+	
+	
+	/**
+	 * Generate a wall at the desired position.
+	 * @param x the x position
+	 * @param y the y position
+	 * @param rotation the rotation of the sprite
+	 * @return The entity corresponding to the created wall.
+	 */
+	public Entity generateWall(float x, float y, float rotation) {
+		final Sprite sWall = new Sprite(x, y , this.spriteLoader.getWallRegion(), this.vertextBufferObjectManager);
+		sWall.setRotation(rotation);
+		Entity wall = this.em.createEntity();
+		this.em.addComponentToEntity(new SpriteComponent(sWall, true), wall);
+		this.em.addComponentToEntity(new SolidComponent(), wall);
+
+		return wall;
+	}
 	
 	
 	/**
