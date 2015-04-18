@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.andengine.entity.scene.Scene;
 
+import com.callil.rotatingsentries.entityComponentSystem.components.DiamondComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SelfRotationComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
 import com.callil.rotatingsentries.entityComponentSystem.entities.Entity;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityManager;
-
 
 /**
  * @author Callil
@@ -61,6 +61,13 @@ public class RenderSystem extends System {
 				this.scene.attachChild(spriteComponent.getSprite());
 				spriteComponent.setAttached(true);
 			}
+			
+			//Attach diamond's life
+			DiamondComponent diamondComponent = this.entityManager.getComponent(DiamondComponent.class, entity);
+    		if (diamondComponent != null && diamondComponent.getLifeText() != null && !diamondComponent.getLifeText().hasParent()) {
+    			this.scene.attachChild(diamondComponent.getLifeText());
+    			diamondComponent.getLifeText().setPosition(20, 20);
+    		}
 		}
 		
 		
@@ -91,6 +98,7 @@ public class RenderSystem extends System {
 	    	}
 	    	
 	    }
+	    
 	    
 	    // MANAGER ENEMY RECOVERY BLINK
 //	    entities = 

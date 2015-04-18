@@ -9,6 +9,7 @@ import static com.callil.rotatingsentries.GameActivity.CAMERA_WIDTH;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.text.Text;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
@@ -65,8 +66,8 @@ public class EntityFactory {
 		sDiamond.setY(sDiamond.getY() - sDiamond.getHeight()/2);
 		Entity diamond = this.em.createEntity();
 		this.em.addComponentToEntity(new SpriteComponent(sDiamond, true), diamond);
-		this.em.addComponentToEntity(new DiamondComponent(frequency), diamond);
-		this.em.addComponentToEntity(new DefenseComponent(500, 0), diamond);
+		this.em.addComponentToEntity(new DiamondComponent(frequency, 100, new Text(0, 0, this.spriteLoader.getPlayerHPFont(), "Placeholder", this.vertextBufferObjectManager)), diamond);
+//		this.em.addComponentToEntity(new DefenseComponent(500, 0), diamond);
 		
 		return diamond;
 	}

@@ -3,6 +3,8 @@
  */
 package com.callil.rotatingsentries.entityComponentSystem.components;
 
+import org.andengine.entity.text.Text;
+
 /**
  * @author Callil
  * Defines that the enemies will spawn to go towards this entity.
@@ -14,11 +16,17 @@ public class DiamondComponent extends Component {
 	/** The time at which the last enemy was generated. */
 	private float lastGenerateTime;
 	
+	/** The number of hp. */
+	private int life;
+	private Text lifeText;
+	
 	/**
 	 * 
 	 */
-	public DiamondComponent(float frequency) {
-		this.frequency = frequency;
+	public DiamondComponent(float frequency, int life, Text lifeText) {
+		setFrequency(frequency);
+		setLifeText(lifeText);
+		setLife(life);
 	}
 
 	/**
@@ -44,5 +52,23 @@ public class DiamondComponent extends Component {
 		this.lastGenerateTime = lastGenerateTime;
 	}
 
+	public int getLife() {
+		return life;
+	}
+
+	public void setLife(int life) {
+		this.life = life;
+		if (this.lifeText != null) {
+			this.lifeText.setText(String.valueOf(this.life));
+		}
+	}
+
+	public Text getLifeText() {
+		return lifeText;
+	}
+
+	public void setLifeText(Text lifeText) {
+		this.lifeText = lifeText;
+	}
 
 }

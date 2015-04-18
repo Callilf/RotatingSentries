@@ -17,7 +17,8 @@ public class EnemyRobberComponent extends Component {
 		INITIALIZING,
 		ARRIVING,
 		WALKING,
-		ATTACKING;
+		ATTACKING,
+		ATTACK_RECOVERING;
 	}
 	
 	/**

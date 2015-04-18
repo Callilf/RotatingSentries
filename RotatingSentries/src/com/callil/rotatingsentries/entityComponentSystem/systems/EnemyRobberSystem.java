@@ -9,6 +9,9 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 
+import android.util.Log;
+
+import com.callil.rotatingsentries.entityComponentSystem.components.DiamondComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.EnemyRobberComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.EnemyRobberComponent.EnemyRobberStateType;
 import com.callil.rotatingsentries.entityComponentSystem.components.AttackComponent;
@@ -115,24 +118,60 @@ public class EnemyRobberSystem extends System {
 		    	Sprite target = moveTowardsComponent.getTarget();
 		    	//Log.i("RS", "Distance between sprites : " + SpriteUtil.distanceBetweenCenters(sprite, target));
 		    	if (SpriteUtil.distanceBetweenCenters(sprite, target) <= 100) {
-		    		enemyRobberComponent.setState(EnemyRobberStateType.ATTACKING);
-		    		sprite.animate(SpriteAnimationEnum.ENEMY_ROBBER_ATTACK.getFrameDurations(), SpriteAnimationEnum.ENEMY_ROBBER_ATTACK.getFrames(), true);
 		    		this.entityManager.removeComponentFromEntity(MoveTowardsComponent.class, entity);
+		    		switchToAttackState(entity, enemyRobberComponent, sprite);
 		    	}
 		    	
 	    		break;
 
 
 	    	case ATTACKING:
-	    		//TODO : animation ATTACK
+	    		if (!sprite.isAnimationRunning()) {
+	    			//End of the attack animation : hit the diamond and switch to recover
+	    			Log.i("RS", "Robber hits the diamond");
+	    			
+	    			List<Entity> diamondEntities = this.entityManager.getAllEntitiesPosessingComponentOfClass(DiamondComponent.class);
+	    			if (diamondEntities != null && diamondEntities.size() > 0) {
+	    				Entity diamond = diamondEntities.get(0);
+	    				DiamondComponent diamondComponent = this.entityManager.getComponent(DiamondComponent.class, diamond);
+	    				diamondComponent.setLife(diamondComponent.getLife() - attackComponent.getDamage());
+	    				//TODO : move this in a DiamondSystem
+	    				if (diamondComponent.getLife() <= 0) {
+	    					entityManager.removeEntity(diamond);
+	    				}
+	    			}	    			
+	    			
+	    			enemyRobberComponent.setState(EnemyRobberStateType.ATTACK_RECOVERING);
+	    			sprite.animate(SpriteAnimationEnum.ENEMY_ROBBER_ATTACK_RECOVER.getFrameDurations(), SpriteAnimationEnum.ENEMY_ROBBER_ATTACK_RECOVER.getFrames(), false);
+	    		}
 	    		break;
 
+	    	case ATTACK_RECOVERING:
+	    		if (!sprite.isAnimationRunning()) {
+	    			switchToAttackState(entity, enemyRobberComponent, sprite);	
+	    		}
+	    		break;
 
 	    	default:
 	    	}
 
 	    }
 	}
+
+
+	/**
+	 * @param entity
+	 * @param enemyRobberComponent
+	 * @param sprite
+	 */
+	private void switchToAttackState(Entity entity,
+			EnemyRobberComponent enemyRobberComponent, AnimatedSprite sprite) {
+		enemyRobberComponent.setState(EnemyRobberStateType.ATTACKING);
+		sprite.animate(SpriteAnimationEnum.ENEMY_ROBBER_ATTACK.getFrameDurations(), SpriteAnimationEnum.ENEMY_ROBBER_ATTACK.getFrames(), false);
+	}
+	
+	
+	
 
 	@Override
 	public void reset() {}
