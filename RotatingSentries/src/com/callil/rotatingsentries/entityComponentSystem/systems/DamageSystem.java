@@ -6,7 +6,7 @@ package com.callil.rotatingsentries.entityComponentSystem.systems;
 import java.util.List;
 
 import org.andengine.entity.scene.Scene;
-import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.shape.IShape;
 
 import com.callil.rotatingsentries.entityComponentSystem.components.AttackComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.DefenseComponent;
@@ -38,13 +38,13 @@ public class DamageSystem extends System {
 		List<Entity> hittables = this.entityManager.getAllEntitiesPosessingComponentOfClass(AttackComponent.class);
 		List<Entity> hitters = this.entityManager.getAllEntitiesPosessingComponentOfClass(DefenseComponent.class);
 		for (Entity hitter : hitters) {
-			Sprite sHitter = this.entityManager.getComponent(SpriteComponent.class, hitter).getSprite();
+			IShape hHitter = this.entityManager.getComponent(SpriteComponent.class, hitter).getHitbox();
 			DefenseComponent cHitter = this.entityManager.getComponent(DefenseComponent.class, hitter);
 			for (Entity hittable : hittables) {
 				SpriteComponent scHittable = this.entityManager.getComponent(SpriteComponent.class, hittable);
 				if (scHittable != null) { // in case the entity is already dead
-					Sprite sHittable = this.entityManager.getComponent(SpriteComponent.class, hittable).getSprite();
-					if (sHitter.collidesWith(sHittable)) {
+					IShape hHittable = this.entityManager.getComponent(SpriteComponent.class, hittable).getHitbox();
+					if (hHitter.collidesWith(hHittable)) {
 						AttackComponent cHittable = this.entityManager.getComponent(AttackComponent.class, hittable);
 						// if dead should continue
 						boolean hitterDead = cHitter.hit(cHittable.getDamage());

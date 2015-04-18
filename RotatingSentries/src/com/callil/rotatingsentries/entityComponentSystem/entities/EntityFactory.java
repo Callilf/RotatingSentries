@@ -99,7 +99,9 @@ public class EntityFactory {
 	public Entity generateRobber(float x, float y, float speed, Sprite target, float ropeRotation) {
 		final AnimatedSprite sRobber = new AnimatedSprite(x, y, this.spriteLoader.getEnemyRobberTextureRegion(), this.vertextBufferObjectManager);
 		Entity robber = this.em.createEntity();
-		this.em.addComponentToEntity(new SpriteComponent(sRobber, true), robber);
+		
+		this.em.addComponentToEntity(new SpriteComponent(sRobber, true).defineRectangularHitboxDiff(-40, 40, -40, 40), robber);
+		//this.em.addComponentToEntity(new SpriteComponent(sRobber, true).defineRectangularHitbox(-40, 40, 176, 16), robber);
 		
 		final AnimatedSprite sRope = new AnimatedSprite(x, y, this.spriteLoader.getEnemyRobberRopeTextureRegion(), this.vertextBufferObjectManager);
 		this.em.addComponentToEntity(new EnemyRobberComponent(speed, target, sRope, ropeRotation), robber);

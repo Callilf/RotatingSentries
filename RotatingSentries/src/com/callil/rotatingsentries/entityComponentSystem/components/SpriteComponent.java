@@ -7,7 +7,10 @@ import org.andengine.entity.modifier.FadeInModifier;
 import org.andengine.entity.modifier.FadeOutModifier;
 import org.andengine.entity.modifier.LoopEntityModifier;
 import org.andengine.entity.modifier.SequenceEntityModifier;
+import org.andengine.entity.primitive.Rectangle;
+import org.andengine.entity.shape.IShape;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.util.color.Color;
 
 /**
  * @author Callil
@@ -17,6 +20,9 @@ public class SpriteComponent extends Component {
 
 	/** The sprite. */
 	private Sprite sprite;
+	
+	/** Hitbox of the sprite */
+	private IShape hitbox;
 	
 	/** Whether the sprite can go out of the screen of not. */
 	private boolean bounded;
@@ -29,11 +35,14 @@ public class SpriteComponent extends Component {
 	/** Whether the sprite has it's blinkModifier activated. */
 	private boolean blinking;
 	
+	
 	/**
 	 * Constructor.
 	 */
 	public SpriteComponent(Sprite sprite, boolean bounded) {
 		this.sprite = sprite;
+		this.hitbox = sprite;
+		
 		this.bounded = bounded;
 		
 		this.setAttached(false);
@@ -41,6 +50,42 @@ public class SpriteComponent extends Component {
 		//Blink modifier
 		this.blinkModifier = new LoopEntityModifier(new SequenceEntityModifier(new FadeOutModifier(0.1f), new FadeInModifier(0.1f)));
 		this.blinking = false;
+	}
+	
+	/**
+	 * Set the hitbox with the 4 coordinates relatively to the Sprite
+	 * 
+	 * @param dxmin left distance to the sprite
+	 * @param dymin top distance to the sprite
+	 * @param dxmax right distance to the sprite
+	 * @param dymax bottom distance to the sprite
+	 * @return this so this call can be inline
+	 */
+	public SpriteComponent defineRectangularHitboxDiff(float dxmin, float dymin, float dxmax, float dymax) {
+		return defineRectangularHitbox(dxmin, dymin, sprite.getWidth() - dxmin - dxmax, sprite.getHeight() - dymin - dymax);
+	}
+	
+	/**
+	 * Set the hitbox relatively to the Sprite
+	 * 
+	 * @param xmin left distance to the sprite
+	 * @param ymin top distance to the sprite
+	 * @param width width of the hitbox
+	 * @param height height of the hitbox
+	 * @return this so this call can be inline
+	 */
+	public SpriteComponent defineRectangularHitbox(float xmin, float ymin, float width, float height) {
+		sprite.setColor(Color.RED);
+		hitbox = new Rectangle(xmin, ymin, width, height, sprite.getVertexBufferObjectManager());
+		
+		// TODO DEBUG
+		hitbox.setVisible(true); // to set to false
+		hitbox.setAlpha(10); // DON'T WORK
+		hitbox.setColor(Color.BLUE);
+		// FIN DEBUG
+		
+		sprite.attachChild(hitbox);
+		return this;
 	}
 	
 	@Override
@@ -52,78 +97,51 @@ public class SpriteComponent extends Component {
 	
 	//Getters & Setters
 	
-	/**
-	 * @return the sprite
-	 */
 	public Sprite getSprite() {
 		return sprite;
 	}
 
-	/**
-	 * @param sprite the sprite to set
-	 */
 	public void setSprite(Sprite sprite) {
 		this.sprite = sprite;
 	}
 
-	/**
-	 * @return the bounded
-	 */
+	public IShape getHitbox() {
+		return hitbox;
+	}
+
+	public void setHitbox(IShape hitbox) {
+		this.hitbox = hitbox;
+	}
+
 	public boolean isBounded() {
 		return bounded;
 	}
 
-	/**
-	 * @param bounded the bounded to set
-	 */
 	public void setBounded(boolean bounded) {
 		this.bounded = bounded;
 	}
 
-
-	/**
-	 * @return the blinkModifier
-	 */
 	public LoopEntityModifier getBlinkModifier() {
 		return blinkModifier;
 	}
 
-
-	/**
-	 * @param blinkModifier the blinkModifier to set
-	 */
 	public void setBlinkModifier(LoopEntityModifier blinkModifier) {
 		this.blinkModifier = blinkModifier;
 	}
 
-
-	/**
-	 * @return the blinking
-	 */
 	public boolean isBlinking() {
 		return blinking;
 	}
 
-
-	/**
-	 * @param blinking the blinking to set
-	 */
 	public void setBlinking(boolean blinking) {
 		this.blinking = blinking;
 	}
 
 
-	/**
-	 * @return the attached
-	 */
 	public boolean isAttached() {
 		return attached;
 	}
 
-
-	/**
-	 * @param attached the attached to set
-	 */
 	public void setAttached(boolean attached) {
 		this.attached = attached;
 	}
