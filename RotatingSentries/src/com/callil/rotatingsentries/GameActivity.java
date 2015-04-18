@@ -175,6 +175,8 @@ public class GameActivity extends BaseGameActivity {
 				return true;
 			}
 		};
+		arrowLeft.setZIndex(10);
+		arrowRight.setZIndex(10);
 		this.mScene.registerTouchArea(arrowLeft);
 		this.mScene.registerTouchArea(arrowRight);
 		this.mScene.attachChild(arrowLeft);

@@ -24,6 +24,7 @@ public class DiamondComponent extends Component {
 	 * 
 	 */
 	public DiamondComponent(float frequency, int life, Text lifeText) {
+		lifeText.setZIndex(50);
 		setFrequency(frequency);
 		setLifeText(lifeText);
 		setLife(life);

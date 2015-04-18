@@ -52,6 +52,8 @@ public class RenderSystem extends System {
 
 	@Override
 	public void onUpdate(float pSecondsElapsed) {
+		// the draw will sort the children with ZIndex just before the next drawing
+		this.scene.sortChildren(false);
 		
 		// ATTACH SPRITES
 		List<Entity> entities = this.entityManager.getAllEntitiesPosessingComponentOfClass(SpriteComponent.class);
