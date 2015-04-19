@@ -25,6 +25,7 @@ import com.callil.rotatingsentries.entityComponentSystem.entities.EntityManager;
 import com.callil.rotatingsentries.entityComponentSystem.systems.AOEAttackSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.DamageSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.EnemyRobberSystem;
+import com.callil.rotatingsentries.entityComponentSystem.systems.GameSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.GenerationSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.MoveSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.RenderSystem;
@@ -45,6 +46,7 @@ public class GameActivity extends BaseGameActivity {
 	// ===========================================================
 
 	public Camera mCamera;
+	//protected Scene mScene;
 	protected Scene mScene;
 	private RectangularShape gameArea;
 	
@@ -99,6 +101,7 @@ public class GameActivity extends BaseGameActivity {
 		this.entityManager = new EntityManager();
 		this.entityFactory = new EntityFactory(this.entityManager, this.gameArea, this.spriteLoader, this.mEngine.getVertexBufferObjectManager());
 			
+		GameSystem gameSystem = new GameSystem(this.entityManager, this);
 		RenderSystem renderSystem = new RenderSystem(this.entityManager, background);
 		MoveSystem moveSystem = new MoveSystem(this.entityManager, background);
 		DamageSystem damageSystem = new DamageSystem(this.entityManager);
@@ -108,9 +111,10 @@ public class GameActivity extends BaseGameActivity {
 
 		// /!\ System : the latest added system will be the first one to be updated
 		systems = new ArrayList<System>();
-		systems.add(damageSystem);
+		systems.add(gameSystem);
 		systems.add(renderSystem);
 		systems.add(moveSystem);
+		systems.add(damageSystem);
 		systems.add(enemyRobberSystem);
 		systems.add(generationSystem);
 		systems.add(aoeAttackSystem);
@@ -126,7 +130,9 @@ public class GameActivity extends BaseGameActivity {
 			}
 		});
 
-		pOnCreateSceneCallback.onCreateSceneFinished(this.mScene);
+		if (pOnCreateSceneCallback != null) {
+			pOnCreateSceneCallback.onCreateSceneFinished(this.mScene);
+		}
 	}
 
 	
@@ -209,7 +215,9 @@ public class GameActivity extends BaseGameActivity {
 			mScene.registerUpdateHandler(system);
 		}
 
-		pOnPopulateSceneCallback.onPopulateSceneFinished();
+		if (pOnPopulateSceneCallback != null) {
+			pOnPopulateSceneCallback.onPopulateSceneFinished();
+		}
 	}
 
 	
@@ -236,5 +244,21 @@ public class GameActivity extends BaseGameActivity {
 		mScene.setIgnoreUpdate(false);
 		paused = false;
 	}
+
+	/**
+	 * Recreate the complete scene
+	 */
+	public void recreateScene() {
+		try {
+			Thread.sleep(2500);
+			onCreateScene(null);
+			onPopulateScene(mScene, null);
+			mEngine.setScene(mScene);
+		}
+		catch(Exception e) {
+			Log.e("GameActivity", "Error while reloading the scene");
+		}
+	}
+
 
 }

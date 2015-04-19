@@ -84,7 +84,7 @@ public class EntityFactory {
 		sDiamond.setY(sDiamond.getY() - sDiamond.getHeight()/2);
 		Entity diamond = this.em.createEntity();
 		this.em.addComponentToEntity(new SpriteComponent(sDiamond, true), diamond);
-		this.em.addComponentToEntity(new DiamondComponent(frequency, 100, new Text(0, 0, this.spriteLoader.getPlayerHPFont(), "Placeholder", this.vertextBufferObjectManager)), diamond);
+		this.em.addComponentToEntity(new DiamondComponent(frequency, 5, new Text(0, 0, this.spriteLoader.getPlayerHPFont(), "Placeholder", this.vertextBufferObjectManager)), diamond);
 //		this.em.addComponentToEntity(new DefenseComponent(500, 0), diamond);
 		
 		return diamond;
@@ -176,9 +176,12 @@ public class EntityFactory {
 					gameArea.getHeight()/2 + startY * rayonSentry - projectileTexture.getHeight()/2f, projectileTexture, this.vertextBufferObjectManager);
 			sProjectile.setRotation(rotationDegre);
 			Entity projectile = this.em.createEntity();
-			this.em.addComponentToEntity(new SpriteComponent(sProjectile, true), projectile);
+			SpriteComponent scProj = new SpriteComponent(sProjectile, true);
+			this.em.addComponentToEntity(scProj, projectile);
 			this.em.addComponentToEntity(new MoveTowardsComponent(15, startX, startY), projectile);
 			this.em.addComponentToEntity(new DefenseComponent(1, 2, false), projectile);
+			gameArea.attachChild(sProjectile);
+			scProj.setAttached(true);
 			return projectile;
 		default:
 			throw new IllegalArgumentException("Undefined projectile " + projectileType);
