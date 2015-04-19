@@ -94,7 +94,15 @@ public class GameActivity extends BaseGameActivity {
 		
 		// Background : game area
 		TextureRegion backgroundTexture = spriteLoader.getBackgroundRegion();
-		Sprite background = new Sprite((CAMERA_WIDTH-backgroundTexture.getWidth())/2, (CAMERA_HEIGHT-backgroundTexture.getHeight())/2, backgroundTexture, this.mEngine.getVertexBufferObjectManager());
+		Sprite background = new Sprite((CAMERA_WIDTH-backgroundTexture.getWidth())/2, (CAMERA_HEIGHT-backgroundTexture.getHeight())/2, backgroundTexture, this.mEngine.getVertexBufferObjectManager()) {
+			@Override
+			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
+				if (paused) {
+					resumeGame();
+				}
+				return true;
+			}
+		};
 		this.gameArea = background;
 		
 		//EntityManager & systems
@@ -145,6 +153,7 @@ public class GameActivity extends BaseGameActivity {
 		Log.d("RS", "onPopulateScene");
 
 		//Attach the game
+		this.mScene.registerTouchArea(gameArea);
 		this.mScene.attachChild(gameArea);
 		
 		//Place walls
@@ -215,6 +224,7 @@ public class GameActivity extends BaseGameActivity {
 			mScene.registerUpdateHandler(system);
 		}
 
+		GameSingleton.getInstance().setTotalTime(0);
 		if (pOnPopulateSceneCallback != null) {
 			pOnPopulateSceneCallback.onPopulateSceneFinished();
 		}
@@ -225,12 +235,11 @@ public class GameActivity extends BaseGameActivity {
 	public void onBackPressed()
 	{
 	    if (paused) {
-	    	resumeGame();
+	    	super.onBackPressed();
 	    } else {
 	    	pauseGame();
 	    }
-	}
-	
+	}	
 	
 	private void pauseGame() {
 		Log.i("RS", "Paused !!!");
@@ -250,13 +259,14 @@ public class GameActivity extends BaseGameActivity {
 	 */
 	public void recreateScene() {
 		try {
-			Thread.sleep(2500);
+			Thread.sleep(1500);
 			onCreateScene(null);
-			onPopulateScene(mScene, null);
 			mEngine.setScene(mScene);
+			onPopulateScene(mScene, null);
+			
 		}
 		catch(Exception e) {
-			Log.e("GameActivity", "Error while reloading the scene");
+			Log.e("RS", "Error while reloading the scene");
 		}
 	}
 
