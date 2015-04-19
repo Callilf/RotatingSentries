@@ -97,17 +97,39 @@ public class DamageSystem extends System {
 		List<Entity> aoeAttacks = this.entityManager.getAllEntitiesPosessingComponentOfClass(AOEAttackComponent.class);
 		for (Entity aoeAttack : aoeAttacks) {
 			AOEAttackComponent aoeAttackComponent = this.entityManager.getComponent(AOEAttackComponent.class, aoeAttack);
-			List<Entity> hittables = this.entityManager.getAllEntitiesPosessingComponentOfClass(AttackComponent.class);
-			for (Entity hittable : hittables) {
-				SpriteComponent scHittable = this.entityManager.getComponent(SpriteComponent.class, hittable);
-				if (scHittable != null) { // in case the entity is already dead
-					IShape hHittable = this.entityManager.getComponent(SpriteComponent.class, hittable).getHitbox();
-					if (aoeAttackComponent.getSprite().collidesWith(hHittable)) {
-						AttackComponent cHittable = this.entityManager.getComponent(AttackComponent.class, hittable);
-						// if dead should continue
-						boolean hittableDead = cHittable.hit(aoeAttackComponent.getDamage());
-						if (hittableDead) {
-							entityManager.removeEntity(hittable);
+			if (aoeAttackComponent.isReady() || aoeAttackComponent.isAttacking()) {
+				
+				List<Entity> hittables = this.entityManager.getAllEntitiesPosessingComponentOfClass(AttackComponent.class);
+				if (aoeAttackComponent.isReady()) {
+					//Perform a new attack
+					for (Entity hittable : hittables) {
+						SpriteComponent scHittable = this.entityManager.getComponent(SpriteComponent.class, hittable);
+						if (scHittable != null) { // in case the entity is already dead
+							IShape hHittable = this.entityManager.getComponent(SpriteComponent.class, hittable).getHitbox();
+							if (aoeAttackComponent.getTrigger().collidesWith(hHittable)) {
+								AttackComponent cHittable = this.entityManager.getComponent(AttackComponent.class, hittable);
+								// if dead should continue
+								boolean hittableDead = cHittable.hit(aoeAttackComponent.performAttack());
+								if (hittableDead) {
+									entityManager.removeEntity(hittable);
+								}
+							}
+						}
+					}
+				} else if (aoeAttackComponent.isAttacking()) {
+					//Deal damages with the current attack
+					for (Entity hittable : hittables) {
+						SpriteComponent scHittable = this.entityManager.getComponent(SpriteComponent.class, hittable);
+						if (scHittable != null) { // in case the entity is already dead
+							IShape hHittable = this.entityManager.getComponent(SpriteComponent.class, hittable).getHitbox();
+							if (aoeAttackComponent.getSprite().collidesWith(hHittable)) {
+								AttackComponent cHittable = this.entityManager.getComponent(AttackComponent.class, hittable);
+								// if dead should continue
+								boolean hittableDead = cHittable.hit(aoeAttackComponent.getDamage());
+								if (hittableDead) {
+									entityManager.removeEntity(hittable);
+								}
+							}
 						}
 					}
 				}

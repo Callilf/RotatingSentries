@@ -9,7 +9,7 @@ package com.callil.rotatingsentries.enums;
  */
 public enum SpriteAnimationEnum {
 	
-	SENTRY_ELECTRIC_ATTACK(new int[]{0,1,2,3,4,5,6}, 100),
+	SENTRY_ELECTRIC_ATTACK(new int[]{0,1,2,3,4,5,6}, 75),
 	
 	ENEMY_ROBBER_WALK(new int[]{0,1,2,3,4,5,6,7,8,9,10,11,12,13}, 100),
 	ENEMY_ROBBER_ATTACK(new int[]{12,14,15,16,17,18}, 100),

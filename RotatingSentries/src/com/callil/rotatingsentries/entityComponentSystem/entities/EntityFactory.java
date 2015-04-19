@@ -22,7 +22,6 @@ import com.callil.rotatingsentries.entityComponentSystem.components.ShootingComp
 import com.callil.rotatingsentries.entityComponentSystem.components.ShootingComponent.ProjectileType;
 import com.callil.rotatingsentries.entityComponentSystem.components.SolidComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
-import com.callil.rotatingsentries.enums.SpriteAnimationEnum;
 import com.callil.rotatingsentries.util.SpriteLoader;
 
 /**
@@ -151,10 +150,9 @@ public class EntityFactory {
 		final AnimatedSprite sElectricAttack = new AnimatedSprite(0, 0, this.spriteLoader.getSentryElectricAttackTextureRegion(), this.vertextBufferObjectManager);
 		sElectricAttack.setX(hitbox.getX() + hitbox.getWidth()/2 - sElectricAttack.getWidth()/2);
 		sElectricAttack.setY(hitbox.getY() + hitbox.getHeight()/2 - sElectricAttack.getHeight()/2);
-		//test
+		sElectricAttack.setVisible(false);
 		sSentry.attachChild(sElectricAttack);
-		sElectricAttack.animate(SpriteAnimationEnum.SENTRY_ELECTRIC_ATTACK.getFrameDurations(), SpriteAnimationEnum.SENTRY_ELECTRIC_ATTACK.getFrames(), true);
-		this.em.addComponentToEntity(new AOEAttackComponent(sElectricAttack, 2, 2), sentry);
+		this.em.addComponentToEntity(new AOEAttackComponent(hitbox, sElectricAttack, 5, 2), sentry);
 		
 		return sentry;
 	}

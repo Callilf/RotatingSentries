@@ -22,6 +22,7 @@ import android.util.Log;
 import com.callil.rotatingsentries.entityComponentSystem.components.SelfRotationComponent;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityFactory;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityManager;
+import com.callil.rotatingsentries.entityComponentSystem.systems.AOEAttackSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.DamageSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.EnemyRobberSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.GenerationSystem;
@@ -100,6 +101,7 @@ public class GameActivity extends BaseGameActivity {
 		DamageSystem damageSystem = new DamageSystem(this.entityManager);
 		EnemyRobberSystem enemyRobberSystem = new EnemyRobberSystem(this.entityManager, background);
 		GenerationSystem generationSystem = new GenerationSystem(entityManager, entityFactory, background);
+		AOEAttackSystem aoeAttackSystem = new AOEAttackSystem(this.entityManager);
 
 		// /!\ System : the latest added system will be the first one to be updated
 		systems = new ArrayList<System>();
@@ -108,6 +110,7 @@ public class GameActivity extends BaseGameActivity {
 		systems.add(moveSystem);
 		systems.add(enemyRobberSystem);
 		systems.add(generationSystem);
+		systems.add(aoeAttackSystem);
 		
 		//Set the game time in the singleton
 		this.mScene.registerUpdateHandler(new IUpdateHandler() {
