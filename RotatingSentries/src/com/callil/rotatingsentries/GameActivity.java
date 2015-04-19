@@ -10,6 +10,7 @@ import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
+import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
@@ -27,6 +28,7 @@ import com.callil.rotatingsentries.entityComponentSystem.systems.GenerationSyste
 import com.callil.rotatingsentries.entityComponentSystem.systems.MoveSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.RenderSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.System;
+import com.callil.rotatingsentries.enums.SpriteAnimationEnum;
 import com.callil.rotatingsentries.util.Couple;
 import com.callil.rotatingsentries.util.SpriteLoader;
 import com.callil.rotatingsentries.util.SpriteUtil;
@@ -194,7 +196,11 @@ public class GameActivity extends BaseGameActivity {
 		Couple<Float> backgroundCenter = SpriteUtil.getCenter(background);
 		entityFactory.generateDiamond(backgroundCenter.getX(), backgroundCenter.getY(), 3.0f);
 		entityFactory.generateSentry(30);
-
+		
+		AnimatedSprite electric = new AnimatedSprite(background.getX() + 200, background.getY() + 200, spriteLoader.getSentryElectricAttackTextureRegion(), this.getVertexBufferObjectManager());
+		electric.animate(SpriteAnimationEnum.SENTRY_ELECTRIC_ATTACK.getFrameDurations(), SpriteAnimationEnum.SENTRY_ELECTRIC_ATTACK.getFrames(), true);
+		this.mScene.attachChild(electric);
+		
 		// Systems
 		for (System system : systems) {
 			system.onPopulateScene();

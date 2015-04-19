@@ -89,6 +89,12 @@ public class SpriteLoader {
 		return mSentryTextureRegion;
 	}
 	
+	/** SENTRY electric attack. */
+	protected TiledTextureRegion mSentryElectricAttackTextureRegion;
+	public TiledTextureRegion getSentryElectricAttackTextureRegion() {
+		return mSentryElectricAttackTextureRegion;
+	}
+	
 	/** PROJECTILE : Standard */
 	protected TextureRegion mProjStdTextureRegion;
 	public TextureRegion getProjStdTextureRegion() {
@@ -175,6 +181,11 @@ public class SpriteLoader {
 		mSentryTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(sentryTexture, this.context, "sentry_standard.png", 0, 0);
 		sentryTexture.load();
 		
+		//Sentry electric attack
+		BitmapTextureAtlas sentryElectricAttackTexture = new BitmapTextureAtlas(this.tm, 756, 108, TextureOptions.NEAREST);
+		mSentryElectricAttackTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(sentryElectricAttackTexture, this.context, "sentry_electric_attack.png", 0, 0, 7, 1);
+		sentryElectricAttackTexture.load();
+
 		//Standard projectile
 		BitmapTextureAtlas projStdTexture = new BitmapTextureAtlas(this.tm, 4, 12, TextureOptions.NEAREST);
 		mProjStdTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(projStdTexture, this.context, "projectile_std.png", 0, 0);
