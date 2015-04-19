@@ -2,9 +2,8 @@ package com.callil.rotatingsentries.entityComponentSystem.systems;
 
 import java.util.List;
 
-import org.andengine.entity.scene.Scene;
+import org.andengine.entity.shape.RectangularShape;
 
-import com.callil.rotatingsentries.entityComponentSystem.components.AOEAttackComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.DiamondComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SelfRotationComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
@@ -17,13 +16,13 @@ import com.callil.rotatingsentries.entityComponentSystem.entities.EntityManager;
  */
 public class RenderSystem extends System {
 
-	/** The scene on which we want to render. */
-	private Scene scene;
+	/** The gameArea on which we want to render. */
+	private RectangularShape gameArea;
 	
 	/**
 	 * @param em
 	 */
-	public RenderSystem(EntityManager em, Scene scene) {
+	public RenderSystem(EntityManager em, RectangularShape scene) {
 		super(em);
 		this.setScene(scene);
 	}
@@ -38,7 +37,7 @@ public class RenderSystem extends System {
 	    	
 	    	SpriteComponent spriteComponent = this.entityManager.getComponent(SpriteComponent.class, entity);
 	    	if (spriteComponent != null) {
-	    		this.scene.attachChild(spriteComponent.getSprite());
+	    		this.gameArea.attachChild(spriteComponent.getSprite());
 	    		spriteComponent.setAttached(true);
 	    	}
 
@@ -49,22 +48,22 @@ public class RenderSystem extends System {
 	@Override
 	public void onUpdate(float pSecondsElapsed) {
 		// the draw will sort the children with ZIndex just before the next drawing
-		this.scene.sortChildren(false);
+		this.gameArea.sortChildren(false);
 		
 		// ATTACH SPRITES
 		List<Entity> entities = this.entityManager.getAllEntitiesPosessingComponentOfClass(SpriteComponent.class);
 		for (Entity entity : entities) {
 			SpriteComponent spriteComponent = this.entityManager.getComponent(SpriteComponent.class, entity);
 			if (spriteComponent != null && !spriteComponent.isAttached()) {
-				this.scene.attachChild(spriteComponent.getSprite());
+				this.gameArea.attachChild(spriteComponent.getSprite());
 				spriteComponent.setAttached(true);
 			}
 			
 			//Attach diamond's life
 			DiamondComponent diamondComponent = this.entityManager.getComponent(DiamondComponent.class, entity);
     		if (diamondComponent != null && diamondComponent.getLifeText() != null && !diamondComponent.getLifeText().hasParent()) {
-    			this.scene.attachChild(diamondComponent.getLifeText());
-    			diamondComponent.getLifeText().setPosition(20, 20);
+    			this.gameArea.attachChild(diamondComponent.getLifeText());
+    			diamondComponent.getLifeText().setPosition(-200, 20);
     		}
 		}
 		
@@ -158,17 +157,11 @@ public class RenderSystem extends System {
 	
 	//Getters & Setters
 	
-	/**
-	 * @return the scene
-	 */
-	public Scene getScene() {
-		return scene;
+	public RectangularShape getScene() {
+		return gameArea;
 	}
 
-	/**
-	 * @param scene the scene to set
-	 */
-	public void setScene(Scene scene) {
-		this.scene = scene;
+	public void setScene(RectangularShape gameArea) {
+		this.gameArea = gameArea;
 	}
 }

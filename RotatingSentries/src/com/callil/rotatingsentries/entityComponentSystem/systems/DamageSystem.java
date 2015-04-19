@@ -5,10 +5,10 @@ package com.callil.rotatingsentries.entityComponentSystem.systems;
 
 import java.util.List;
 
-import org.andengine.entity.scene.Scene;
 import org.andengine.entity.shape.IShape;
 
-import com.callil.rotatingsentries.GameActivity;
+import android.util.Log;
+
 import com.callil.rotatingsentries.entityComponentSystem.components.AOEAttackComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.AttackComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.DefenseComponent;
@@ -24,15 +24,11 @@ import com.callil.rotatingsentries.entityComponentSystem.entities.EntityManager;
  */
 public class DamageSystem extends System {
 
-	/** The scene. */
-	private Scene scene;
-	
 	/**
 	 * @param em
 	 */
-	public DamageSystem(EntityManager em, Scene scene) {
+	public DamageSystem(EntityManager em) {
 		super(em);
-		this.scene = scene;
 	}
 
 
@@ -76,6 +72,7 @@ public class DamageSystem extends System {
 					if (hHitter.collidesWith(solidHitbox)) {
 						// If projectile doesn't bounce, destroy it
 						if (!cHitter.isBounce()) {
+							Log.d("DamageSystem", "Hitter collisionne X=" + hHitter.getX() +", Y="+ hHitter.getY());
 							entityManager.removeEntity(hitter);
 							break; // if dead, cannot kill another component
 						} else {

@@ -3,9 +3,9 @@ package com.callil.rotatingsentries.entityComponentSystem.systems;
 import java.util.List;
 import java.util.Random;
 
+import org.andengine.entity.shape.RectangularShape;
 import org.andengine.entity.sprite.Sprite;
 
-import com.callil.rotatingsentries.GameActivity;
 import com.callil.rotatingsentries.GameSingleton;
 import com.callil.rotatingsentries.entityComponentSystem.components.DiamondComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.ShootingComponent;
@@ -19,9 +19,12 @@ public class GenerationSystem extends System {
 
 	private EntityFactory entityFactory;
 	
-	public GenerationSystem(EntityManager em, EntityFactory ef) {
+	private RectangularShape gameArea;
+	
+	public GenerationSystem(EntityManager em, EntityFactory ef, RectangularShape gameArea) {
 		super(em);
 		this.entityFactory = ef;
+		this.gameArea = gameArea;
 	}
 
 	@Override
@@ -50,22 +53,22 @@ public class GenerationSystem extends System {
 				case 0:
 					 generatedY = 0;
 					 ropeAngle = 0;
-					 generatedX = GameActivity.ROOM_X + rand.nextInt((int) (GameActivity.ROOM_WIDTH - 96.0 - 30.0)) + 30; 
+					 generatedX = rand.nextInt((int) (gameArea.getWidth() - 96.0 - 30.0)) + 30; 
 					break;
 				case 1:
-					generatedX = GameActivity.ROOM_X + GameActivity.ROOM_WIDTH - 96;
+					generatedX = gameArea.getWidth() - 96;
 					ropeAngle = 90;
-					generatedY = GameActivity.ROOM_Y + rand.nextInt((int) (GameActivity.ROOM_HEIGHT - 96.0 - 30.0)) + 30; 
+					generatedY = rand.nextInt((int) (gameArea.getHeight() - 96.0 - 30.0)) + 30; 
 					break;
 				case 2:
-					generatedY = GameActivity.ROOM_Y + GameActivity.ROOM_HEIGHT - 96;
+					generatedY = gameArea.getHeight() - 96;
 					ropeAngle = 180;
-					generatedX = GameActivity.ROOM_X + rand.nextInt((int) (GameActivity.ROOM_WIDTH - 96.0 - 30.0)) + 30; 
+					generatedX = rand.nextInt((int) (gameArea.getWidth() - 96.0 - 30.0)) + 30; 
 					break;
 				case 3:
-					generatedX = GameActivity.ROOM_X;
+					generatedX = 0;
 					ropeAngle = 270;
-					generatedY = GameActivity.ROOM_Y + rand.nextInt((int) (GameActivity.ROOM_HEIGHT - 96.0 - 30.0)) + 30; 
+					generatedY = rand.nextInt((int) (gameArea.getHeight() - 96.0 - 30.0)) + 30; 
 					break;
 					default:
 				}

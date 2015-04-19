@@ -5,10 +5,9 @@ package com.callil.rotatingsentries.entityComponentSystem.systems;
 
 import java.util.List;
 
-import org.andengine.entity.scene.Scene;
+import org.andengine.entity.shape.RectangularShape;
 import org.andengine.entity.sprite.Sprite;
 
-import com.callil.rotatingsentries.GameActivity;
 import com.callil.rotatingsentries.entityComponentSystem.components.MoveTowardsComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
 import com.callil.rotatingsentries.entityComponentSystem.entities.Entity;
@@ -23,15 +22,15 @@ import com.callil.rotatingsentries.util.MathUtil;
  */
 public class MoveSystem extends System {
 	
-	/** The scene. */
-	private Scene scene;
+	/** The gameArea. */
+	private RectangularShape gameArea;
 		
 	/**
 	 * @param em
 	 */
-	public MoveSystem(EntityManager em, Scene scene) {
+	public MoveSystem(EntityManager em, RectangularShape gameArea) {
 		super(em);
-		this.scene = scene;
+		this.gameArea = gameArea;
 	}
 
 
@@ -70,8 +69,8 @@ public class MoveSystem extends System {
 			    		sprite.setY(sprite.getY() + (moveTowardsComponent.getDirectionY() * moveTowardsComponent.getSpeed()));
 			    		
 			    		// test if a straight forward entity is out of screen
-			    		if (sprite.getX() < 0 || sprite.getX() > GameActivity.CAMERA_WIDTH + sprite.getWidth() ||
-			    				sprite.getY() < 0 || sprite.getY() > GameActivity.CAMERA_HEIGHT + sprite.getHeight()) {
+			    		if (sprite.getX() < 0 || sprite.getX() > gameArea.getWidth() + sprite.getWidth() ||
+			    				sprite.getY() < 0 || sprite.getY() > gameArea.getHeight() + sprite.getHeight()) {
 			    			//Log.d("MoveSystem", "Removing entity out of screen : x=" + sprite.getX() + ", Y=" + sprite.getY());
 			    			entityManager.removeEntity(entity);
 			    		}

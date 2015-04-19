@@ -10,6 +10,7 @@ import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
+import org.andengine.entity.shape.RectangularShape;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
@@ -27,9 +28,7 @@ import com.callil.rotatingsentries.entityComponentSystem.systems.GenerationSyste
 import com.callil.rotatingsentries.entityComponentSystem.systems.MoveSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.RenderSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.System;
-import com.callil.rotatingsentries.util.Couple;
 import com.callil.rotatingsentries.util.SpriteLoader;
-import com.callil.rotatingsentries.util.SpriteUtil;
 
 public class GameActivity extends BaseGameActivity {
 	// ===========================================================
@@ -39,11 +38,6 @@ public class GameActivity extends BaseGameActivity {
 	
 	public static final int CAMERA_WIDTH = 1920;
 	public static final int CAMERA_HEIGHT = 1080;
-	
-	public static final int ROOM_X = 420;
-	public static final int ROOM_Y= 0;
-	public static final int ROOM_WIDTH = 1080;
-	public static final int ROOM_HEIGHT = 1080;
 
 	// ===========================================================
 	// Fields
@@ -51,6 +45,7 @@ public class GameActivity extends BaseGameActivity {
 
 	public Camera mCamera;
 	protected Scene mScene;
+	private RectangularShape gameArea;
 	
 	private EntityManager entityManager;
 	private SpriteLoader spriteLoader;
@@ -91,21 +86,26 @@ public class GameActivity extends BaseGameActivity {
 		this.mScene = new Scene();
 		this.mScene.setBackground(new Background(1.0f, 1.0f, 1.0f));
 		
+		// Background : game area
+		TextureRegion backgroundTexture = spriteLoader.getBackgroundRegion();
+		Sprite background = new Sprite((CAMERA_WIDTH-backgroundTexture.getWidth())/2, (CAMERA_HEIGHT-backgroundTexture.getHeight())/2, backgroundTexture, this.mEngine.getVertexBufferObjectManager());
+		this.gameArea = background;
+		
 		//EntityManager & systems
 		this.entityManager = new EntityManager();
-		this.entityFactory = new EntityFactory(this.entityManager, this.mCamera, this.spriteLoader, this.mEngine.getVertexBufferObjectManager());
-
-		RenderSystem renderSystem = new RenderSystem(this.entityManager, this.mScene);
-		MoveSystem moveSystem = new MoveSystem(this.entityManager, this.mScene);
-		DamageSystem damageSystem = new DamageSystem(this.entityManager, this.mScene);
-		EnemyRobberSystem enemyRobberSystem = new EnemyRobberSystem(this.entityManager, this.mScene);
-		GenerationSystem generationSystem = new GenerationSystem(entityManager, entityFactory);
+		this.entityFactory = new EntityFactory(this.entityManager, this.gameArea, this.spriteLoader, this.mEngine.getVertexBufferObjectManager());
+			
+		RenderSystem renderSystem = new RenderSystem(this.entityManager, background);
+		MoveSystem moveSystem = new MoveSystem(this.entityManager, background);
+		DamageSystem damageSystem = new DamageSystem(this.entityManager);
+		EnemyRobberSystem enemyRobberSystem = new EnemyRobberSystem(this.entityManager, background);
+		GenerationSystem generationSystem = new GenerationSystem(entityManager, entityFactory, background);
 
 		// /!\ System : the latest added system will be the first one to be updated
 		systems = new ArrayList<System>();
+		systems.add(damageSystem);
 		systems.add(renderSystem);
 		systems.add(moveSystem);
-		systems.add(damageSystem);
 		systems.add(enemyRobberSystem);
 		systems.add(generationSystem);
 		
@@ -131,11 +131,20 @@ public class GameActivity extends BaseGameActivity {
 	public void onPopulateScene(Scene pScene,
 			OnPopulateSceneCallback pOnPopulateSceneCallback) throws Exception {
 		Log.d("RS", "onPopulateScene");
-		
-		TextureRegion backgroundTexture = spriteLoader.getBackgroundRegion();
-		Sprite background = new Sprite((CAMERA_WIDTH-backgroundTexture.getWidth())/2, (CAMERA_HEIGHT-backgroundTexture.getHeight())/2, backgroundTexture, this.mEngine.getVertexBufferObjectManager());
-		this.mScene.attachChild(background);
 
+		//Attach the game
+		this.mScene.attachChild(gameArea);
+		
+		//Place walls
+		entityFactory.generateWall(0, 0, 0);
+		entityFactory.generateWall(gameArea.getWidth()/2 - 20, gameArea.getHeight()/2 - 20, 90);
+		entityFactory.generateWall(0, gameArea.getHeight() - 40, 180);
+		entityFactory.generateWall( -gameArea.getWidth()/2 + 20, gameArea.getHeight()/2 - 20, 270);
+		
+		//Place diamond and sentry
+		entityFactory.generateDiamond(gameArea.getWidth()/2, gameArea.getHeight()/2, 3.0f);
+		entityFactory.generateSentry(30);
+		
 		// CREATE BUTTON
 		final Sprite arrowLeft = new Sprite(0, 0, spriteLoader.getArrowLeftTextureRegion(), this.mEngine.getVertexBufferObjectManager()) {
 			@Override
@@ -143,6 +152,7 @@ public class GameActivity extends BaseGameActivity {
 				switch (pSceneTouchEvent.getAction()) {
 				case TouchEvent.ACTION_UP:
 				case TouchEvent.ACTION_OUTSIDE:
+				case TouchEvent.ACTION_CANCEL:
 					SelfRotationComponent.leftPressed = 0;
 					break;
 				case TouchEvent.ACTION_MOVE:
@@ -164,6 +174,7 @@ public class GameActivity extends BaseGameActivity {
 				switch (pSceneTouchEvent.getAction()) {
 				case TouchEvent.ACTION_UP:
 				case TouchEvent.ACTION_OUTSIDE:
+				case TouchEvent.ACTION_CANCEL:
 					SelfRotationComponent.rightPressed = 0;
 					break;
 				case TouchEvent.ACTION_MOVE:
@@ -184,28 +195,15 @@ public class GameActivity extends BaseGameActivity {
 		this.mScene.attachChild(arrowLeft);
 		this.mScene.attachChild(arrowRight);
 		
-		//Place walls
-		entityFactory.generateWall(background.getX(), background.getY(), 0);
-		entityFactory.generateWall(background.getX() + background.getWidth()/2 - 20, background.getY() + background.getHeight()/2 - 20, 90);
-		entityFactory.generateWall(background.getX(), background.getY() + background.getHeight() - 40, 180);
-		entityFactory.generateWall(background.getX() - background.getWidth()/2 + 20, background.getY() + background.getHeight()/2 - 20, 270);
-		
-		//Place diamond and sentry
-		Couple<Float> backgroundCenter = SpriteUtil.getCenter(background);
-		entityFactory.generateDiamond(backgroundCenter.getX(), backgroundCenter.getY(), 3.0f);
-		entityFactory.generateSentry(30);
-		
 //		AnimatedSprite electric = new AnimatedSprite(background.getX() + 200, background.getY() + 200, spriteLoader.getSentryElectricAttackTextureRegion(), this.getVertexBufferObjectManager());
 //		this.mScene.attachChild(electric);
 		
-		// Systems
 		for (System system : systems) {
 			system.onPopulateScene();
 			mScene.registerUpdateHandler(system);
 		}
 
 		pOnPopulateSceneCallback.onPopulateSceneFinished();
-
 	}
 
 

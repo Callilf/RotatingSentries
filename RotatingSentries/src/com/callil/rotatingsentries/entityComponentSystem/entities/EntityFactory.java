@@ -3,12 +3,8 @@
  */
 package com.callil.rotatingsentries.entityComponentSystem.entities;
 
-import static com.callil.rotatingsentries.GameActivity.CAMERA_HEIGHT;
-import static com.callil.rotatingsentries.GameActivity.CAMERA_WIDTH;
-
-import org.andengine.engine.camera.Camera;
 import org.andengine.entity.primitive.Rectangle;
-import org.andengine.entity.shape.IShape;
+import org.andengine.entity.shape.RectangularShape;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
@@ -38,8 +34,8 @@ public class EntityFactory {
 	/** The entity manager. */
 	private EntityManager em;
 	
-	/** The camera. */
-	private Camera camera;
+	/** The game area */
+	private RectangularShape gameArea;
 	
 	/** The sprite loader. */
 	private SpriteLoader spriteLoader;
@@ -50,9 +46,9 @@ public class EntityFactory {
 	/**
 	 * Constructor.
 	 */
-	public EntityFactory(EntityManager em, Camera camera, SpriteLoader spriteLoader, VertexBufferObjectManager vertextBufferObjectManager) {
+	public EntityFactory(EntityManager em, RectangularShape gameArea, SpriteLoader spriteLoader, VertexBufferObjectManager vertextBufferObjectManager) {
 		this.em = em;
-		this.camera = camera;
+		this.gameArea = gameArea;
 		this.spriteLoader = spriteLoader;
 		this.vertextBufferObjectManager = vertextBufferObjectManager;
 	}
@@ -142,7 +138,7 @@ public class EntityFactory {
 	 */
 	public Entity generateSentry(int rotation) {
 		TextureRegion sentryTexture = spriteLoader.getSentryTextureRegion();
-		final Sprite sSentry = new Sprite((CAMERA_WIDTH - sentryTexture.getWidth())/2, (CAMERA_HEIGHT - sentryTexture.getHeight())/2, 
+		final Sprite sSentry = new Sprite(gameArea.getWidth()/2 - sentryTexture.getWidth()/2, gameArea.getHeight()/2 - sentryTexture.getHeight()/2, 
 				sentryTexture, this.vertextBufferObjectManager);
 		sSentry.setRotation(rotation);
 		Entity sentry = this.em.createEntity();
@@ -171,8 +167,6 @@ public class EntityFactory {
 	public Entity generateProjectile(ProjectileType projectileType, Sprite sentry) {
 		float rotationDegre = sentry.getRotation();
 		double rotationRad = rotationDegre * Math.PI / 180d;
-		int centerX = CAMERA_WIDTH / 2;
-		int centerY = CAMERA_HEIGHT / 2;
 		float rayonSentry = sentry.getWidth() / 2;
 		float startX = (float) Math.sin(rotationRad);
 		float startY = (float) Math.cos(rotationRad) * -1;
@@ -180,8 +174,8 @@ public class EntityFactory {
 		switch (projectileType) {
 		case STANDARD:
 			TextureRegion projectileTexture = spriteLoader.getProjStdTextureRegion();
-			final Sprite sProjectile = new Sprite(centerX + startX * rayonSentry - projectileTexture.getWidth()/2f, 
-					centerY + startY * rayonSentry - projectileTexture.getHeight()/2f, projectileTexture, this.vertextBufferObjectManager);
+			final Sprite sProjectile = new Sprite(gameArea.getWidth()/2 + startX * rayonSentry - projectileTexture.getWidth()/2f, 
+					gameArea.getHeight()/2 + startY * rayonSentry - projectileTexture.getHeight()/2f, projectileTexture, this.vertextBufferObjectManager);
 			sProjectile.setRotation(rotationDegre);
 			Entity projectile = this.em.createEntity();
 			this.em.addComponentToEntity(new SpriteComponent(sProjectile, true), projectile);

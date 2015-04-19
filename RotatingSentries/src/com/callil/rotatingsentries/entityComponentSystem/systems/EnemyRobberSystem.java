@@ -5,16 +5,16 @@ package com.callil.rotatingsentries.entityComponentSystem.systems;
 
 import java.util.List;
 
-import org.andengine.entity.scene.Scene;
+import org.andengine.entity.shape.RectangularShape;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 
 import android.util.Log;
 
+import com.callil.rotatingsentries.entityComponentSystem.components.AttackComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.DiamondComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.EnemyRobberComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.EnemyRobberComponent.EnemyRobberStateType;
-import com.callil.rotatingsentries.entityComponentSystem.components.AttackComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.MoveTowardsComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
 import com.callil.rotatingsentries.entityComponentSystem.entities.Entity;
@@ -29,14 +29,14 @@ import com.callil.rotatingsentries.util.SpriteUtil;
  */
 public class EnemyRobberSystem extends System {
 	
-	private Scene scene;
+	private RectangularShape gameArea;
 
 	/**
 	 * @param em
 	 */
-	public EnemyRobberSystem(EntityManager em, Scene scene) {
+	public EnemyRobberSystem(EntityManager em, RectangularShape gameArea) {
 		super(em);
-		this.scene = scene;
+		this.gameArea = gameArea;
 	}
 
 
@@ -64,7 +64,7 @@ public class EnemyRobberSystem extends System {
 		    		rope = (AnimatedSprite)enemyRobberComponent.getRope();
 		    		rope.animate(SpriteAnimationEnum.ENEMY_ROBBER_ROPE.getFrameDurations(), SpriteAnimationEnum.ENEMY_ROBBER_ROPE.getFrames(), false);
 		    		rope.setRotation(enemyRobberComponent.getRopeRotation());
-		    		scene.attachChild(rope);
+		    		gameArea.attachChild(rope);
 		    		sprite.setVisible(false);
 	    		} else if (!rope.isAnimationRunning()) {
 	    			enemyRobberComponent.setState(EnemyRobberStateType.ARRIVING);
