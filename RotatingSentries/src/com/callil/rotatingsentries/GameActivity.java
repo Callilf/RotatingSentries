@@ -55,6 +55,9 @@ public class GameActivity extends BaseGameActivity {
 	//Systems
 	private List<System> systems;
 	
+	/** Whether the game is paused or not. */
+	private boolean paused;
+	
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
@@ -209,5 +212,29 @@ public class GameActivity extends BaseGameActivity {
 		pOnPopulateSceneCallback.onPopulateSceneFinished();
 	}
 
+	
+	@Override
+	public void onBackPressed()
+	{
+	    if (paused) {
+	    	resumeGame();
+	    } else {
+	    	pauseGame();
+	    }
+	}
+	
+	
+	private void pauseGame() {
+		Log.i("RS", "Paused !!!");
+		mScene.setIgnoreUpdate(true);
+		//mScene.setChildScene(mPauseScene, false, true, true);
+		paused = true;
+	}
+	private void resumeGame() {
+		Log.i("RS", "Resumed !!!");
+		mScene.clearChildScene();
+		mScene.setIgnoreUpdate(false);
+		paused = false;
+	}
 
 }
