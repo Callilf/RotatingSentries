@@ -8,8 +8,11 @@ import java.util.List;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.shape.IShape;
 
+import com.callil.rotatingsentries.GameActivity;
 import com.callil.rotatingsentries.entityComponentSystem.components.AttackComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.DefenseComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.MoveTowardsComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.SolidComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
 import com.callil.rotatingsentries.entityComponentSystem.entities.Entity;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityManager;
@@ -35,11 +38,14 @@ public class DamageSystem extends System {
 	@Override
 	public void onUpdate(float pSecondsElapsed) {
 		
-		List<Entity> hittables = this.entityManager.getAllEntitiesPosessingComponentOfClass(AttackComponent.class);
+		// MANAGE COLLISIONS OF PROJECTILES
 		List<Entity> hitters = this.entityManager.getAllEntitiesPosessingComponentOfClass(DefenseComponent.class);
 		for (Entity hitter : hitters) {
 			IShape hHitter = this.entityManager.getComponent(SpriteComponent.class, hitter).getHitbox();
 			DefenseComponent cHitter = this.entityManager.getComponent(DefenseComponent.class, hitter);
+			
+			//With ennemies
+			List<Entity> hittables = this.entityManager.getAllEntitiesPosessingComponentOfClass(AttackComponent.class);
 			for (Entity hittable : hittables) {
 				SpriteComponent scHittable = this.entityManager.getComponent(SpriteComponent.class, hittable);
 				if (scHittable != null) { // in case the entity is already dead
@@ -59,7 +65,36 @@ public class DamageSystem extends System {
 					}
 				}
 			}
+			
+			//With solid objects
+			List<Entity> solids = this.entityManager.getAllEntitiesPosessingComponentOfClass(SolidComponent.class);
+			for (Entity solid : solids) {
+				SpriteComponent solidSprite = this.entityManager.getComponent(SpriteComponent.class, solid);
+				if (solidSprite != null) { // in case the entity is already dead
+					IShape solidHitbox = solidSprite.getHitbox();
+					if (hHitter.collidesWith(solidHitbox)) {
+						// If projectile doesn't bounce, destroy it
+						if (!cHitter.isBounce()) {
+							entityManager.removeEntity(hitter);
+							break; // if dead, cannot kill another component
+						} else {
+							//Bounces
+							MoveTowardsComponent moveComponent = this.entityManager.getComponent(MoveTowardsComponent.class, hitter);
+			    			
+							if (moveComponent != null) {
+								//TODO : find a way to know which direction should be inverted
+								//invert x
+								moveComponent.setDirectionX(-moveComponent.getDirectionX());
+				    			//invert y
+								moveComponent.setDirectionY(-moveComponent.getDirectionY());
+							}
+						}
+					}
+				}
+			}
 		}
+		
+		
 		
 		// MANAGER HITABLE ENTITY COLLISIONS WITH ITEMS
 //		List<Entity> entities = 

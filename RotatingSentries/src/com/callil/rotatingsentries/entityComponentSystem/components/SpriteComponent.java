@@ -77,14 +77,17 @@ public class SpriteComponent extends Component {
 	 * @return this so this call can be inline
 	 */
 	public SpriteComponent defineRectangularHitbox(float xmin, float ymin, float width, float height) {
-		sprite.setColor(Color.RED);
+		//sprite.setColor(Color.RED);
 		hitbox = new Rectangle(xmin, ymin, width, height, sprite.getVertexBufferObjectManager());
 		
 		if (GameActivity.DEBUG_MODE) {
 			hitbox.setVisible(true); // to set to false
 			hitbox.setAlpha(10); // DON'T WORK
 			hitbox.setColor(Color.BLUE);
+		} else {
+			hitbox.setVisible(false);
 		}
+		
 		sprite.attachChild(hitbox);
 		return this;
 	}

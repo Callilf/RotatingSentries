@@ -7,8 +7,20 @@ package com.callil.rotatingsentries.entityComponentSystem.components;
  */
 public class DefenseComponent extends AttackComponent {
 
-	public DefenseComponent(int hp, int damage) {
+	/** Whether the entity bounces against solid objects. */
+	private boolean bounce;
+	
+	public DefenseComponent(int hp, int damage, boolean bounce) {
 		super(hp, damage);
+		this.bounce = bounce;
+	}
+
+	public boolean isBounce() {
+		return bounce;
+	}
+
+	public void setBounce(boolean bounce) {
+		this.bounce = bounce;
 	}
 
 }

@@ -119,8 +119,8 @@ public class EntityFactory {
 		final AnimatedSprite sRobber = new AnimatedSprite(x, y, this.spriteLoader.getEnemyRobberTextureRegion(), this.vertextBufferObjectManager);
 		Entity robber = this.em.createEntity();
 		
-		this.em.addComponentToEntity(new SpriteComponent(sRobber, true).defineRectangularHitboxDiff(4, 9, 4, 30), robber);
-		// BOARD MODE (the two folloging call are the same
+		this.em.addComponentToEntity(new SpriteComponent(sRobber, true).defineRectangularHitboxDiff(10, 20, 10, 30), robber);
+		// BOARD MODE (the two following call are the same
 		//this.em.addComponentToEntity(new SpriteComponent(sRobber, true).defineRectangularHitboxDiff(-40, 40, -40, 40), robber);
 		//this.em.addComponentToEntity(new SpriteComponent(sRobber, true).defineRectangularHitbox(-40, 40, 176, 16), robber);
 		
@@ -172,7 +172,7 @@ public class EntityFactory {
 			Entity projectile = this.em.createEntity();
 			this.em.addComponentToEntity(new SpriteComponent(sProjectile, true), projectile);
 			this.em.addComponentToEntity(new MoveTowardsComponent(15, startX, startY), projectile);
-			this.em.addComponentToEntity(new DefenseComponent(1, 2), projectile);
+			this.em.addComponentToEntity(new DefenseComponent(1, 2, false), projectile);
 			return projectile;
 		default:
 			throw new IllegalArgumentException("Undefined projectile " + projectileType);

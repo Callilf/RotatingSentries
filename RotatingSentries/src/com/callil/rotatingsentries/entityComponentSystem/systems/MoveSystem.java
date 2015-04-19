@@ -66,15 +66,6 @@ public class MoveSystem extends System {
 		    			}
 		    		} else {
 		    			// Move straight in a specific DIRECTION
-//		    			//Bounce against wall
-//			    		if (sprite.getX() == 0 || sprite.getX() == GameActivity.CAMERA_WIDTH - sprite.getWidth()) {
-//			    			//invert x
-//			    			straightMoveComponent.setDirectionX(-straightMoveComponent.getDirectionX());
-//			    		}
-//			    		if (sprite.getY() == 0 || sprite.getY() == GameActivity.CAMERA_HEIGHT -sprite.getHeight()) {
-//			    			//invert y
-//			    			straightMoveComponent.setDirectionY(-straightMoveComponent.getDirectionY());
-//			    		}
 			    		sprite.setX(sprite.getX() + (moveTowardsComponent.getDirectionX() * moveTowardsComponent.getSpeed()));
 			    		sprite.setY(sprite.getY() + (moveTowardsComponent.getDirectionY() * moveTowardsComponent.getSpeed()));
 			    		
