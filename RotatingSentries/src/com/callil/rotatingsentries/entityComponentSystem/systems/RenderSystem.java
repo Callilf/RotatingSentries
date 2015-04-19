@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.andengine.entity.scene.Scene;
 
+import com.callil.rotatingsentries.entityComponentSystem.components.AOEAttackComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.DiamondComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SelfRotationComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
@@ -39,15 +40,10 @@ public class RenderSystem extends System {
 	    	if (spriteComponent != null) {
 	    		this.scene.attachChild(spriteComponent.getSprite());
 	    		spriteComponent.setAttached(true);
-	    		
-//	    		HealthComponent healthComponent = this.entityManager.getComponent(HealthComponent.class, entity);
-//	    		if (healthComponent != null && healthComponent.isDisplayHP()) {
-//	    			spriteComponent.getSprite().attachChild(healthComponent.getText());
-//	    			healthComponent.getText().setPosition(0, spriteComponent.getSprite().getHeight());
-//	    		}
 	    	}
 
 	    }
+
 	}
 
 	@Override

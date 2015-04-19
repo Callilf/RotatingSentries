@@ -7,12 +7,15 @@ import static com.callil.rotatingsentries.GameActivity.CAMERA_HEIGHT;
 import static com.callil.rotatingsentries.GameActivity.CAMERA_WIDTH;
 
 import org.andengine.engine.camera.Camera;
+import org.andengine.entity.primitive.Rectangle;
+import org.andengine.entity.shape.IShape;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
+import com.callil.rotatingsentries.entityComponentSystem.components.AOEAttackComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.AttackComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.DefenseComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.DiamondComponent;
@@ -23,6 +26,7 @@ import com.callil.rotatingsentries.entityComponentSystem.components.ShootingComp
 import com.callil.rotatingsentries.entityComponentSystem.components.ShootingComponent.ProjectileType;
 import com.callil.rotatingsentries.entityComponentSystem.components.SolidComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
+import com.callil.rotatingsentries.enums.SpriteAnimationEnum;
 import com.callil.rotatingsentries.util.SpriteLoader;
 
 /**
@@ -142,9 +146,19 @@ public class EntityFactory {
 				sentryTexture, this.vertextBufferObjectManager);
 		sSentry.setRotation(rotation);
 		Entity sentry = this.em.createEntity();
-		this.em.addComponentToEntity(new SpriteComponent(sSentry, true), sentry);
+		SpriteComponent spriteComponent = new SpriteComponent(sSentry, true).defineRectangularHitbox(108, 10, 55, 70);
+		this.em.addComponentToEntity(spriteComponent, sentry);
 		this.em.addComponentToEntity(new SelfRotationComponent(3, rotation, true, true), sentry);
 		this.em.addComponentToEntity(new ShootingComponent(ProjectileType.STANDARD, 0.5f), sentry);
+		
+		Rectangle hitbox = (Rectangle)spriteComponent.getHitbox();
+		final AnimatedSprite sElectricAttack = new AnimatedSprite(0, 0, this.spriteLoader.getSentryElectricAttackTextureRegion(), this.vertextBufferObjectManager);
+		sElectricAttack.setX(hitbox.getX() + hitbox.getWidth()/2 - sElectricAttack.getWidth()/2);
+		sElectricAttack.setY(hitbox.getY() + hitbox.getHeight()/2 - sElectricAttack.getHeight()/2);
+		//test
+		sSentry.attachChild(sElectricAttack);
+		sElectricAttack.animate(SpriteAnimationEnum.SENTRY_ELECTRIC_ATTACK.getFrameDurations(), SpriteAnimationEnum.SENTRY_ELECTRIC_ATTACK.getFrames(), true);
+		this.em.addComponentToEntity(new AOEAttackComponent(sElectricAttack, 2, 2), sentry);
 		
 		return sentry;
 	}
