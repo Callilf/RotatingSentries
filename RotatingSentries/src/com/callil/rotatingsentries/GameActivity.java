@@ -8,14 +8,18 @@ import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
+import org.andengine.entity.scene.CameraScene;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.shape.RectangularShape;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.text.Text;
+import org.andengine.entity.text.TextOptions;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
+import org.andengine.util.HorizontalAlign;
 
 import android.util.Log;
 
@@ -48,6 +52,7 @@ public class GameActivity extends BaseGameActivity {
 	public Camera mCamera;
 	//protected Scene mScene;
 	protected Scene mScene;
+	protected Scene pauseScene;
 	private RectangularShape gameArea;
 	
 	private EntityManager entityManager;
@@ -94,15 +99,7 @@ public class GameActivity extends BaseGameActivity {
 		
 		// Background : game area
 		TextureRegion backgroundTexture = spriteLoader.getBackgroundRegion();
-		Sprite background = new Sprite((CAMERA_WIDTH-backgroundTexture.getWidth())/2, (CAMERA_HEIGHT-backgroundTexture.getHeight())/2, backgroundTexture, this.mEngine.getVertexBufferObjectManager()) {
-			@Override
-			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-				if (paused) {
-					resumeGame();
-				}
-				return true;
-			}
-		};
+		Sprite background = new Sprite((CAMERA_WIDTH-backgroundTexture.getWidth())/2, (CAMERA_HEIGHT-backgroundTexture.getHeight())/2, backgroundTexture, this.mEngine.getVertexBufferObjectManager());
 		this.gameArea = background;
 		
 		//EntityManager & systems
@@ -141,6 +138,35 @@ public class GameActivity extends BaseGameActivity {
 		if (pOnCreateSceneCallback != null) {
 			pOnCreateSceneCallback.onCreateSceneFinished(this.mScene);
 		}
+		
+		
+		// TEST
+		// Create pause scene
+		pauseScene = new CameraScene(mCamera);
+	    
+		Sprite pauseBackground = new Sprite(0, 0, spriteLoader.getMenuPauseBackgroundTextureRegion(), getVertexBufferObjectManager());
+		pauseBackground.setX(background.getX() + background.getWidth()/2 - pauseBackground.getWidth()/2);
+		pauseBackground.setY(background.getY() + background.getHeight()/2 - pauseBackground.getHeight()/2);
+		pauseScene.attachChild(pauseBackground);
+		
+	    Text scoreText = new Text(100, 300, spriteLoader.getHPFont(), "0123456789", new TextOptions(HorizontalAlign.LEFT), getVertexBufferObjectManager());
+	    scoreText.setText("1100001");
+	    pauseBackground.attachChild(scoreText);  
+
+	    final Sprite unpauseButtonSprite = new Sprite(200, 400, spriteLoader.getMenuPauseButtonPlayTextureRegion(), getVertexBufferObjectManager()) {
+	        @Override
+	        public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+	            if (pSceneTouchEvent.isActionUp()) {
+	            	resumeGame();
+	            }
+	            return true;
+	        }           
+	    };
+	    pauseScene.registerTouchArea(unpauseButtonSprite);
+	    pauseBackground.attachChild(unpauseButtonSprite);
+	     
+	    pauseScene.setBackgroundEnabled(false);
+	    // END OF TEST
 	}
 
 	
@@ -244,7 +270,7 @@ public class GameActivity extends BaseGameActivity {
 	private void pauseGame() {
 		Log.i("RS", "Paused !!!");
 		mScene.setIgnoreUpdate(true);
-		//mScene.setChildScene(mPauseScene, false, true, true);
+		mScene.setChildScene(pauseScene, false, true, true);
 		paused = true;
 	}
 	private void resumeGame() {

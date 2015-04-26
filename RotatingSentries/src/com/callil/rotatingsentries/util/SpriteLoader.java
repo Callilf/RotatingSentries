@@ -103,6 +103,23 @@ public class SpriteLoader {
 	
 	
 	//##############
+	// MENUS
+	
+	/** PAUSE MENU Background. */
+	protected TextureRegion mMenuPauseBackgroundTextureRegion;
+	public TextureRegion getMenuPauseBackgroundTextureRegion() {
+		return mMenuPauseBackgroundTextureRegion;
+	}
+	
+	/** PAUSE MENU play button. */
+	protected TextureRegion mMenuPauseButtonPlayTextureRegion;
+	public TextureRegion getMenuPauseButtonPlayTextureRegion() {
+		return mMenuPauseButtonPlayTextureRegion;
+	}
+	
+	
+	
+	//##############
 	// FONTS
 	
 	/** The hp font for the player. */
@@ -192,6 +209,24 @@ public class SpriteLoader {
 		projStdTexture.load();
 
 		
+		
+		
+		//############
+		// Menus
+		
+		//Sentry
+		BitmapTextureAtlas menuPauseBackground = new BitmapTextureAtlas(this.tm, 854, 672, TextureOptions.NEAREST);
+		mMenuPauseBackgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuPauseBackground, this.context, "menu_pause_background.png", 0, 0);
+		menuPauseBackground.load();
+		
+		//Player
+		BitmapTextureAtlas menuPauseButtonPlayTexture = new BitmapTextureAtlas(this.tm, 302, 171);
+		mMenuPauseButtonPlayTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuPauseButtonPlayTexture, this.context, "menu_pause_button_play.png", 0, 0);
+		menuPauseButtonPlayTexture.load();
+		
+		
+		//############
+		// Fonts
 		
 		//Font for player HPs
 		this.mPlayerHPFont = FontFactory.create(this.fm, this.tm, 256, 256, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 64);
