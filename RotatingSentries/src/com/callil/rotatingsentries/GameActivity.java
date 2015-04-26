@@ -64,6 +64,7 @@ public class GameActivity extends BaseGameActivity {
 	
 	/** Whether the game is paused or not. */
 	private boolean paused;
+	private Text pauseMenuTimeText;
 	
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -149,11 +150,10 @@ public class GameActivity extends BaseGameActivity {
 		pauseBackground.setY(background.getY() + background.getHeight()/2 - pauseBackground.getHeight()/2);
 		pauseScene.attachChild(pauseBackground);
 		
-	    Text scoreText = new Text(100, 300, spriteLoader.getHPFont(), "0123456789", new TextOptions(HorizontalAlign.LEFT), getVertexBufferObjectManager());
-	    scoreText.setText("1100001");
-	    pauseBackground.attachChild(scoreText);  
+		pauseMenuTimeText = new Text(390, 220, spriteLoader.getMenuFont(), "01234567890123456789", new TextOptions(HorizontalAlign.LEFT), getVertexBufferObjectManager());
+	    pauseBackground.attachChild(pauseMenuTimeText);  
 
-	    final Sprite unpauseButtonSprite = new Sprite(200, 400, spriteLoader.getMenuPauseButtonPlayTextureRegion(), getVertexBufferObjectManager()) {
+	    final Sprite unpauseButtonSprite = new Sprite(100, 416, spriteLoader.getMenuPauseButtonPlayTextureRegion(), getVertexBufferObjectManager()) {
 	        @Override
 	        public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
 	            if (pSceneTouchEvent.isActionUp()) {
@@ -164,6 +164,18 @@ public class GameActivity extends BaseGameActivity {
 	    };
 	    pauseScene.registerTouchArea(unpauseButtonSprite);
 	    pauseBackground.attachChild(unpauseButtonSprite);
+	    
+	    final Sprite homeButtonSprite = new Sprite(452, 416, spriteLoader.getMenuPauseButtonHomeTextureRegion(), getVertexBufferObjectManager()) {
+	        @Override
+	        public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+	            if (pSceneTouchEvent.isActionUp()) {
+	            	finish();
+	            }
+	            return true;
+	        }           
+	    };
+	    pauseScene.registerTouchArea(homeButtonSprite);
+	    pauseBackground.attachChild(homeButtonSprite);
 	     
 	    pauseScene.setBackgroundEnabled(false);
 	    // END OF TEST
@@ -260,9 +272,7 @@ public class GameActivity extends BaseGameActivity {
 	@Override
 	public void onBackPressed()
 	{
-	    if (paused) {
-	    	super.onBackPressed();
-	    } else {
+	    if (!paused) {
 	    	pauseGame();
 	    }
 	}	
@@ -271,13 +281,26 @@ public class GameActivity extends BaseGameActivity {
 		Log.i("RS", "Paused !!!");
 		mScene.setIgnoreUpdate(true);
 		mScene.setChildScene(pauseScene, false, true, true);
+	    setCurrentTimeString();
 		paused = true;
 	}
+
 	private void resumeGame() {
 		Log.i("RS", "Resumed !!!");
 		mScene.clearChildScene();
 		mScene.setIgnoreUpdate(false);
 		paused = false;
+	}
+	
+	/**
+	 * Set the current time string attribute to display it in the pause menu.
+	 */
+	private void setCurrentTimeString() {
+		long millis = (long)GameSingleton.getInstance().getTotalTime();
+	    long s = millis % 60;
+	    long m = (millis / 60) % 60;
+	    long h = (millis / (60 * 60)) % 24;
+	    pauseMenuTimeText.setText(String.format("%d:%02d:%02d", h,m,s));
 	}
 
 	/**

@@ -117,6 +117,14 @@ public class SpriteLoader {
 		return mMenuPauseButtonPlayTextureRegion;
 	}
 	
+	/** PAUSE MENU play button. */
+	protected TextureRegion mMenuPauseButtonHomeTextureRegion;
+	public TextureRegion getMenuPauseButtonHomeTextureRegion() {
+		return mMenuPauseButtonHomeTextureRegion;
+	}
+	
+	
+	
 	
 	
 	//##############
@@ -128,10 +136,10 @@ public class SpriteLoader {
 		return mPlayerHPFont;
 	}
 	
-	/** The hp font for enemies. */
-	private Font mHPFont;
-	public Font getHPFont() {
-		return mHPFont;
+	/** The font for the pause menu. */
+	private Font menuFont;
+	public Font getMenuFont() {
+		return menuFont;
 	}
 	
 	
@@ -214,15 +222,20 @@ public class SpriteLoader {
 		//############
 		// Menus
 		
-		//Sentry
+		//Pause background
 		BitmapTextureAtlas menuPauseBackground = new BitmapTextureAtlas(this.tm, 854, 672, TextureOptions.NEAREST);
 		mMenuPauseBackgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuPauseBackground, this.context, "menu_pause_background.png", 0, 0);
 		menuPauseBackground.load();
 		
-		//Player
+		//Pause - Play button
 		BitmapTextureAtlas menuPauseButtonPlayTexture = new BitmapTextureAtlas(this.tm, 302, 171);
 		mMenuPauseButtonPlayTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuPauseButtonPlayTexture, this.context, "menu_pause_button_play.png", 0, 0);
 		menuPauseButtonPlayTexture.load();
+		
+		//Pause - Home button
+		BitmapTextureAtlas menuPauseButtonHomeTexture = new BitmapTextureAtlas(this.tm, 302, 171);
+		mMenuPauseButtonHomeTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuPauseButtonHomeTexture, this.context, "menu_pause_button_home.png", 0, 0);
+		menuPauseButtonHomeTexture.load();
 		
 		
 		//############
@@ -233,8 +246,8 @@ public class SpriteLoader {
 		this.mPlayerHPFont.load();
 		
 		//Font for enemy HPs
-		this.mHPFont = FontFactory.create(this.fm, this.tm, 256, 256, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 32, Color.RED);
-		this.mHPFont.load();
+		this.menuFont = FontFactory.create(this.fm, this.tm, 256, 256, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 72, Color.BLACK);
+		this.menuFont.load();
 	}
 
 	/**
