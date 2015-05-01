@@ -6,8 +6,8 @@ package com.callil.rotatingsentries.entityComponentSystem.components;
 import org.andengine.entity.shape.IShape;
 import org.andengine.entity.sprite.AnimatedSprite;
 
-import com.callil.rotatingsentries.GameSingleton;
 import com.callil.rotatingsentries.enums.SpriteAnimationEnum;
+import com.callil.rotatingsentries.singleton.GameSingleton;
 
 /**
  * @author Callil

@@ -5,10 +5,10 @@ package com.callil.rotatingsentries.entityComponentSystem.systems;
 
 import java.util.List;
 
-import com.callil.rotatingsentries.GameSingleton;
 import com.callil.rotatingsentries.entityComponentSystem.components.AOEAttackComponent;
 import com.callil.rotatingsentries.entityComponentSystem.entities.Entity;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityManager;
+import com.callil.rotatingsentries.singleton.GameSingleton;
 
 /**
  * @author Callil

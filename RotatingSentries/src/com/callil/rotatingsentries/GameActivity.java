@@ -3,23 +3,13 @@ package com.callil.rotatingsentries;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
-import org.andengine.engine.options.ScreenOrientation;
-import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
-import org.andengine.entity.scene.CameraScene;
 import org.andengine.entity.scene.Scene;
-import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.shape.RectangularShape;
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.entity.text.Text;
-import org.andengine.entity.text.TextOptions;
 import org.andengine.input.touch.TouchEvent;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.TextureRegion;
-import org.andengine.ui.activity.BaseGameActivity;
-import org.andengine.util.HorizontalAlign;
 
 import android.util.Log;
 
@@ -34,9 +24,9 @@ import com.callil.rotatingsentries.entityComponentSystem.systems.GenerationSyste
 import com.callil.rotatingsentries.entityComponentSystem.systems.MoveSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.RenderSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.System;
-import com.callil.rotatingsentries.util.SpriteLoader;
+import com.callil.rotatingsentries.singleton.GameSingleton;
 
-public class GameActivity extends BaseGameActivity {
+public class GameActivity extends ParentGameActivity {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -49,22 +39,12 @@ public class GameActivity extends BaseGameActivity {
 	// Fields
 	// ===========================================================
 
-	public Camera mCamera;
-	//protected Scene mScene;
-	protected Scene mScene;
-	protected Scene pauseScene;
 	private RectangularShape gameArea;
-	
 	private EntityManager entityManager;
-	private SpriteLoader spriteLoader;
 	private EntityFactory entityFactory;
 	
 	//Systems
 	private List<System> systems;
-	
-	/** Whether the game is paused or not. */
-	private boolean paused;
-	private Text pauseMenuTimeText;
 	
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -72,11 +52,7 @@ public class GameActivity extends BaseGameActivity {
 	
 	@Override
 	public EngineOptions onCreateEngineOptions() {
-		Log.d("RS", "onCreateEngineOptions");
-		this.mCamera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
-		EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), this.mCamera);
-		engineOptions.getTouchOptions().setNeedsMultiTouch(true);
-		return engineOptions;
+		return super.onCreateEngineOptions();
 	}
 	
 
@@ -84,9 +60,7 @@ public class GameActivity extends BaseGameActivity {
 	public void onCreateResources(
 			OnCreateResourcesCallback pOnCreateResourcesCallback)
 			throws Exception {
-		Log.d("RS", "onCreateResources");
-		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-		spriteLoader = new SpriteLoader(this); 
+		super.onCreateResources(pOnCreateResourcesCallback);
 		pOnCreateResourcesCallback.onCreateResourcesFinished();
 	}
 	
@@ -94,9 +68,7 @@ public class GameActivity extends BaseGameActivity {
 	@Override
 	public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback)
 			throws Exception {
-		Log.d("RS", "onCreateScene");
-		this.mScene = new Scene();
-		this.mScene.setBackground(new Background(1.0f, 1.0f, 1.0f));
+		super.onCreateScene(pOnCreateSceneCallback);
 		
 		// Background : game area
 		TextureRegion backgroundTexture = spriteLoader.getBackgroundRegion();
@@ -124,61 +96,10 @@ public class GameActivity extends BaseGameActivity {
 		systems.add(enemyRobberSystem);
 		systems.add(generationSystem);
 		systems.add(aoeAttackSystem);
-		
-		//Set the game time in the singleton
-		this.mScene.registerUpdateHandler(new IUpdateHandler() {
-			@Override
-			public void reset() {}
-			
-			@Override
-			public void onUpdate(float pSecondsElapsed) {
-				GameSingleton.getInstance().setTotalTime(GameSingleton.getInstance().getTotalTime() + pSecondsElapsed);
-			}
-		});
 
 		if (pOnCreateSceneCallback != null) {
 			pOnCreateSceneCallback.onCreateSceneFinished(this.mScene);
 		}
-		
-		
-		// TEST
-		// Create pause scene
-		pauseScene = new CameraScene(mCamera);
-	    
-		Sprite pauseBackground = new Sprite(0, 0, spriteLoader.getMenuPauseBackgroundTextureRegion(), getVertexBufferObjectManager());
-		pauseBackground.setX(background.getX() + background.getWidth()/2 - pauseBackground.getWidth()/2);
-		pauseBackground.setY(background.getY() + background.getHeight()/2 - pauseBackground.getHeight()/2);
-		pauseScene.attachChild(pauseBackground);
-		
-		pauseMenuTimeText = new Text(390, 220, spriteLoader.getMenuFont(), "01234567890123456789", new TextOptions(HorizontalAlign.LEFT), getVertexBufferObjectManager());
-	    pauseBackground.attachChild(pauseMenuTimeText);  
-
-	    final Sprite unpauseButtonSprite = new Sprite(100, 416, spriteLoader.getMenuPauseButtonPlayTextureRegion(), getVertexBufferObjectManager()) {
-	        @Override
-	        public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-	            if (pSceneTouchEvent.isActionUp()) {
-	            	resumeGame();
-	            }
-	            return true;
-	        }           
-	    };
-	    pauseScene.registerTouchArea(unpauseButtonSprite);
-	    pauseBackground.attachChild(unpauseButtonSprite);
-	    
-	    final Sprite homeButtonSprite = new Sprite(452, 416, spriteLoader.getMenuPauseButtonHomeTextureRegion(), getVertexBufferObjectManager()) {
-	        @Override
-	        public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-	            if (pSceneTouchEvent.isActionUp()) {
-	            	finish();
-	            }
-	            return true;
-	        }           
-	    };
-	    pauseScene.registerTouchArea(homeButtonSprite);
-	    pauseBackground.attachChild(homeButtonSprite);
-	     
-	    pauseScene.setBackgroundEnabled(false);
-	    // END OF TEST
 	}
 
 	
@@ -267,57 +188,4 @@ public class GameActivity extends BaseGameActivity {
 			pOnPopulateSceneCallback.onPopulateSceneFinished();
 		}
 	}
-
-	
-	@Override
-	public void onBackPressed()
-	{
-	    if (!paused) {
-	    	pauseGame();
-	    }
-	}	
-	
-	private void pauseGame() {
-		Log.i("RS", "Paused !!!");
-		mScene.setIgnoreUpdate(true);
-		mScene.setChildScene(pauseScene, false, true, true);
-	    setCurrentTimeString();
-		paused = true;
-	}
-
-	private void resumeGame() {
-		Log.i("RS", "Resumed !!!");
-		mScene.clearChildScene();
-		mScene.setIgnoreUpdate(false);
-		paused = false;
-	}
-	
-	/**
-	 * Set the current time string attribute to display it in the pause menu.
-	 */
-	private void setCurrentTimeString() {
-		long millis = (long)GameSingleton.getInstance().getTotalTime();
-	    long s = millis % 60;
-	    long m = (millis / 60) % 60;
-	    long h = (millis / (60 * 60)) % 24;
-	    pauseMenuTimeText.setText(String.format("%d:%02d:%02d", h,m,s));
-	}
-
-	/**
-	 * Recreate the complete scene
-	 */
-	public void recreateScene() {
-		try {
-			Thread.sleep(1500);
-			onCreateScene(null);
-			mEngine.setScene(mScene);
-			onPopulateScene(mScene, null);
-			
-		}
-		catch(Exception e) {
-			Log.e("RS", "Error while reloading the scene");
-		}
-	}
-
-
 }

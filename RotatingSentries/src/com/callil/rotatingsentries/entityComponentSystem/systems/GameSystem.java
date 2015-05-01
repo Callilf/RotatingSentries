@@ -21,7 +21,7 @@ public class GameSystem extends System {
 	public void onUpdate(float pSecondsElapsed) {
 		SparseArray<Component> diamonds = entityManager.getComponentsByClass().get(DiamondComponent.class);
 		if (diamonds == null || diamonds.size() == 0) {
-			activity.recreateScene();
+			activity.endGame();
 		}
 	}
 

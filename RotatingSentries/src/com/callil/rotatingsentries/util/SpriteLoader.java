@@ -117,7 +117,13 @@ public class SpriteLoader {
 		return mMenuPauseButtonPlayTextureRegion;
 	}
 	
-	/** PAUSE MENU play button. */
+	/** PAUSE MENU restart button. */
+	protected TextureRegion mMenuPauseButtonRestartTextureRegion;
+	public TextureRegion getMenuPauseButtonRestartTextureRegion() {
+		return mMenuPauseButtonRestartTextureRegion;
+	}
+	
+	/** PAUSE MENU quit button. */
 	protected TextureRegion mMenuPauseButtonHomeTextureRegion;
 	public TextureRegion getMenuPauseButtonHomeTextureRegion() {
 		return mMenuPauseButtonHomeTextureRegion;
@@ -231,6 +237,11 @@ public class SpriteLoader {
 		BitmapTextureAtlas menuPauseButtonPlayTexture = new BitmapTextureAtlas(this.tm, 302, 171);
 		mMenuPauseButtonPlayTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuPauseButtonPlayTexture, this.context, "menu_pause_button_play.png", 0, 0);
 		menuPauseButtonPlayTexture.load();
+		
+		//Pause - restart button
+		BitmapTextureAtlas menuPauseButtonRestartTexture = new BitmapTextureAtlas(this.tm, 302, 171);
+		mMenuPauseButtonRestartTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuPauseButtonRestartTexture, this.context, "menu_pause_button_restart.png", 0, 0);
+		menuPauseButtonRestartTexture.load();
 		
 		//Pause - Home button
 		BitmapTextureAtlas menuPauseButtonHomeTexture = new BitmapTextureAtlas(this.tm, 302, 171);
