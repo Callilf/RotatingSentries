@@ -16,7 +16,7 @@ public class Score implements Comparable<Score>, Serializable {
 	private long scoreId;
 	
 	/** The time score of the HighScore */
-	private long timeScore;
+	private float timeScore;
 	
 	/** Name of the player of the HighScore*/
 	private String player;
@@ -32,7 +32,7 @@ public class Score implements Comparable<Score>, Serializable {
 	 * @param player name associated with the score
 	 * @param timeScore the time score
 	 */
-	public Score(long scoreId, String player, long timeScore) {
+	public Score(long scoreId, String player, float timeScore) {
 		this.scoreId = scoreId;
 		this.player = player;
 		this.timeScore = timeScore;
@@ -71,11 +71,11 @@ public class Score implements Comparable<Score>, Serializable {
 		this.scoreId = scoreId;
 	}
 
-	public long getTimeScore() {
+	public float getTimeScore() {
 		return timeScore;
 	}
 
-	public void setTimeScore(long timeScore) {
+	public void setTimeScore(float timeScore) {
 		this.timeScore = timeScore;
 	}
 

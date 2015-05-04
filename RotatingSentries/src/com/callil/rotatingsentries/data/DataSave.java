@@ -66,7 +66,7 @@ public final class DataSave implements Serializable {
 	 * @param timePassed the score
 	 * @return
 	 */
-	public boolean addScore(long timePassed) {
+	public boolean addScore(float timePassed) {
 		DifficultyEnum difficulty = getCurrentDifficulty();
 		TreeSet<Score> scores = highScore.get(difficulty);
 		if (scores == null) {

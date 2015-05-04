@@ -200,7 +200,7 @@ public abstract class ParentGameActivity extends BaseGameActivity {
 	    
 		// save the score
 		DataSave data = DataSave.getSaveData(this);
-		long timePassed = (long)GameSingleton.getInstance().getTotalTime();
+		float timePassed = GameSingleton.getInstance().getTotalTime();
 		if (data != null) {
 			// if it's a new highscore, store the file
 			if (data.addScore(timePassed)) {
@@ -217,12 +217,14 @@ public abstract class ParentGameActivity extends BaseGameActivity {
 	 * Set the current time string attribute to display it in the pause menu.
 	 */
 	private void setCurrentTimeString() {
-		long millis = (long)GameSingleton.getInstance().getTotalTime();
-	    long s = millis % 60;
-	    long m = (millis / 60) % 60;
-	    long h = (millis / (60 * 60)) % 24;
-	    pauseMenuTimeText.setText(String.format("%d:%02d:%02d", h,m,s));
-	    endMenuTimeText.setText(String.format("%d:%02d:%02d", h,m,s));
+//		long millis = (long)GameSingleton.getInstance().getTotalTime();
+//	    long s = millis % 60;
+//	    long m = (millis / 60) % 60;
+//	    long h = (millis / (60 * 60)) % 24;
+//		String seconds = Float.toString( ((int)(GameSingleton.getInstance().getTotalTime() * 1000))/1000f );
+		String seconds = String.format("%.3f", GameSingleton.getInstance().getTotalTime());
+	    pauseMenuTimeText.setText(seconds);
+	    endMenuTimeText.setText(seconds);
 	}
 
 	/**
