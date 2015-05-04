@@ -36,6 +36,22 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.callil.rotatingsentries.menu.MainMenuActivity" />
         </activity>
+        <activity
+            android:name=".menu.HowToPlayActivity"
+            android:label="@string/title_activity_how_to_play"
+            android:screenOrientation="landscape" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.callil.rotatingsentries.menu.MainMenuActivity" />
+        </activity>
+        <activity
+            android:name=".menu.CreditsActivity"
+            android:label="@string/title_activity_credits"
+            android:screenOrientation="landscape" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.callil.rotatingsentries.menu.MainMenuActivity" />
+        </activity>
     </application>
 
 </manifest>

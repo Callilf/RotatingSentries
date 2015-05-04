@@ -15,12 +15,13 @@
     <string name="options">OPTIONS</string>
     <string name="on">ON</string>
     <string name="off">OFF</string>
-    <string name="enemies">Enemies</string>
     <string name="optDifficulty">Difficulty:</string>
     <string name="optDiffEasy">Easy</string>
     <string name="optDiffNormal">Normal</string>
     <string name="optDiffHard">Hard</string>
     <string name="goal">The goal of Rotating Sentry is to defend the diamond as long as possible. During the game, multiple enemies will appear and trying to catch the diamond.  Several items will also appear, to boost your sentries. This page lists all the enemies and items you can encounter.</string>
+    <string name="items">Items</string>
+    <string name="enemies">Enemies</string>
     <string name="howtoplay">HOW TO PLAY</string>
     <string name="credits">CREDITS</string>
     <string name="creditsText">This game is a prototype realized by 2 freshly graduated French guys. It was just supposed to be a test for us to see what we can do and was entirely made during our free time, outside of work. We hope you enjoy playing and would appreciate any feedback about it.</string>

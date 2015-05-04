@@ -129,12 +129,12 @@ public class MainMenuActivity extends BaseGameActivity {
 	}
 	
 	public void goToHowToPlay() {
-		Intent intent = new Intent(MainMenuActivity.this.getBaseContext(), GameActivity.class);
+		Intent intent = new Intent(MainMenuActivity.this.getBaseContext(), HowToPlayActivity.class);
 		startActivity(intent);
 	}
 	
 	public void goToCredits() {
-		Intent intent = new Intent(MainMenuActivity.this.getBaseContext(), GameActivity.class);
+		Intent intent = new Intent(MainMenuActivity.this.getBaseContext(), CreditsActivity.class);
 		startActivity(intent);
 	}
 	
