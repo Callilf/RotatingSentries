@@ -16,6 +16,7 @@ import android.util.Log;
 
 import com.callil.rotatingsentries.GameActivity;
 import com.callil.rotatingsentries.ParentGameActivity;
+import com.callil.rotatingsentries.util.PrefsUtil;
 import com.callil.rotatingsentries.util.SpriteLoader;
 
 public class MainMenuActivity extends BaseGameActivity {
@@ -37,6 +38,7 @@ public class MainMenuActivity extends BaseGameActivity {
 	@Override
 	public void onCreateResources(OnCreateResourcesCallback pOnCreateResourcesCallback) throws Exception {
 		Log.d("RS", "[MENU] onCreateResources");
+		PrefsUtil.initPreferences(this);
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		spriteLoader = SpriteLoader.getInstance(); 
 		spriteLoader.initMenuSprite(this);
@@ -122,7 +124,7 @@ public class MainMenuActivity extends BaseGameActivity {
 	}
 	
 	public void goToOptions() {
-		Intent intent = new Intent(MainMenuActivity.this.getBaseContext(), GameActivity.class);
+		Intent intent = new Intent(MainMenuActivity.this.getBaseContext(), OptionsActivity.class);
 		startActivityForResult(intent, 1);
 	}
 	

@@ -1,0 +1,177 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+     >
+    
+    <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:id="@+id/verticalLayout"
+       android:orientation="vertical" >  
+           
+	    <TextView
+	        android:id="@+id/textView1"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_horizontal"
+	        android:layout_marginBottom="20sp"
+	        android:text="@string/options"
+	        android:textAppearance="?android:attr/textAppearanceLarge"
+	        android:textColor="#FFFFFF"
+	        android:textSize="30sp" />
+	
+	    <LinearLayout
+	        android:id="@+id/optionsLinearSound"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_horizontal"
+	        android:layout_marginBottom="10sp"
+	        android:layout_marginLeft="10sp"
+	        android:layout_marginRight="10sp" >
+	
+	        <TextView
+	            android:id="@+id/textView2"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_gravity="center_vertical"
+	            android:layout_marginRight="10sp"
+	            android:text="@string/optSound"
+	            android:textColor="#FFFFFF"
+	            android:textSize="14sp"
+	            android:textStyle="bold" />
+	
+	        <RadioGroup
+	            android:id="@+id/radioSound"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:baselineAligned="false"
+	            android:orientation="horizontal" >
+	        
+		        <RadioButton
+		            android:id="@+id/radioSoundOn"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:checked="true"
+		            android:text="@string/on"
+		            android:textColor="#FFFFFF"
+		            android:textSize="14sp" />
+		
+		        <RadioButton
+		            android:id="@+id/radioSoundOff"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="@string/off"
+		            android:textColor="#FFFFFF"
+		            android:textSize="14sp" />
+		        
+	        </RadioGroup>
+	
+	    </LinearLayout>
+	
+	    <LinearLayout
+	        android:id="@+id/optionsLinearParticle"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_horizontal"
+	        android:layout_marginBottom="10sp"
+	        android:layout_marginLeft="10sp"
+	        android:layout_marginRight="10sp" >
+	
+	        <TextView
+	            android:id="@+id/textView5"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_gravity="center_vertical"
+	            android:layout_marginRight="10sp"
+	            android:text="@string/optParticle"
+	            android:textColor="#FFFFFF"
+	            android:textSize="14sp"
+	            android:textStyle="bold" />
+	
+	        <RadioGroup
+	            android:id="@+id/radioParticle"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:baselineAligned="false"
+	            android:orientation="horizontal" >
+	        
+		        <RadioButton
+		            android:id="@+id/radioParticleOn"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:checked="true"
+		            android:text="@string/on"
+		            android:textColor="#FFFFFF"
+		            android:textSize="14sp" />
+		
+		        <RadioButton
+		            android:id="@+id/radioParticleOff"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="@string/off"
+		            android:textColor="#FFFFFF"
+		            android:textSize="14sp" />
+		        
+	        </RadioGroup>
+	
+	    </LinearLayout>    
+	    
+	    
+	    <LinearLayout
+	        android:id="@+id/optionDifficulty"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_horizontal"
+	        android:layout_marginBottom="10sp"
+	        android:layout_marginLeft="10sp"
+	        android:layout_marginRight="10sp" >
+	
+	        <TextView
+	            android:id="@+id/TextView02"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_gravity="center_vertical"
+	            android:layout_marginRight="10sp"
+	            android:text="@string/optDifficulty"
+	            android:textColor="#FFFFFF"
+	            android:textSize="14sp"
+	            android:textStyle="bold" />
+	        
+	        <RadioGroup
+	            android:id="@+id/radioDifficulty"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:baselineAligned="false"
+	            android:orientation="horizontal" >
+	
+	            <RadioButton
+	                android:id="@+id/radioDiffEasy"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:checked="true"
+	                android:text="@string/optDiffEasy"
+	                android:textColor="#FFFFFF"
+	                android:textSize="14sp" />
+	
+	            <RadioButton
+	                android:id="@+id/radioDiffNormal"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="@string/optDiffNormal"
+	                android:textColor="#FFFFFF"
+	                android:textSize="14sp" />
+	
+	            <RadioButton
+	                android:id="@+id/radioDiffHard"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="@string/optDiffHard"
+	                android:textColor="#FFFFFF"
+	                android:textSize="14sp" />
+	            
+	        </RadioGroup>
+	
+	    </LinearLayout>
+     </LinearLayout>
+</ScrollView>
