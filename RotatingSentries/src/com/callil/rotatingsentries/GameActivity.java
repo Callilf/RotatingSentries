@@ -3,7 +3,6 @@ package com.callil.rotatingsentries;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.shape.RectangularShape;

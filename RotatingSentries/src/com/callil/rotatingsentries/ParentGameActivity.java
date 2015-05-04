@@ -35,7 +35,6 @@ public abstract class ParentGameActivity extends BaseGameActivity {
 	// ===========================================================
 
 	public Camera mCamera;
-	//protected Scene mScene;
 	protected Scene mScene;
 	protected Scene pauseScene;
 	protected Scene endScene;
@@ -66,7 +65,8 @@ public abstract class ParentGameActivity extends BaseGameActivity {
 			throws Exception {
 		Log.d("RS", "onCreateResources");
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-		spriteLoader = new SpriteLoader(this); 
+		spriteLoader = SpriteLoader.getInstance(); 
+		spriteLoader.initGameSprite(this);
 	}
 	
 
@@ -220,12 +220,10 @@ public abstract class ParentGameActivity extends BaseGameActivity {
 			onCreateScene(null);
 			mEngine.setScene(mScene);
 			onPopulateScene(mScene, null);
-			
 		}
 		catch(Exception e) {
 			Log.e("RS", "Error while reloading the scene");
 		}
 	}
-
 
 }

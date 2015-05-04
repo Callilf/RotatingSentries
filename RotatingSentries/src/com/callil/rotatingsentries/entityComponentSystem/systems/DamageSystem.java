@@ -7,8 +7,6 @@ import java.util.List;
 
 import org.andengine.entity.shape.IShape;
 
-import android.util.Log;
-
 import com.callil.rotatingsentries.entityComponentSystem.components.AOEAttackComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.AttackComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.DefenseComponent;
@@ -72,7 +70,7 @@ public class DamageSystem extends System {
 					if (hHitter.collidesWith(solidHitbox)) {
 						// If projectile doesn't bounce, destroy it
 						if (!cHitter.isBounce()) {
-							Log.d("DamageSystem", "Hitter collisionne X=" + hHitter.getX() +", Y="+ hHitter.getY());
+							//Log.d("DamageSystem", "Hitter collisionne X=" + hHitter.getX() +", Y="+ hHitter.getY());
 							entityManager.removeEntity(hitter);
 							break; // if dead, cannot kill another component
 						} else {
