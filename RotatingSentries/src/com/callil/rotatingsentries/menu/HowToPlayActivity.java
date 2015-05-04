@@ -5,7 +5,6 @@ import android.support.v4.app.NavUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
 import android.widget.ScrollView;
 
 import com.callil.rotatingsentries.R;
@@ -13,11 +12,9 @@ import com.callil.rotatingsentries.R;
 
 public class HowToPlayActivity extends AbstractActivity {
 	
-	/** TAG for the logs. */
-	private static final String TAG = HowToPlayActivity.class.getSimpleName();
 
-	private ListView enemyList;
-	private ListView itemList;
+//	private ListView enemyList;
+//	private ListView itemList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -26,8 +23,8 @@ public class HowToPlayActivity extends AbstractActivity {
 
         setContentView(R.layout.activity_how_to_play);
         
-        enemyList = (ListView) findViewById(R.id.enemies);
-        itemList = (ListView) findViewById(R.id.itemsList);
+//        enemyList = (ListView) findViewById(R.id.enemies);
+//        itemList = (ListView) findViewById(R.id.itemsList);
         
         //Fill lists
 //        List<GameEntity> enemies = new ArrayList<GameEntity>();

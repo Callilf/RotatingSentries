@@ -10,18 +10,13 @@ import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
 import com.callil.rotatingsentries.R;
-import com.callil.rotatingsentries.options.Difficulty.DifficultyEnum;
+import com.callil.rotatingsentries.data.Difficulty.DifficultyEnum;
 import com.callil.rotatingsentries.util.PrefsUtil;
 import com.callil.rotatingsentries.util.PrefsUtil.PreferencesConstants;
 
 
 public class OptionsActivity extends AbstractActivity {
 	
-	/** TAG for the logs. */
-	private static final String TAG = OptionsActivity.class.getSimpleName();
-	
-	private static boolean isScalingChanged = false;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	setTagParent("Options");

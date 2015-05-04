@@ -18,6 +18,7 @@ import org.andengine.util.HorizontalAlign;
 
 import android.util.Log;
 
+import com.callil.rotatingsentries.data.DataSave;
 import com.callil.rotatingsentries.singleton.GameSingleton;
 import com.callil.rotatingsentries.util.SpriteLoader;
 
@@ -196,6 +197,19 @@ public abstract class ParentGameActivity extends BaseGameActivity {
 		mScene.setIgnoreUpdate(true);
 		mScene.setChildScene(endScene, false, true, true);
 	    setCurrentTimeString();
+	    
+		// save the score
+		DataSave data = DataSave.getSaveData(this);
+		long timePassed = (long)GameSingleton.getInstance().getTotalTime();
+		if (data != null) {
+			// if it's a new highscore, store the file
+			if (data.addScore(timePassed)) {
+				data.saveData(this);
+				Log.d("RS", "New highscore > " + timePassed);
+				// TODO tell the people it's a new highscore
+			}
+		}
+		
 		paused = true;
 	}
 	

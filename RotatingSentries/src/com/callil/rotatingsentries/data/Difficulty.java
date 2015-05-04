@@ -1,4 +1,4 @@
-package com.callil.rotatingsentries.options;
+package com.callil.rotatingsentries.data;
 
 /**
  * Contains differents variables dependant of the difficulty 
