@@ -143,7 +143,7 @@ public class SpriteLoader {
 	protected TextureRegion mMmenuTitleTextureRegion;
 	protected TextureRegion mMmenuPlayBtnTextureRegion;
 	protected TextureRegion mMmenuOptionsBtnTextureRegion;
-	protected TextureRegion mMmenuHowtopBtnTextureRegion;
+	protected TextureRegion mMmenuLeaderboardBtnTextureRegion;
 	protected TextureRegion mMmenuCreditsBtnTextureRegion;
 	protected TextureRegion mMmenuEmptyBtnTextureRegion;
 
@@ -163,8 +163,8 @@ public class SpriteLoader {
 		return mMmenuOptionsBtnTextureRegion;
 	}
 
-	public TextureRegion getMmenuHowtopBtnTextureRegion() {
-		return mMmenuHowtopBtnTextureRegion;
+	public TextureRegion getMmenuLeaderboardBtnTextureRegion() {
+		return mMmenuLeaderboardBtnTextureRegion;
 	}
 
 	public TextureRegion getMmenuCreditsBtnTextureRegion() {
@@ -309,7 +309,7 @@ public class SpriteLoader {
 		
 		//Background
 		BitmapTextureAtlas mmenuBackgroundTexture = new BitmapTextureAtlas(tm, 1920, 1080);
-		mMmenuBackgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(mmenuBackgroundTexture, context, "mainmenu/menu_background.jpg", 0, 0);
+		mMmenuBackgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(mmenuBackgroundTexture, context, "mainmenu/menu_background.png", 0, 0);
 		mmenuBackgroundTexture.load();
 		
 		//Title
@@ -328,9 +328,9 @@ public class SpriteLoader {
 		mmenuOptionsBtnTexture.load();
 		
 		//Hot to play button
-		BitmapTextureAtlas mmenuHowtopBtnTexture = new BitmapTextureAtlas(tm, 1920, 1080);
-		mMmenuHowtopBtnTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(mmenuHowtopBtnTexture, context, "mainmenu/menu_htp_btn.png", 0, 0);
-		mmenuHowtopBtnTexture.load();
+		BitmapTextureAtlas mmenuLeaderboadBtnTexture = new BitmapTextureAtlas(tm, 1920, 1080);
+		mMmenuLeaderboardBtnTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(mmenuLeaderboadBtnTexture, context, "mainmenu/menu_leaderboard_btn.png", 0, 0);
+		mmenuLeaderboadBtnTexture.load();
 		
 		//Credits button
 		BitmapTextureAtlas mmenuCreditsBtnTexture = new BitmapTextureAtlas(tm, 1920, 1080);

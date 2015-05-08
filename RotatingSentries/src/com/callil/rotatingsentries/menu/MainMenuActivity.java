@@ -81,7 +81,7 @@ public class MainMenuActivity extends BaseGameActivity {
 	    mainScene.registerTouchArea(optionsButtonSprite);
 	    mainScene.attachChild(optionsButtonSprite);
 		
-	    final Sprite howToPlayButtonSprite = new Sprite(324, 700, spriteLoader.getMmenuHowtopBtnTextureRegion(), getVertexBufferObjectManager()) {
+	    final Sprite howToPlayButtonSprite = new Sprite(324, 700, spriteLoader.getMmenuLeaderboardBtnTextureRegion(), getVertexBufferObjectManager()) {
 	        @Override
 	        public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
 	            if (pSceneTouchEvent.isActionUp()) {
@@ -93,7 +93,7 @@ public class MainMenuActivity extends BaseGameActivity {
 	    mainScene.registerTouchArea(howToPlayButtonSprite);
 	    mainScene.attachChild(howToPlayButtonSprite);
 		
-	    final Sprite creditsButtonSprite = new Sprite(1122, 700, spriteLoader.getMmenuEmptyBtnTextureRegion(), getVertexBufferObjectManager()) {
+	    final Sprite creditsButtonSprite = new Sprite(1122, 700, spriteLoader.getMmenuCreditsBtnTextureRegion(), getVertexBufferObjectManager()) {
 	        @Override
 	        public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
 	            if (pSceneTouchEvent.isActionUp()) {
@@ -104,9 +104,6 @@ public class MainMenuActivity extends BaseGameActivity {
 	    };
 	    mainScene.registerTouchArea(creditsButtonSprite);
 	    mainScene.attachChild(creditsButtonSprite);
-	    
-	    final Sprite creditsTexteSprite = new Sprite(51, 64, spriteLoader.getMmenuCreditsBtnTextureRegion(), getVertexBufferObjectManager());
-	    creditsButtonSprite.attachChild(creditsTexteSprite);
 	    
 	    pOnCreateSceneCallback.onCreateSceneFinished(mainScene);	    
 	}
