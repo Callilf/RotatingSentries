@@ -3,6 +3,7 @@
  */
 package com.callil.rotatingsentries.entityComponentSystem.components;
 
+import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.text.Text;
 
 /**
@@ -19,15 +20,20 @@ public class DiamondComponent extends Component {
 	/** The number of hp. */
 	private int life;
 	private Text lifeText;
+	private Rectangle lifeBar;
 	
 	/**
 	 * 
 	 */
-	public DiamondComponent(float frequency, int life, Text lifeText) {
-		lifeText.setZIndex(50);
+	public DiamondComponent(float frequency, int life, Rectangle lifeBar) {
+		setLifeBar(lifeBar);
+		this.lifeBar.setZIndex(9);
+		
 		setFrequency(frequency);
-		setLifeText(lifeText);
 		setLife(life);
+		
+//		lifeText.setZIndex(50);
+//		setLifeText(lifeText);
 	}
 
 	/**
@@ -72,4 +78,19 @@ public class DiamondComponent extends Component {
 		this.lifeText = lifeText;
 	}
 
+	/**
+	 * @return the lifeBar
+	 */
+	public Rectangle getLifeBar() {
+		return lifeBar;
+	}
+
+	/**
+	 * @param lifeBar the lifeBar to set
+	 */
+	public void setLifeBar(Rectangle lifeBar) {
+		this.lifeBar = lifeBar;
+	}
+
+	
 }

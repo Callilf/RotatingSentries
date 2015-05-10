@@ -79,18 +79,6 @@ public abstract class ParentGameActivity extends BaseGameActivity {
 		this.mScene = new Scene();
 		this.mScene.setBackground(new Background(0.23f, 0.23f, 0.23f));
 		
-		//Set the game time in the singleton
-		this.mScene.registerUpdateHandler(new IUpdateHandler() {
-			@Override
-			public void reset() {}
-			
-			@Override
-			public void onUpdate(float pSecondsElapsed) {
-				GameSingleton.getInstance().setTotalTime(GameSingleton.getInstance().getTotalTime() + pSecondsElapsed);
-			}
-		});
-		
-		// TEST
 		// Create pause scene
 		pauseScene = new CameraScene(mCamera);
 	    
@@ -217,11 +205,6 @@ public abstract class ParentGameActivity extends BaseGameActivity {
 	 * Set the current time string attribute to display it in the pause menu.
 	 */
 	private void setCurrentTimeString() {
-//		long millis = (long)GameSingleton.getInstance().getTotalTime();
-//	    long s = millis % 60;
-//	    long m = (millis / 60) % 60;
-//	    long h = (millis / (60 * 60)) % 24;
-//		String seconds = Float.toString( ((int)(GameSingleton.getInstance().getTotalTime() * 1000))/1000f );
 		String seconds = String.format("%.3f", GameSingleton.getInstance().getTotalTime());
 	    pauseMenuTimeText.setText(seconds);
 	    endMenuTimeText.setText(seconds);

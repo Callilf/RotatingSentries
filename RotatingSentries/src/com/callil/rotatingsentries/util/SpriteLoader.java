@@ -54,24 +54,6 @@ public class SpriteLoader {
 		return mWall;
 	}
 	
-	/** SIDE GRAY*/
-	protected TextureRegion mSideGrayTextureRegion;
-	public TextureRegion getSideGrayTextureRegion() {
-		return mSideGrayTextureRegion;
-	}
-	
-	/** ARROW : left */
-	protected TextureRegion mArrowLeftTextureRegion;
-	public TextureRegion getArrowLeftTextureRegion() {
-		return mArrowLeftTextureRegion;
-	}
-	
-	/** ARROW : right */
-	protected TextureRegion mArrowRightTextureRegion;
-	public TextureRegion getArrowRightTextureRegion() {
-		return mArrowRightTextureRegion;
-	}
-	
 	/** DIAMOND. */
 	protected TextureRegion mdiamondTextureRegion;
 	public TextureRegion getDiamondTextureRegion() {
@@ -112,6 +94,42 @@ public class SpriteLoader {
 	public TextureRegion getProjStdTextureRegion() {
 		return mProjStdTextureRegion;
 	}
+	
+	
+	
+	//##############
+	// HUD
+	
+	/** SIDE GRAY*/
+	protected TextureRegion mSideGrayTextureRegion;
+	public TextureRegion getSideGrayTextureRegion() {
+		return mSideGrayTextureRegion;
+	}
+	
+	/** ARROW : left */
+	protected TextureRegion mArrowLeftTextureRegion;
+	public TextureRegion getArrowLeftTextureRegion() {
+		return mArrowLeftTextureRegion;
+	}
+	
+	/** ARROW : right */
+	protected TextureRegion mArrowRightTextureRegion;
+	public TextureRegion getArrowRightTextureRegion() {
+		return mArrowRightTextureRegion;
+	}
+	
+	/** TIME PANEL*/
+	protected TextureRegion mHudPanelTimerTextureRegion;
+	public TextureRegion getHUDPanelTimerTextureRegion() {
+		return mHudPanelTimerTextureRegion;
+	}
+	
+	/** HEALTH PANEL*/
+	protected TextureRegion mHudPanelHealthTextureRegion;
+	public TextureRegion getHUDPanelHealthTextureRegion() {
+		return mHudPanelHealthTextureRegion;
+	}
+	
 	
 	
 	//##############
@@ -219,21 +237,6 @@ public class SpriteLoader {
 		BitmapTextureAtlas wallTexture = new BitmapTextureAtlas(tm, 1080, 40);
 		mWall =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(wallTexture, context, "wall.png", 0, 0);
 		wallTexture.load();
-		
-		//Side gray
-		BitmapTextureAtlas sideGrayButtonTexture = new BitmapTextureAtlas(tm, 420, 1080);
-		mSideGrayTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(sideGrayButtonTexture, context, "side_gray.png", 0, 0);
-		sideGrayButtonTexture.load();
-		
-		//Left button
-		BitmapTextureAtlas leftButtonTexture = new BitmapTextureAtlas(tm, 401, 533);
-		mArrowLeftTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(leftButtonTexture, context, "left_button2.png", 0, 0);
-		leftButtonTexture.load();
-		
-		//Right button
-		BitmapTextureAtlas rightButtonTexture = new BitmapTextureAtlas(tm, 401, 533);
-		mArrowRightTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(rightButtonTexture, context, "right_button2.png", 0, 0);
-		rightButtonTexture.load();
 				
 		//Diamond
 		BitmapTextureAtlas diamondTexture = new BitmapTextureAtlas(tm, 100, 100);
@@ -269,6 +272,35 @@ public class SpriteLoader {
 		BitmapTextureAtlas projStdTexture = new BitmapTextureAtlas(tm, 4, 12, TextureOptions.NEAREST);
 		mProjStdTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(projStdTexture, context, "projectile_std.png", 0, 0);
 		projStdTexture.load();
+		
+		
+		//############
+		// HUD
+		
+		//Side gray
+		BitmapTextureAtlas sideGrayButtonTexture = new BitmapTextureAtlas(tm, 420, 1080);
+		mSideGrayTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(sideGrayButtonTexture, context, "side_gray.png", 0, 0);
+		sideGrayButtonTexture.load();
+		
+		//Left button
+		BitmapTextureAtlas leftButtonTexture = new BitmapTextureAtlas(tm, 401, 533);
+		mArrowLeftTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(leftButtonTexture, context, "left_button2.png", 0, 0);
+		leftButtonTexture.load();
+		
+		//Right button
+		BitmapTextureAtlas rightButtonTexture = new BitmapTextureAtlas(tm, 401, 533);
+		mArrowRightTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(rightButtonTexture, context, "right_button2.png", 0, 0);
+		rightButtonTexture.load();
+		
+		//Time panel
+		BitmapTextureAtlas hudPanelTimerTexture = new BitmapTextureAtlas(tm, 401, 157);
+		mHudPanelTimerTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(hudPanelTimerTexture, context, "hud_panel_timer.png", 0, 0);
+		hudPanelTimerTexture.load();
+		
+		//Health panel
+		BitmapTextureAtlas hudPanelHealthTexture = new BitmapTextureAtlas(tm, 401, 157);
+		mHudPanelHealthTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(hudPanelHealthTexture, context, "hud_panel_health.png", 0, 0);
+		hudPanelHealthTexture.load();
 
 
 		//############

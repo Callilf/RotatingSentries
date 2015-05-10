@@ -84,7 +84,13 @@ public class EntityFactory {
 		sDiamond.setY(sDiamond.getY() - sDiamond.getHeight()/2);
 		Entity diamond = this.em.createEntity();
 		this.em.addComponentToEntity(new SpriteComponent(sDiamond, true), diamond);
-		this.em.addComponentToEntity(new DiamondComponent(frequency, 5, new Text(0, 0, this.spriteLoader.getPlayerHPFont(), "Placeholder", this.vertextBufferObjectManager)), diamond);
+		
+		Rectangle rectangle = new Rectangle(26, 242, 370, 80, this.vertextBufferObjectManager);
+		rectangle.setColor(0.8f, 0.2f, 0.2f);
+		this.em.addComponentToEntity(new DiamondComponent(frequency, 5, rectangle), diamond);
+
+		
+//		this.em.addComponentToEntity(new DiamondComponent(frequency, 5, new Text(0, 0, this.spriteLoader.getPlayerHPFont(), "Placeholder", this.vertextBufferObjectManager)), diamond);
 //		this.em.addComponentToEntity(new DefenseComponent(500, 0), diamond);
 		
 		return diamond;

@@ -3,13 +3,16 @@ package com.callil.rotatingsentries;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.entity.scene.Scene;
-import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.shape.RectangularShape;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.text.Text;
+import org.andengine.entity.text.TextOptions;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.region.TextureRegion;
+import org.andengine.util.HorizontalAlign;
 
 import android.util.Log;
 
@@ -42,9 +45,9 @@ public class GameActivity extends ParentGameActivity {
 	private RectangularShape gameArea;
 	private EntityManager entityManager;
 	private EntityFactory entityFactory;
-	
-	//Systems
 	private List<System> systems;
+	
+	public Text timerText;
 	
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -80,7 +83,7 @@ public class GameActivity extends ParentGameActivity {
 		this.entityFactory = new EntityFactory(this.entityManager, this.gameArea, this.spriteLoader, this.mEngine.getVertexBufferObjectManager());
 			
 		GameSystem gameSystem = new GameSystem(this.entityManager, this);
-		RenderSystem renderSystem = new RenderSystem(this.entityManager, background);
+		RenderSystem renderSystem = new RenderSystem(this.entityManager, background, mScene);
 		MoveSystem moveSystem = new MoveSystem(this.entityManager, background);
 		DamageSystem damageSystem = new DamageSystem(this.entityManager);
 		EnemyRobberSystem enemyRobberSystem = new EnemyRobberSystem(this.entityManager, background);
@@ -96,6 +99,19 @@ public class GameActivity extends ParentGameActivity {
 		systems.add(enemyRobberSystem);
 		systems.add(generationSystem);
 		systems.add(aoeAttackSystem);
+		
+		//Set the game time in the singleton
+		this.mScene.registerUpdateHandler(new IUpdateHandler() {
+			@Override
+			public void reset() {}
+			
+			@Override
+			public void onUpdate(float pSecondsElapsed) {
+				GameSingleton instance = GameSingleton.getInstance();
+				instance.setTotalTime(GameSingleton.getInstance().getTotalTime() + pSecondsElapsed);
+				setTimerText(instance.getTotalTime());
+			}
+		});
 
 		if (pOnCreateSceneCallback != null) {
 			pOnCreateSceneCallback.onCreateSceneFinished(this.mScene);
@@ -125,10 +141,50 @@ public class GameActivity extends ParentGameActivity {
 		entityFactory.generateDiamond(gameArea.getWidth()/2, gameArea.getHeight()/2, 3.0f);
 		entityFactory.generateSentry(30);
 		
-		// CREATE BUTTON
-		final Sprite grayLeft = new Sprite(0, 0, spriteLoader.getSideGrayTextureRegion(), this.mEngine.getVertexBufferObjectManager());
-		grayLeft.setZIndex(9);
+		createHUD();
+		
+//		AnimatedSprite electric = new AnimatedSprite(background.getX() + 200, background.getY() + 200, spriteLoader.getSentryElectricAttackTextureRegion(), this.getVertexBufferObjectManager());
+//		this.mScene.attachChild(electric);
+		
+		for (System system : systems) {
+			system.onPopulateScene();
+			mScene.registerUpdateHandler(system);
+		}
+
+		GameSingleton.getInstance().setTotalTime(0);
+		if (pOnPopulateSceneCallback != null) {
+			pOnPopulateSceneCallback.onPopulateSceneFinished();
+		}
+	}
+
+
+	/**
+	 * Create all the HUD elements.
+	 */
+	private void createHUD() {
+		// Create gray vertical sidebars
+		TextureRegion trGraySideBar = spriteLoader.getSideGrayTextureRegion();
+		final Sprite grayLeft = new Sprite(0, 0, trGraySideBar, this.mEngine.getVertexBufferObjectManager());
+		grayLeft.setZIndex(5);
 		this.mScene.attachChild(grayLeft);
+		final Sprite grayRight = new Sprite(CAMERA_WIDTH - trGraySideBar.getWidth(), 0, trGraySideBar, this.mEngine.getVertexBufferObjectManager());
+		grayRight.setZIndex(5);
+		this.mScene.attachChild(grayRight);
+		
+		// Create Timer Panel
+		final Sprite timerPanel = new Sprite(8, 8, spriteLoader.getHUDPanelTimerTextureRegion(), this.mEngine.getVertexBufferObjectManager());
+		timerPanel.setZIndex(10);
+		this.mScene.attachChild(timerPanel);
+		timerText = new Text(140, 75, spriteLoader.getPlayerHPFont(), "0123456789", new TextOptions(HorizontalAlign.CENTER), getVertexBufferObjectManager());
+		timerText.setZIndex(11);
+		this.mScene.attachChild(timerText);  
+		
+		// Create Health Panel
+		final Sprite healthPanel = new Sprite(8, 174, spriteLoader.getHUDPanelHealthTextureRegion(), this.mEngine.getVertexBufferObjectManager());
+		healthPanel.setZIndex(10);
+		this.mScene.attachChild(healthPanel);
+		
+		// CREATE ARROW BUTTONS
 		final Sprite arrowLeft = new Sprite(8, CAMERA_HEIGHT/2, spriteLoader.getArrowLeftTextureRegion(), this.mEngine.getVertexBufferObjectManager()) {
 			@Override
 			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
@@ -149,11 +205,6 @@ public class GameActivity extends ParentGameActivity {
 				return true;
 			}
 		};
-		// CREATE BUTTON
-		TextureRegion trGrayRight = spriteLoader.getSideGrayTextureRegion();
-		final Sprite grayRight = new Sprite(CAMERA_WIDTH - trGrayRight.getWidth(), 0, trGrayRight, this.mEngine.getVertexBufferObjectManager());
-		grayRight.setZIndex(9);
-		this.mScene.attachChild(grayRight);
 		TextureRegion trArrowRight = spriteLoader.getArrowRightTextureRegion();
 		final Sprite arrowRight = new Sprite(CAMERA_WIDTH - trArrowRight.getWidth() - 8, CAMERA_HEIGHT/2, trArrowRight, this.mEngine.getVertexBufferObjectManager()) {
 			@Override
@@ -181,18 +232,13 @@ public class GameActivity extends ParentGameActivity {
 		this.mScene.registerTouchArea(arrowRight);
 		this.mScene.attachChild(arrowLeft);
 		this.mScene.attachChild(arrowRight);
-		
-//		AnimatedSprite electric = new AnimatedSprite(background.getX() + 200, background.getY() + 200, spriteLoader.getSentryElectricAttackTextureRegion(), this.getVertexBufferObjectManager());
-//		this.mScene.attachChild(electric);
-		
-		for (System system : systems) {
-			system.onPopulateScene();
-			mScene.registerUpdateHandler(system);
-		}
-
-		GameSingleton.getInstance().setTotalTime(0);
-		if (pOnPopulateSceneCallback != null) {
-			pOnPopulateSceneCallback.onPopulateSceneFinished();
-		}
+	}
+	
+	/**
+	 * Set the current time string attribute to display it in the pause menu.
+	 */
+	private void setTimerText(float time) {
+		String seconds = String.format("%.3f", time);
+	    timerText.setText(seconds);
 	}
 }

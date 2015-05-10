@@ -2,6 +2,7 @@ package com.callil.rotatingsentries.entityComponentSystem.systems;
 
 import java.util.List;
 
+import org.andengine.entity.scene.Scene;
 import org.andengine.entity.shape.RectangularShape;
 
 import com.callil.rotatingsentries.entityComponentSystem.components.DiamondComponent;
@@ -19,11 +20,15 @@ public class RenderSystem extends System {
 	/** The gameArea on which we want to render. */
 	private RectangularShape gameArea;
 	
+	/** The scene. */
+	private Scene scene;
+	
 	/**
 	 * @param em
 	 */
-	public RenderSystem(EntityManager em, RectangularShape scene) {
+	public RenderSystem(EntityManager em, RectangularShape gameArea, Scene scene) {
 		super(em);
+		this.gameArea = gameArea;
 		this.setScene(scene);
 	}
 
@@ -61,9 +66,14 @@ public class RenderSystem extends System {
 			
 			//Attach diamond's life
 			DiamondComponent diamondComponent = this.entityManager.getComponent(DiamondComponent.class, entity);
-    		if (diamondComponent != null && diamondComponent.getLifeText() != null && !diamondComponent.getLifeText().hasParent()) {
-    			this.gameArea.attachChild(diamondComponent.getLifeText());
-    			diamondComponent.getLifeText().setPosition(-200, 20);
+//    		if (diamondComponent != null && diamondComponent.getLifeText() != null && !diamondComponent.getLifeText().hasParent()) {
+//    			this.gameArea.attachChild(diamondComponent.getLifeText());
+//    			diamondComponent.getLifeText().setPosition(-200, 20);
+//    		}
+    		if (diamondComponent != null && diamondComponent.getLifeBar() != null && !diamondComponent.getLifeBar().hasParent()) {
+    			this.getScene().attachChild(diamondComponent.getLifeBar());
+    			diamondComponent.getLifeBar().setZIndex(9);
+    			this.getScene().sortChildren();
     		}
 		}
 		
@@ -157,11 +167,19 @@ public class RenderSystem extends System {
 	
 	//Getters & Setters
 	
-	public RectangularShape getScene() {
+	public RectangularShape getGameArea() {
 		return gameArea;
 	}
 
-	public void setScene(RectangularShape gameArea) {
+	public void setGameArea(RectangularShape gameArea) {
 		this.gameArea = gameArea;
+	}
+
+	public Scene getScene() {
+		return scene;
+	}
+
+	public void setScene(Scene scene) {
+		this.scene = scene;
 	}
 }
