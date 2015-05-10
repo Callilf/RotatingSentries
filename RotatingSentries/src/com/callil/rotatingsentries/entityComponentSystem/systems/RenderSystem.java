@@ -71,6 +71,8 @@ public class RenderSystem extends System {
 //    			diamondComponent.getLifeText().setPosition(-200, 20);
 //    		}
     		if (diamondComponent != null && diamondComponent.getLifeBar() != null && !diamondComponent.getLifeBar().hasParent()) {
+    			this.getScene().attachChild(diamondComponent.getLifeBarMax());
+    			diamondComponent.getLifeBarMax().setZIndex(8);
     			this.getScene().attachChild(diamondComponent.getLifeBar());
     			diamondComponent.getLifeBar().setZIndex(9);
     			this.getScene().sortChildren();

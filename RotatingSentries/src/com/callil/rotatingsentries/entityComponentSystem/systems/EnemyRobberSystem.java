@@ -134,11 +134,11 @@ public class EnemyRobberSystem extends System {
 	    			if (diamondEntities != null && diamondEntities.size() > 0) {
 	    				Entity diamond = diamondEntities.get(0);
 	    				DiamondComponent diamondComponent = this.entityManager.getComponent(DiamondComponent.class, diamond);
-	    				diamondComponent.setLife(diamondComponent.getLife() - attackComponent.getDamage());
+	    				diamondComponent.takeDamage(attackComponent.getDamage());
 	    				//TODO : move this in a DiamondSystem
-	    				if (diamondComponent.getLife() <= 0) {
-	    					entityManager.removeEntity(diamond);
-	    				}
+//	    				if (diamondComponent.getLife() <= 0) {
+//	    					entityManager.removeEntity(diamond);
+//	    				}
 	    			}	    			
 	    			
 	    			enemyRobberComponent.setState(EnemyRobberStateType.ATTACK_RECOVERING);

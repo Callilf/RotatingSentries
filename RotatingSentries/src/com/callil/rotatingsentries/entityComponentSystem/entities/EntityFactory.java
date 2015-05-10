@@ -7,7 +7,6 @@ import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.shape.RectangularShape;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.entity.text.Text;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
@@ -85,13 +84,11 @@ public class EntityFactory {
 		Entity diamond = this.em.createEntity();
 		this.em.addComponentToEntity(new SpriteComponent(sDiamond, true), diamond);
 		
-		Rectangle rectangle = new Rectangle(26, 242, 370, 80, this.vertextBufferObjectManager);
-		rectangle.setColor(0.8f, 0.2f, 0.2f);
-		this.em.addComponentToEntity(new DiamondComponent(frequency, 5, rectangle), diamond);
-
-		
-//		this.em.addComponentToEntity(new DiamondComponent(frequency, 5, new Text(0, 0, this.spriteLoader.getPlayerHPFont(), "Placeholder", this.vertextBufferObjectManager)), diamond);
-//		this.em.addComponentToEntity(new DefenseComponent(500, 0), diamond);
+		Rectangle currLifeRect = new Rectangle(26, 242, 370, 80, this.vertextBufferObjectManager);
+		currLifeRect.setColor(0.8f, 0.2f, 0.2f);
+		Rectangle maxLifeRect = new Rectangle(26, 242, 370, 80, this.vertextBufferObjectManager);
+		maxLifeRect.setColor(0.79f, 0.79f, 0.79f);
+		this.em.addComponentToEntity(new DiamondComponent(frequency, 20, currLifeRect, maxLifeRect), diamond);
 		
 		return diamond;
 	}
