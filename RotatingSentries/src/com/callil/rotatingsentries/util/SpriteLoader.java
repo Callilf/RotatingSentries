@@ -54,6 +54,12 @@ public class SpriteLoader {
 		return mWall;
 	}
 	
+	/** SIDE GRAY*/
+	protected TextureRegion mSideGrayTextureRegion;
+	public TextureRegion getSideGrayTextureRegion() {
+		return mSideGrayTextureRegion;
+	}
+	
 	/** ARROW : left */
 	protected TextureRegion mArrowLeftTextureRegion;
 	public TextureRegion getArrowLeftTextureRegion() {
@@ -214,14 +220,19 @@ public class SpriteLoader {
 		mWall =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(wallTexture, context, "wall.png", 0, 0);
 		wallTexture.load();
 		
+		//Side gray
+		BitmapTextureAtlas sideGrayButtonTexture = new BitmapTextureAtlas(tm, 420, 1080);
+		mSideGrayTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(sideGrayButtonTexture, context, "side_gray.png", 0, 0);
+		sideGrayButtonTexture.load();
+		
 		//Left button
-		BitmapTextureAtlas leftButtonTexture = new BitmapTextureAtlas(tm, 420, 1080);
-		mArrowLeftTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(leftButtonTexture, context, "left_button.png", 0, 0);
+		BitmapTextureAtlas leftButtonTexture = new BitmapTextureAtlas(tm, 401, 533);
+		mArrowLeftTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(leftButtonTexture, context, "left_button2.png", 0, 0);
 		leftButtonTexture.load();
 		
 		//Right button
-		BitmapTextureAtlas rightButtonTexture = new BitmapTextureAtlas(tm, 420, 1080);
-		mArrowRightTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(rightButtonTexture, context, "right_button.png", 0, 0);
+		BitmapTextureAtlas rightButtonTexture = new BitmapTextureAtlas(tm, 401, 533);
+		mArrowRightTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(rightButtonTexture, context, "right_button2.png", 0, 0);
 		rightButtonTexture.load();
 				
 		//Diamond

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.entity.scene.Scene;
+import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.shape.RectangularShape;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
@@ -125,7 +126,10 @@ public class GameActivity extends ParentGameActivity {
 		entityFactory.generateSentry(30);
 		
 		// CREATE BUTTON
-		final Sprite arrowLeft = new Sprite(0, 0, spriteLoader.getArrowLeftTextureRegion(), this.mEngine.getVertexBufferObjectManager()) {
+		final Sprite grayLeft = new Sprite(0, 0, spriteLoader.getSideGrayTextureRegion(), this.mEngine.getVertexBufferObjectManager());
+		grayLeft.setZIndex(9);
+		this.mScene.attachChild(grayLeft);
+		final Sprite arrowLeft = new Sprite(8, CAMERA_HEIGHT/2, spriteLoader.getArrowLeftTextureRegion(), this.mEngine.getVertexBufferObjectManager()) {
 			@Override
 			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
 				switch (pSceneTouchEvent.getAction()) {
@@ -146,8 +150,12 @@ public class GameActivity extends ParentGameActivity {
 			}
 		};
 		// CREATE BUTTON
+		TextureRegion trGrayRight = spriteLoader.getSideGrayTextureRegion();
+		final Sprite grayRight = new Sprite(CAMERA_WIDTH - trGrayRight.getWidth(), 0, trGrayRight, this.mEngine.getVertexBufferObjectManager());
+		grayRight.setZIndex(9);
+		this.mScene.attachChild(grayRight);
 		TextureRegion trArrowRight = spriteLoader.getArrowRightTextureRegion();
-		final Sprite arrowRight = new Sprite(CAMERA_WIDTH - trArrowRight.getWidth(), 0, trArrowRight, this.mEngine.getVertexBufferObjectManager()) {
+		final Sprite arrowRight = new Sprite(CAMERA_WIDTH - trArrowRight.getWidth() - 8, CAMERA_HEIGHT/2, trArrowRight, this.mEngine.getVertexBufferObjectManager()) {
 			@Override
 			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
 				switch (pSceneTouchEvent.getAction()) {

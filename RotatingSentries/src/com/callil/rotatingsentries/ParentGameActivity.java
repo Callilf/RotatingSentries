@@ -77,7 +77,7 @@ public abstract class ParentGameActivity extends BaseGameActivity {
 		Log.d("RS", "onCreateScene");
 		paused = false;
 		this.mScene = new Scene();
-		this.mScene.setBackground(new Background(1.0f, 1.0f, 1.0f));
+		this.mScene.setBackground(new Background(0.23f, 0.23f, 0.23f));
 		
 		//Set the game time in the singleton
 		this.mScene.registerUpdateHandler(new IUpdateHandler() {
@@ -99,7 +99,7 @@ public abstract class ParentGameActivity extends BaseGameActivity {
 		pauseBackground.setY(mCamera.getCenterY() - pauseBackground.getHeight()/2);
 		pauseScene.attachChild(pauseBackground);
 		
-		pauseMenuTimeText = new Text(390, 220, spriteLoader.getMenuFont(), "01234567890123456789", new TextOptions(HorizontalAlign.LEFT), getVertexBufferObjectManager());
+		pauseMenuTimeText = new Text(480, 260, spriteLoader.getMenuFont(), "01234567890123456789", new TextOptions(HorizontalAlign.LEFT), getVertexBufferObjectManager());
 	    pauseBackground.attachChild(pauseMenuTimeText);  
 
 	    final Sprite unpauseButtonSprite = new Sprite(100, 416, spriteLoader.getMenuPauseButtonPlayTextureRegion(), getVertexBufferObjectManager()) {
@@ -137,7 +137,7 @@ public abstract class ParentGameActivity extends BaseGameActivity {
 		endBackground.setY(mCamera.getCenterY() - endBackground.getHeight()/2);
 		endScene.attachChild(endBackground);
 		
-		endMenuTimeText = new Text(390, 220, spriteLoader.getMenuFont(), "01234567890123456789", new TextOptions(HorizontalAlign.LEFT), getVertexBufferObjectManager());
+		endMenuTimeText = new Text(480, 260, spriteLoader.getMenuFont(), "01234567890123456789", new TextOptions(HorizontalAlign.LEFT), getVertexBufferObjectManager());
 		endBackground.attachChild(endMenuTimeText);  
 	    
 	    final Sprite restartButtonSprite = new Sprite(100, 416, spriteLoader.getMenuPauseButtonRestartTextureRegion(), getVertexBufferObjectManager()) {
