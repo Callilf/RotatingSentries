@@ -133,6 +133,22 @@ public class SpriteLoader {
 	
 	
 	//##############
+	// Skills
+	
+	/** Skill frame */
+	protected TextureRegion mSkillFrameTextureRegion;
+	public TextureRegion getSkillFrameTextureRegion() {
+		return mSkillFrameTextureRegion;
+	}
+	
+	/** Skill : Electricity */
+	protected TextureRegion mSkillElectricityTextureRegion;
+	public TextureRegion getSkillElectricityTextureRegion() {
+		return mSkillElectricityTextureRegion;
+	}
+	
+	
+	//##############
 	// MENUS
 	
 	/** PAUSE MENU Background. */
@@ -302,6 +318,20 @@ public class SpriteLoader {
 		mHudPanelHealthTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(hudPanelHealthTexture, context, "hud_panel_health.png", 0, 0);
 		hudPanelHealthTexture.load();
 
+		
+		//############
+		// Skills
+		
+		//Skill frame
+		BitmapTextureAtlas skillFrameTexture = new BitmapTextureAtlas(tm, 124, 124);
+		mSkillFrameTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(skillFrameTexture, context, "skill_icons/frame.png", 0, 0);
+		skillFrameTexture.load();
+		
+		//Skill : electricity
+		BitmapTextureAtlas skillElectricityTexture = new BitmapTextureAtlas(tm, 124, 124);
+		mSkillElectricityTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(skillElectricityTexture, context, "skill_icons/skill_electricity.png", 0, 0);
+		skillElectricityTexture.load();
+		
 
 		//############
 		// Menus (pause, end)

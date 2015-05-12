@@ -155,7 +155,14 @@ public class EntityFactory {
 		sElectricAttack.setY(hitbox.getY() + hitbox.getHeight()/2 - sElectricAttack.getHeight()/2);
 		sElectricAttack.setVisible(false);
 		sSentry.attachChild(sElectricAttack);
-		this.em.addComponentToEntity(new AOEAttackComponent(hitbox, sElectricAttack, 5, 2), sentry);
+		final Sprite sElectricAttackIcon = new Sprite(0, 0, this.spriteLoader.getSkillElectricityTextureRegion(), this.vertextBufferObjectManager);
+		final Sprite sElectricAttackIconFrame = new Sprite(0, 0, this.spriteLoader.getSkillFrameTextureRegion(), this.vertextBufferObjectManager);
+		//Temp :
+		sElectricAttackIconFrame.setX(1508);
+		sElectricAttackIconFrame.setY(10);
+		sElectricAttackIcon.setX(1508);
+		sElectricAttackIcon.setY(10);
+		this.em.addComponentToEntity(new AOEAttackComponent(sElectricAttack, sElectricAttackIcon, sElectricAttackIconFrame, hitbox, 5, 2, this.vertextBufferObjectManager), sentry);
 		
 		return sentry;
 	}

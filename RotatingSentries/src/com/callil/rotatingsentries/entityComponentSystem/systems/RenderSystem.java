@@ -5,8 +5,10 @@ import java.util.List;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.shape.RectangularShape;
 
+import com.callil.rotatingsentries.entityComponentSystem.components.AOEAttackComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.DiamondComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SelfRotationComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.SkillComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
 import com.callil.rotatingsentries.entityComponentSystem.entities.Entity;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityManager;
@@ -77,6 +79,17 @@ public class RenderSystem extends System {
     			diamondComponent.getLifeBar().setZIndex(9);
     			this.getScene().sortChildren();
     		}
+		}
+		//Attach skill icons
+		entities = this.entityManager.getAllEntitiesPosessingComponentOfClass(AOEAttackComponent.class);
+		for (Entity entity : entities) {
+			AOEAttackComponent skillComponent = this.entityManager.getComponent(AOEAttackComponent.class, entity);
+			if (skillComponent != null && !skillComponent.getIconSprite().hasParent()) {
+				this.scene.attachChild(skillComponent.getIconSprite());
+				this.scene.attachChild(skillComponent.getCooldownRectangle());
+				this.scene.attachChild(skillComponent.getIconFrame());
+				this.scene.sortChildren();
+			}
 		}
 		
 		

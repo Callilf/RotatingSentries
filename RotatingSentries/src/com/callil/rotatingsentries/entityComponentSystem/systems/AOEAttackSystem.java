@@ -5,6 +5,8 @@ package com.callil.rotatingsentries.entityComponentSystem.systems;
 
 import java.util.List;
 
+import android.util.Log;
+
 import com.callil.rotatingsentries.entityComponentSystem.components.AOEAttackComponent;
 import com.callil.rotatingsentries.entityComponentSystem.entities.Entity;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityManager;
@@ -37,7 +39,22 @@ public class AOEAttackSystem extends System {
 				}
 			}
 			if (!aoeAttackComponent.isReady()) {
-				aoeAttackComponent.setReady(isCooldownOver(aoeAttackComponent));
+				if (isCooldownOver(aoeAttackComponent)) {
+					//Reinit the size of the rect and hide it
+					//TODO: play the animation showing that the cooldown is over
+					Log.i("RS", "AOEAttack - Cooldown over !!!!");
+					aoeAttackComponent.getCooldownRectangle().setHeight(aoeAttackComponent.getCooldownRectangeMaxHeight());
+					aoeAttackComponent.setReady(true);
+					aoeAttackComponent.getCooldownRectangle().setVisible(false);
+				} else {
+					//Cooldown not over, keep reducing the size of the rect
+					float remainingTime = aoeAttackComponent.getCooldown() - (GameSingleton.getInstance().getTotalTime() - aoeAttackComponent.getLastAttackTime());
+					float rectHeightToSet = ((aoeAttackComponent.getCooldownRectangeMaxHeight() * remainingTime) / aoeAttackComponent.getCooldown());
+					aoeAttackComponent.getCooldownRectangle().setHeight(rectHeightToSet);
+					
+					aoeAttackComponent.setReady(false);
+					aoeAttackComponent.getCooldownRectangle().setVisible(true);
+				}
 			}
 		}
 		
