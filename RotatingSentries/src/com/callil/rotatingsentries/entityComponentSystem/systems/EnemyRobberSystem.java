@@ -118,7 +118,7 @@ public class EnemyRobberSystem extends System {
 		    	Sprite target = moveTowardsComponent.getTarget();
 		    	//Log.i("RS", "Distance between sprites : " + SpriteUtil.distanceBetweenCenters(sprite, target));
 		    	if (SpriteUtil.distanceBetweenCenters(sprite, target) <= 100) {
-		    		this.entityManager.removeComponentFromEntity(MoveTowardsComponent.class, entity);
+		    		this.entityManager.removeComponentFromEntity(moveTowardsComponent, entity);
 		    		switchToAttackState(entity, enemyRobberComponent, sprite);
 		    	}
 		    	

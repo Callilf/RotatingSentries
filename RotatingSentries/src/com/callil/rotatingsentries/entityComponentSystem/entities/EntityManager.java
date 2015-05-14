@@ -108,13 +108,17 @@ public class EntityManager {
 	 * @param componentClass the class of the component.
 	 * @param entity the entity
 	 */
-	public void removeComponentFromEntity(Class<? extends Component> componentClass, Entity entity) {
-		SparseArray<List<Component>> components = this.getComponentsByClass().get(componentClass);
+	public void removeComponentFromEntity(Component component, Entity entity) {
+		SparseArray<List<Component>> components = this.getComponentsByClass().get(component.getClass());
 		if (components != null) {
 			List<Component> list = components.get(entity.getEid());
-			list.clear();
-			components.remove(entity.getEid());
+			list.remove(component);
+			if (list.isEmpty()) {
+				components.remove(entity.getEid());
+			}
 		}
+		
+		//TODO : remove from superclass too !!!
 	}
 	
 	/**
