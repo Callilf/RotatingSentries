@@ -1,26 +1,19 @@
-package com.callil.rotatingsentries.entityComponentSystem.components;
+package com.callil.rotatingsentries.entityComponentSystem.components.attackDefense;
 
 /**
  * Entity that can hit and be hit by DefenseComponent
  * 
  * @author Thomas
  */
-public class AttackComponent extends Component {
+public class AttackComponent extends AttDefComponent {
 
-	/** hit points */
-	private int hp;
-	
-	/** damage deals on hit */
-	private int damage;
-	
 	/**
 	 * Constructor
 	 * @param hp initial hp.
 	 * @param damage damage on hit
 	 */
 	public AttackComponent(int hp, int damage) {
-		this.hp = hp;
-		this.damage = damage;
+		super(hp,damage);
 	}
 	
 	/**
@@ -29,14 +22,14 @@ public class AttackComponent extends Component {
 	 * @return true if the entity is dead, false otherwise
 	 */
 	public boolean hit(int damage) {
-		hp -= damage;
-		return hp <= 0;
+		this.hp -= damage;
+		return this.hp <= 0;
 	}
 
 	// GETTER & SETTER
 	
 	public int getHp() {
-		return hp;
+		return this.hp;
 	}
 
 	public void setHp(int hp) {
@@ -44,7 +37,7 @@ public class AttackComponent extends Component {
 	}
 
 	public int getDamage() {
-		return damage;
+		return this.damage;
 	}
 
 	public void setDamage(int damage) {

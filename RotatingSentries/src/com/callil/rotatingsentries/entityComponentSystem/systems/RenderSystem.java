@@ -5,11 +5,11 @@ import java.util.List;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.shape.RectangularShape;
 
-import com.callil.rotatingsentries.entityComponentSystem.components.AOEAttackComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.DiamondComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SelfRotationComponent;
-import com.callil.rotatingsentries.entityComponentSystem.components.SkillComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.skills.AOEAttackComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.skills.SkillComponent;
 import com.callil.rotatingsentries.entityComponentSystem.entities.Entity;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityManager;
 
@@ -81,9 +81,9 @@ public class RenderSystem extends System {
     		}
 		}
 		//Attach skill icons
-		entities = this.entityManager.getAllEntitiesPosessingComponentOfClass(AOEAttackComponent.class);
+		entities = this.entityManager.getAllEntitiesPosessingComponentOfClass(SkillComponent.class);
 		for (Entity entity : entities) {
-			AOEAttackComponent skillComponent = this.entityManager.getComponent(AOEAttackComponent.class, entity);
+			SkillComponent skillComponent = this.entityManager.getComponent(SkillComponent.class, entity);
 			if (skillComponent != null && !skillComponent.getIconSprite().hasParent()) {
 				this.scene.attachChild(skillComponent.getIconSprite());
 				this.scene.attachChild(skillComponent.getCooldownRectangle());

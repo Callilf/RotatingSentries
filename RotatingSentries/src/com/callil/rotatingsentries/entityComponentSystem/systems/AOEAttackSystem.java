@@ -7,7 +7,7 @@ import java.util.List;
 
 import android.util.Log;
 
-import com.callil.rotatingsentries.entityComponentSystem.components.AOEAttackComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.skills.AOEAttackComponent;
 import com.callil.rotatingsentries.entityComponentSystem.entities.Entity;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityManager;
 import com.callil.rotatingsentries.singleton.GameSingleton;

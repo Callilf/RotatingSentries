@@ -8,9 +8,12 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
+import android.util.Log;
 import android.util.SparseArray;
 
+import com.callil.rotatingsentries.GameActivity;
 import com.callil.rotatingsentries.entityComponentSystem.components.Component;
 
 /**
@@ -71,13 +74,33 @@ public class EntityManager {
 	 * @param entity the entity to which the component will be added.
 	 */
 	public void addComponentToEntity(Component component, Entity entity) {
-		SparseArray<Component> components = this.getComponentsByClass().get(component.getClass());
+		addComponentToEntity(component, component.getClass(), entity);
+	}
+	
+	/**
+	 * Add a component to an entity.
+	 * @param component the component to add.
+	 * @param componentClass the class of the component to add.
+	 * @param entity the entity to which the component will be added.
+	 */
+	private void addComponentToEntity(Component component, Class<? extends Component> componentClass, Entity entity) {
+		SparseArray<Component> components = this.getComponentsByClass().get(componentClass);
 		if (components == null) {
 			components = new SparseArray<Component>();
-			this.getComponentsByClass().put(component.getClass(), components);
+			this.getComponentsByClass().put(componentClass, components);
 		}
 		components.put(entity.getEid(), component);
+		
+		if (Component.class.isAssignableFrom(component.getClass())) {
+			//If this component extends Component, repeat this operation for each superclass until we reach Component
+			Class<? extends Component> superclass = (Class<? extends Component>) componentClass.getSuperclass();
+			if (!superclass.getName().equals(Component.class.getName())) {
+				addComponentToEntity(component, superclass, entity);
+			}
+		}
 	}
+	
+	
 	
 	/**
 	 * Remove a component from an entity.

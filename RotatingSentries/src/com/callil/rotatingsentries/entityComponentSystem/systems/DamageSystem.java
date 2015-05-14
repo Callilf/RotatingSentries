@@ -7,12 +7,12 @@ import java.util.List;
 
 import org.andengine.entity.shape.IShape;
 
-import com.callil.rotatingsentries.entityComponentSystem.components.AOEAttackComponent;
-import com.callil.rotatingsentries.entityComponentSystem.components.AttackComponent;
-import com.callil.rotatingsentries.entityComponentSystem.components.DefenseComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.MoveTowardsComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SolidComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.attackDefense.AttackComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.attackDefense.DefenseComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.skills.AOEAttackComponent;
 import com.callil.rotatingsentries.entityComponentSystem.entities.Entity;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityManager;
 

@@ -1,11 +1,11 @@
-package com.callil.rotatingsentries.entityComponentSystem.components;
+package com.callil.rotatingsentries.entityComponentSystem.components.attackDefense;
 
 /**
  * Entity that can hit and be hit by AttackComponent
  * 
  * @author Thomas
  */
-public class DefenseComponent extends AttackComponent {
+public class DefenseComponent extends AttDefComponent {
 
 	/** Whether the entity bounces against solid objects. */
 	private boolean bounce;

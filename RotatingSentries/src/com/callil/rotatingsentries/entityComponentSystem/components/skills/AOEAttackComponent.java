@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.callil.rotatingsentries.entityComponentSystem.components;
+package com.callil.rotatingsentries.entityComponentSystem.components.skills;
 
 import org.andengine.entity.shape.IShape;
 import org.andengine.entity.sprite.AnimatedSprite;

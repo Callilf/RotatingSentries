@@ -10,15 +10,15 @@ import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
-import com.callil.rotatingsentries.entityComponentSystem.components.AOEAttackComponent;
-import com.callil.rotatingsentries.entityComponentSystem.components.AttackComponent;
-import com.callil.rotatingsentries.entityComponentSystem.components.DefenseComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.DiamondComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.EnemyRobberComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.MoveTowardsComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SelfRotationComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.ShootingComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.ShootingComponent.ProjectileType;
+import com.callil.rotatingsentries.entityComponentSystem.components.attackDefense.AttackComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.attackDefense.DefenseComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.skills.AOEAttackComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SolidComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
 import com.callil.rotatingsentries.util.SpriteLoader;

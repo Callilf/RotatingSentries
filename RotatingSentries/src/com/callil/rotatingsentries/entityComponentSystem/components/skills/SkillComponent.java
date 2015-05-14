@@ -1,12 +1,13 @@
 /**
  * 
  */
-package com.callil.rotatingsentries.entityComponentSystem.components;
+package com.callil.rotatingsentries.entityComponentSystem.components.skills;
 
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
+import com.callil.rotatingsentries.entityComponentSystem.components.Component;
 import com.callil.rotatingsentries.singleton.GameSingleton;
 
 /**
