@@ -35,8 +35,8 @@ public class GameSystem extends System {
 		}
 		
 		// Game over is there are no more diamond in the game
-		SparseArray<Component> diamonds = entityManager.getComponentsByClass().get(DiamondComponent.class);
-		if (diamonds == null || diamonds.size() == 0) {
+		diamondEntities = this.entityManager.getAllEntitiesPosessingComponentOfClass(DiamondComponent.class);
+		if (diamondEntities == null || diamondEntities.size() == 0) {
 			activity.endGame();
 		}
 	}
