@@ -146,7 +146,7 @@ public class EntityFactory {
 		Entity sentry = this.em.createEntity();
 		SpriteComponent spriteComponent = new SpriteComponent(sSentry, true).defineRectangularHitbox(108, 10, 55, 70);
 		this.em.addComponentToEntity(spriteComponent, sentry);
-		this.em.addComponentToEntity(new SelfRotationComponent(3, rotation, true, true), sentry);
+		this.em.addComponentToEntity(new SelfRotationComponent(3, 0.2f, rotation, true, true), sentry);
 		this.em.addComponentToEntity(new ShootingComponent(ProjectileType.STANDARD, 0.5f), sentry);
 		
 		Rectangle hitbox = (Rectangle)spriteComponent.getHitbox();

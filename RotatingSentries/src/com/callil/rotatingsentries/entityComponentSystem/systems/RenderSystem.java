@@ -108,11 +108,14 @@ public class RenderSystem extends System {
 	    				rotationComponent.setClockwise(true);
 	    			}
 	    			else {
+	    				rotationComponent.setCurrentSpeed(0);
 	    				continue;
 	    			}
 	    		}
 		    	SpriteComponent spriteComponent = this.entityManager.getComponent(SpriteComponent.class, entity);
-		    	float speed = rotationComponent.getRotationSpeed() * (rotationComponent.isClockwise()? 1 : -1);
+		    	rotationComponent.setCurrentSpeed(
+		    			Math.min(rotationComponent.getCurrentSpeed() + rotationComponent.getAcceleraton(),rotationComponent.getMaxRotationSpeed()));
+		    	float speed = rotationComponent.getCurrentSpeed() * (rotationComponent.isClockwise()? 1 : -1);
 		    	if (rotationComponent != null && spriteComponent != null) {
 		    		rotationComponent.setCurrentRotation( (rotationComponent.getCurrentRotation() + speed) % 360);
 		    		spriteComponent.getSprite().setRotation(rotationComponent.getCurrentRotation());

@@ -15,9 +15,12 @@ public class SelfRotationComponent extends Component {
 	/** 0 if the right button is pressed */
 	public static int rightPressed = 0;
 	
-	
+	/** The acceleration. For instant max speed, set acceleration = maxRotationSpeed */
+	private float acceleraton;
 	/** The speed of the rotation. */
-	private float rotationSpeed;
+	private float currentSpeed = 0;
+	/** The speed of the rotation. */
+	private float maxRotationSpeed;
 
 	/** the current value of the rotation. */
 	private float currentRotation;
@@ -33,10 +36,11 @@ public class SelfRotationComponent extends Component {
 	
 	/**
 	 * Constructor.
-	 * @param rotationSpeed the speed of rotation. Positive for trigo rotation, negative for time rotation.
+	 * @param maxRotationSpeed the speed of rotation. Positive for trigo rotation, negative for time rotation.
 	 */
-	public SelfRotationComponent(float rotationSpeed) {
-		this.setRotationSpeed(rotationSpeed);
+	public SelfRotationComponent(float maxRotationSpeed) {
+		this.setMaxRotationSpeed(maxRotationSpeed);
+		this.setCurrentSpeed(0);
 		this.setCurrentRotation(0);
 		this.clockwise = true;
 		this.active = true;
@@ -45,12 +49,13 @@ public class SelfRotationComponent extends Component {
 	
 	/**
 	 * Constructor.
-	 * @param rotationSpeed the speed of rotation. Positive for trigo rotation, negative for time rotation.
+	 * @param maxRotationSpeed the speed of rotation. Positive for trigo rotation, negative for time rotation.
 	 * @param currentRotation the initial rotation
 	 * @param active if the rotation is active or not
 	 */
-	public SelfRotationComponent(float rotationSpeed, float currentRotation, boolean active, boolean affectedByButton) {
-		this(rotationSpeed);
+	public SelfRotationComponent(float maxRotationSpeed, float acceleration, float currentRotation, boolean active, boolean affectedByButton) {
+		this(maxRotationSpeed);
+		this.acceleraton = acceleration;
 		this.currentRotation = currentRotation;
 		this.active = active;
 		this.affectedByButton = affectedByButton;
@@ -61,19 +66,19 @@ public class SelfRotationComponent extends Component {
 	 * @param src the {@link SelfRotationComponent} to copy.
 	 */
 	public SelfRotationComponent(SelfRotationComponent src) {
-		this.setRotationSpeed(src.getRotationSpeed());
+		this.setMaxRotationSpeed(src.getMaxRotationSpeed());
 		this.setCurrentRotation(0);
 	}
 
 	
 	//Getters & Setters
 	
-	public float getRotationSpeed() {
-		return rotationSpeed;
+	public float getMaxRotationSpeed() {
+		return maxRotationSpeed;
 	}
 
-	public void setRotationSpeed(float rotationSpeed) {
-		this.rotationSpeed = rotationSpeed;
+	public void setMaxRotationSpeed(float rotationSpeed) {
+		this.maxRotationSpeed = rotationSpeed;
 	}
 
 	public float getCurrentRotation() {
@@ -114,6 +119,22 @@ public class SelfRotationComponent extends Component {
 
 	public boolean isLastRightPressed() {
 		return rightPressed > leftPressed;
+	}
+
+	public float getCurrentSpeed() {
+		return currentSpeed;
+	}
+
+	public void setCurrentSpeed(float currentSpeed) {
+		this.currentSpeed = currentSpeed;
+	}
+
+	public float getAcceleraton() {
+		return acceleraton;
+	}
+
+	public void setAcceleraton(float acceleraton) {
+		this.acceleraton = acceleraton;
 	}
 
 
