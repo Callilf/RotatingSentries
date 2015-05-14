@@ -16,11 +16,11 @@ import com.callil.rotatingsentries.entityComponentSystem.components.MoveTowardsC
 import com.callil.rotatingsentries.entityComponentSystem.components.SelfRotationComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.ShootingComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.ShootingComponent.ProjectileType;
+import com.callil.rotatingsentries.entityComponentSystem.components.SolidComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.attackDefense.AttackComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.attackDefense.DefenseComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.skills.AOEAttackComponent;
-import com.callil.rotatingsentries.entityComponentSystem.components.SolidComponent;
-import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
 import com.callil.rotatingsentries.util.SpriteLoader;
 
 /**
@@ -146,7 +146,7 @@ public class EntityFactory {
 		Entity sentry = this.em.createEntity();
 		SpriteComponent spriteComponent = new SpriteComponent(sSentry, true).defineRectangularHitbox(108, 10, 55, 70);
 		this.em.addComponentToEntity(spriteComponent, sentry);
-		this.em.addComponentToEntity(new SelfRotationComponent(3, 0.2f, rotation, true, true), sentry);
+		this.em.addComponentToEntity(new SelfRotationComponent(3, 0.8f, 0.2f, rotation, true, true), sentry);
 		this.em.addComponentToEntity(new ShootingComponent(ProjectileType.STANDARD, 0.5f), sentry);
 		
 		Rectangle hitbox = (Rectangle)spriteComponent.getHitbox();

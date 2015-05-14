@@ -80,6 +80,7 @@ public class EntityManager {
 	 * @param componentClass the class of the component to add.
 	 * @param entity the entity to which the component will be added.
 	 */
+	@SuppressWarnings("unchecked")
 	private void addComponentToEntity(Component component, Class<? extends Component> componentClass, Entity entity) {
 		SparseArray<List<Component>> components = this.getComponentsByClass().get(componentClass);
 		if (components == null) {
@@ -92,12 +93,8 @@ public class EntityManager {
 		}
 		components.get(entity.getEid()).add(component);
 		
-		if (Component.class.isAssignableFrom(component.getClass())) {
-			//If this component extends Component, repeat this operation for each superclass until we reach Component
-			Class<? extends Component> superclass = (Class<? extends Component>) componentClass.getSuperclass();
-			if (!superclass.getName().equals(Component.class.getName())) {
-				addComponentToEntity(component, superclass, entity);
-			}
+		if (componentClass.getSuperclass() != Component.class) {
+			addComponentToEntity(component, (Class<? extends Component>) componentClass.getSuperclass(), entity);
 		}
 	}
 	
@@ -109,16 +106,18 @@ public class EntityManager {
 	 * @param entity the entity
 	 */
 	public void removeComponentFromEntity(Component component, Entity entity) {
-		SparseArray<List<Component>> components = this.getComponentsByClass().get(component.getClass());
-		if (components != null) {
-			List<Component> list = components.get(entity.getEid());
-			list.remove(component);
-			if (list.isEmpty()) {
-				components.remove(entity.getEid());
+		Class<?> componentClass = component.getClass();
+		while(componentClass != Component.class) {
+			SparseArray<List<Component>> components = this.getComponentsByClass().get(componentClass);
+			if (components != null) {
+				List<Component> list = components.get(entity.getEid());
+				list.remove(component);
+				if (list.isEmpty()) {
+					components.remove(entity.getEid());
+				}
 			}
+			componentClass = componentClass.getSuperclass();
 		}
-		
-		//TODO : remove from superclass too !!!
 	}
 	
 	/**

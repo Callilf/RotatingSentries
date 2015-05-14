@@ -1,7 +1,8 @@
 package com.callil.rotatingsentries;
 
+import java.util.Locale;
+
 import org.andengine.engine.camera.Camera;
-import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
@@ -205,7 +206,7 @@ public abstract class ParentGameActivity extends BaseGameActivity {
 	 * Set the current time string attribute to display it in the pause menu.
 	 */
 	private void setCurrentTimeString() {
-		String seconds = String.format("%.3f", GameSingleton.getInstance().getTotalTime());
+		String seconds = String.format(Locale.FRANCE, "%.3f", GameSingleton.getInstance().getTotalTime());
 	    pauseMenuTimeText.setText(seconds);
 	    endMenuTimeText.setText(seconds);
 	}

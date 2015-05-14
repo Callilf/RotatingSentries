@@ -49,6 +49,7 @@ public class MainMenuActivity extends BaseGameActivity {
 	public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) throws Exception {
 		Log.d("RS", "[MENU] onCreateScene");
 		mainScene = new Scene();
+		mainScene.setIgnoreUpdate(true);
 		mainScene.setBackground(new Background(1.0f, 1.0f, 1.0f));
 		
 		Sprite menuBackgroundSprite = new Sprite(0, 0, spriteLoader.getMmenuBackgroundTextureRegion(), getVertexBufferObjectManager());

@@ -8,7 +8,6 @@ import org.andengine.entity.shape.RectangularShape;
 import com.callil.rotatingsentries.entityComponentSystem.components.DiamondComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SelfRotationComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
-import com.callil.rotatingsentries.entityComponentSystem.components.skills.AOEAttackComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.skills.SkillComponent;
 import com.callil.rotatingsentries.entityComponentSystem.entities.Entity;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityManager;
@@ -113,9 +112,7 @@ public class RenderSystem extends System {
 	    			}
 	    		}
 		    	SpriteComponent spriteComponent = this.entityManager.getComponent(SpriteComponent.class, entity);
-		    	rotationComponent.setCurrentSpeed(
-		    			Math.min(rotationComponent.getCurrentSpeed() + rotationComponent.getAcceleraton(),rotationComponent.getMaxRotationSpeed()));
-		    	float speed = rotationComponent.getCurrentSpeed() * (rotationComponent.isClockwise()? 1 : -1);
+		    	float speed = rotationComponent.increaseSpeed() * (rotationComponent.isClockwise()? 1 : -1);
 		    	if (rotationComponent != null && spriteComponent != null) {
 		    		rotationComponent.setCurrentRotation( (rotationComponent.getCurrentRotation() + speed) % 360);
 		    		spriteComponent.getSprite().setRotation(rotationComponent.getCurrentRotation());
