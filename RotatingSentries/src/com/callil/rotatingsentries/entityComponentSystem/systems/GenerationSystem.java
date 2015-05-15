@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.andengine.entity.shape.RectangularShape;
+import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 
 import com.callil.rotatingsentries.entityComponentSystem.components.DiamondComponent;
@@ -86,7 +87,13 @@ public class GenerationSystem extends System {
 	    	if (nextGeneratingTime < currentDuration) {
 	    		shootingComponent.setLastGenerateTime(currentDuration);
 	    		SpriteComponent spriteComponent = this.entityManager.getComponent(SpriteComponent.class, entity);
+	    		Sprite sprite = spriteComponent.getSprite();
 	    		entityFactory.generateProjectile(ProjectileType.STANDARD, spriteComponent.getSprite());
+	    		
+	    		//If the shooter sprite is animated and an animation is registered in shootingComponent, PLAY IT
+	    		if (spriteComponent.getSprite() instanceof AnimatedSprite && shootingComponent.getShootAnimFrames() != null) {
+	    			((AnimatedSprite)sprite).animate(shootingComponent.getShootAnimDurations(), shootingComponent.getShootAnimFrames(), false);
+	    		}
 	    	}
 	    }
 

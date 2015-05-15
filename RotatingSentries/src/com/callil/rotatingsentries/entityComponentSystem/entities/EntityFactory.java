@@ -8,6 +8,7 @@ import org.andengine.entity.shape.RectangularShape;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.TextureRegion;
+import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import com.callil.rotatingsentries.entityComponentSystem.components.DiamondComponent;
@@ -21,6 +22,7 @@ import com.callil.rotatingsentries.entityComponentSystem.components.SpriteCompon
 import com.callil.rotatingsentries.entityComponentSystem.components.attackDefense.AttackComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.attackDefense.DefenseComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.skills.AOEAttackComponent;
+import com.callil.rotatingsentries.enums.SpriteAnimationEnum;
 import com.callil.rotatingsentries.util.SpriteLoader;
 
 /**
@@ -139,15 +141,18 @@ public class EntityFactory {
 	 * @return The entity corresponding to the created sentry.
 	 */
 	public Entity generateSentry(int rotation) {
-		TextureRegion sentryTexture = spriteLoader.getSentryTextureRegion();
-		final Sprite sSentry = new Sprite(gameArea.getWidth()/2 - sentryTexture.getWidth()/2, gameArea.getHeight()/2 - sentryTexture.getHeight()/2, 
+		TiledTextureRegion sentryTexture = spriteLoader.getSentryTextureRegion();
+		final AnimatedSprite sSentry = new AnimatedSprite(gameArea.getWidth()/2 - sentryTexture.getWidth()/2, gameArea.getHeight()/2 - sentryTexture.getHeight()/2, 
 				sentryTexture, this.vertextBufferObjectManager);
 		sSentry.setRotation(rotation);
+		sSentry.stopAnimation(0);
 		Entity sentry = this.em.createEntity();
 		SpriteComponent spriteComponent = new SpriteComponent(sSentry, true).defineRectangularHitbox(108, 10, 55, 70);
 		this.em.addComponentToEntity(spriteComponent, sentry);
 		this.em.addComponentToEntity(new SelfRotationComponent(3, 0.8f, 0.2f, rotation, true, true), sentry);
-		this.em.addComponentToEntity(new ShootingComponent(ProjectileType.STANDARD, 0.5f), sentry);
+		this.em.addComponentToEntity(new ShootingComponent(ProjectileType.STANDARD, 0.5f, 
+				SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrames(), 
+				SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrameDurations()), sentry);
 		
 		Rectangle hitbox = (Rectangle)spriteComponent.getHitbox();
 		final AnimatedSprite sElectricAttack = new AnimatedSprite(0, 0, this.spriteLoader.getSentryElectricAttackTextureRegion(), this.vertextBufferObjectManager);

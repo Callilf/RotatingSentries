@@ -42,7 +42,7 @@ public class SpriteLoader {
 	//##############
 	// TEXTURES
 	
-	/** BACROUND. */
+	/** BACKGROUND. */
 	protected TextureRegion mBackgroundRegion;
 	public TextureRegion getBackgroundRegion() {
 		return mBackgroundRegion;
@@ -77,9 +77,10 @@ public class SpriteLoader {
 		return mEnemyRobberRopeTextureRegion;
 	}
 	
+	
 	/** SENTRY. */
-	protected TextureRegion mSentryTextureRegion;
-	public TextureRegion getSentryTextureRegion() {
+	protected TiledTextureRegion mSentryTextureRegion;
+	public TiledTextureRegion getSentryTextureRegion() {
 		return mSentryTextureRegion;
 	}
 	
@@ -275,8 +276,8 @@ public class SpriteLoader {
 		enemyRobberRopeTexture.load();
 		
 		//Sentry
-		BitmapTextureAtlas sentryTexture = new BitmapTextureAtlas(tm, 275, 275, TextureOptions.NEAREST);
-		mSentryTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(sentryTexture, context, "sentry_standard.png", 0, 0);
+		BitmapTextureAtlas sentryTexture = new BitmapTextureAtlas(tm, 1650, 550, TextureOptions.NEAREST);
+		mSentryTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(sentryTexture, context, "sentry_standard.png", 0, 0, 6, 2);
 		sentryTexture.load();
 		
 		//Sentry electric attack
