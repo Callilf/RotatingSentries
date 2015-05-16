@@ -9,7 +9,6 @@ import org.andengine.entity.sprite.Sprite;
 
 import com.callil.rotatingsentries.entityComponentSystem.components.DiamondComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.ShootingComponent;
-import com.callil.rotatingsentries.entityComponentSystem.components.ShootingComponent.ProjectileType;
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
 import com.callil.rotatingsentries.entityComponentSystem.entities.Entity;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityFactory;
@@ -88,7 +87,7 @@ public class GenerationSystem extends System {
 	    		shootingComponent.setLastGenerateTime(currentDuration);
 	    		SpriteComponent spriteComponent = this.entityManager.getComponent(SpriteComponent.class, entity);
 	    		Sprite sprite = spriteComponent.getSprite();
-	    		entityFactory.generateProjectile(ProjectileType.STANDARD, spriteComponent.getSprite());
+	    		entityFactory.generateProjectile(shootingComponent.getProjectileType(), spriteComponent.getSprite());
 	    		
 	    		//If the shooter sprite is animated and an animation is registered in shootingComponent, PLAY IT
 	    		if (spriteComponent.getSprite() instanceof AnimatedSprite && shootingComponent.getShootAnimFrames() != null) {

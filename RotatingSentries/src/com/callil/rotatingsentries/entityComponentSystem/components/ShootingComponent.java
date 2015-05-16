@@ -12,6 +12,9 @@ public class ShootingComponent extends Component {
 	/** time the last projectile was generate */
 	private float lastGenerateTime;
 	
+	/** Type of the projectile */
+	private ProjectileType projectileType;
+	
 	/** The list of frames to play for the shoot animation. If null, no animation. */
 	private int[] shootAnimFrames;
 	/** The list of durations of each frame of the shoot animation. */
@@ -19,21 +22,22 @@ public class ShootingComponent extends Component {
 	
 	/**
 	 * Constructor
-	 * @param projectile the type of projectile
+	 * @param projectileType the type of projectile
 	 * @param frequency the frequency of generation per seconds
 	 */
-	public ShootingComponent(ProjectileType projectile, float frequency) {
+	public ShootingComponent(ProjectileType projectileType, float frequency) {
 		this.frequency = frequency;
+		this.projectileType = projectileType;
 		lastGenerateTime = 0;
 	}
 	
 	/**
 	 * Constructor
-	 * @param projectile the type of projectile
+	 * @param projectileType the type of projectile
 	 * @param frequency the frequency of generation per seconds
 	 */
-	public ShootingComponent(ProjectileType projectile, float frequency, int[] shootAnimFrames, long[] shootAnimDurations) {
-		this(projectile, frequency);
+	public ShootingComponent(ProjectileType projectileType, float frequency, int[] shootAnimFrames, long[] shootAnimDurations) {
+		this(projectileType, frequency);
 		this.shootAnimFrames = shootAnimFrames;
 		this.shootAnimDurations = shootAnimDurations;
 	}
@@ -59,6 +63,14 @@ public class ShootingComponent extends Component {
 
 	public void setLastGenerateTime(float lastGenerateTime) {
 		this.lastGenerateTime = lastGenerateTime;
+	}
+
+	public ProjectileType getProjectileType() {
+		return projectileType;
+	}
+
+	public void setProjectileType(ProjectileType projectileType) {
+		this.projectileType = projectileType;
 	}
 
 	public int[] getShootAnimFrames() {
