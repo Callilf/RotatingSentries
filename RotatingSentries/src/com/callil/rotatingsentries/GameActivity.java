@@ -17,6 +17,9 @@ import org.andengine.util.HorizontalAlign;
 import android.util.Log;
 
 import com.callil.rotatingsentries.entityComponentSystem.components.SelfRotationComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.ShootingComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.ShootingComponent.ProjectileType;
+import com.callil.rotatingsentries.entityComponentSystem.entities.Entity;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityFactory;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityManager;
 import com.callil.rotatingsentries.entityComponentSystem.systems.AOEAttackSystem;
@@ -27,6 +30,7 @@ import com.callil.rotatingsentries.entityComponentSystem.systems.GenerationSyste
 import com.callil.rotatingsentries.entityComponentSystem.systems.MoveSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.RenderSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.System;
+import com.callil.rotatingsentries.enums.SpriteAnimationEnum;
 import com.callil.rotatingsentries.singleton.GameSingleton;
 
 public class GameActivity extends ParentGameActivity {
@@ -48,6 +52,11 @@ public class GameActivity extends ParentGameActivity {
 	private List<System> systems;
 	
 	public Text timerText;
+	
+	
+	// TEST Fields
+	private float lastSentryChange = -5.0f;
+	private boolean testSentry1 = true;
 	
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -101,6 +110,7 @@ public class GameActivity extends ParentGameActivity {
 		systems.add(aoeAttackSystem);
 		
 		//Set the game time in the singleton
+		final EntityManager entityMgr = this.entityManager;
 		this.mScene.registerUpdateHandler(new IUpdateHandler() {
 			@Override
 			public void reset() {}
@@ -110,6 +120,44 @@ public class GameActivity extends ParentGameActivity {
 				GameSingleton instance = GameSingleton.getInstance();
 				instance.setTotalTime(GameSingleton.getInstance().getTotalTime() + pSecondsElapsed);
 				setTimerText(instance.getTotalTime());
+				
+				
+				//######################
+				// TESTS
+				
+				ShootingComponent shooter1 = new ShootingComponent(ProjectileType.STANDARD, 0.9f, 
+						SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrames(), 
+						SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrameDurations());
+				ShootingComponent shooter2 = new ShootingComponent(ProjectileType.STANDARD, 0.05f, 
+				SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrames(), 
+				SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrameDurations());
+				
+				//Change sentry every 5 seconds
+				if (instance.getTotalTime() - lastSentryChange > 5.0f) {
+					Log.w("RS", "5 seconds");
+					lastSentryChange = instance.getTotalTime();
+					List<Entity> sentries = entityMgr.getAllEntitiesPosessingComponentOfClass(ShootingComponent.class);
+					for (Entity sentry : sentries) {
+						if (testSentry1) {
+							Log.w("RS", "Set shooter 1");
+							entityMgr.replaceComponentForEntity(shooter1, sentry);
+							testSentry1 = false;
+						} else {
+							Log.w("RS", "Set shooter 2");
+							entityMgr.replaceComponentForEntity(shooter2, sentry);
+							testSentry1 = true;
+						}
+					}
+				}
+				
+				
+				
+				
+				
+				
+				// END OF TESTS
+				//######################
+				
 			}
 		});
 

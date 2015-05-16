@@ -99,6 +99,49 @@ public class EntityManager {
 	}
 	
 	
+	/**
+	 * Replace a component for the given entity (delete the components of the same).
+	 * @param component the component to add.
+	 * @param entity the entity to which the component will be added.
+	 */
+	@SuppressWarnings("unchecked")
+	public void replaceComponentForEntity(Component component, Entity entity) {
+		replaceComponentForEntity(component,  component.getClass(), entity);
+	}
+	
+	/**
+	 * Add a component to an entity.
+	 * @param component the component to add.
+	 * @param componentClass the class of the component to add.
+	 * @param entity the entity to which the component will be added.
+	 */
+	@SuppressWarnings("unchecked")
+	private void replaceComponentForEntity(Component component, Class<? extends Component> componentClass, Entity entity) {
+		SparseArray<List<Component>> components = this.getComponentsByClass().get(componentClass);
+		if (components == null) {
+			components = new SparseArray<List<Component>>();
+			this.getComponentsByClass().put(componentClass, components);
+		}
+		
+		List<Component> compoList = components.get(entity.getEid());
+		if (compoList == null) {
+			List<Component> list = new ArrayList<Component>();
+			components.put(entity.getEid(), list);
+		} else {
+			//If contains compo, remove them before adding the new one
+			for (Component oldCompo : compoList) {
+				this.removeComponentFromEntity(oldCompo, entity);
+			}
+			components.put(entity.getEid(), compoList);
+		}
+		components.get(entity.getEid()).add(component);
+		
+		if (componentClass.getSuperclass() != Component.class) {
+			addComponentToEntity(component, (Class<? extends Component>) componentClass.getSuperclass(), entity);
+		}
+	}
+	
+	
 	
 	/**
 	 * Remove a component from an entity.
