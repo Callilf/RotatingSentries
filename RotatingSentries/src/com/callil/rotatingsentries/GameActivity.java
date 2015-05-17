@@ -7,6 +7,7 @@ import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.shape.RectangularShape;
+import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.entity.text.TextOptions;
@@ -231,6 +232,30 @@ public class GameActivity extends ParentGameActivity {
 		final Sprite healthPanel = new Sprite(8, 174, spriteLoader.getHUDPanelHealthTextureRegion(), this.mEngine.getVertexBufferObjectManager());
 		healthPanel.setZIndex(10);
 		this.mScene.attachChild(healthPanel);
+		
+		// Create Switch Fire Panel
+		final AnimatedSprite switchFirePanel = new AnimatedSprite(8, 342, spriteLoader.getHUDPanelSwitchFireTextureRegion(), this.mEngine.getVertexBufferObjectManager()) {
+			@Override
+			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
+				switch (pSceneTouchEvent.getAction()) {
+				case TouchEvent.ACTION_UP:
+				case TouchEvent.ACTION_OUTSIDE:
+				case TouchEvent.ACTION_CANCEL:
+					//TODO
+					this.stopAnimation(this.getCurrentTileIndex() == 0 ? 1 : 0);
+					break;
+				case TouchEvent.ACTION_MOVE:
+				case TouchEvent.ACTION_DOWN:
+				default:
+					break;
+				}
+				return true;
+			}
+		};
+		switchFirePanel.setZIndex(10);
+		switchFirePanel.stopAnimation(0);
+		this.mScene.registerTouchArea(switchFirePanel);
+		this.mScene.attachChild(switchFirePanel);
 		
 		// CREATE ARROW BUTTONS
 		final Sprite arrowLeft = new Sprite(8, CAMERA_HEIGHT/2, spriteLoader.getArrowLeftTextureRegion(), this.mEngine.getVertexBufferObjectManager()) {

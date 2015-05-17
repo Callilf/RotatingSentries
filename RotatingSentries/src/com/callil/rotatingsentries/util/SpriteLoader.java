@@ -131,6 +131,12 @@ public class SpriteLoader {
 		return mHudPanelHealthTextureRegion;
 	}
 	
+	/** SWITCH FIRE PANEL. */
+	protected TiledTextureRegion mHudPanelSwitchFireTextureRegion;
+	public TiledTextureRegion getHUDPanelSwitchFireTextureRegion() {
+		return mHudPanelSwitchFireTextureRegion;
+	}
+	
 	
 	
 	//##############
@@ -318,6 +324,11 @@ public class SpriteLoader {
 		BitmapTextureAtlas hudPanelHealthTexture = new BitmapTextureAtlas(tm, 401, 157);
 		mHudPanelHealthTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(hudPanelHealthTexture, context, "hud_panel_health.png", 0, 0);
 		hudPanelHealthTexture.load();
+		
+		//Switch fire panel
+		BitmapTextureAtlas hudPanelSwitchFireTexture = new BitmapTextureAtlas(tm, 802, 189, TextureOptions.NEAREST);
+		mHudPanelSwitchFireTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(hudPanelSwitchFireTexture, context, "hud_panel_switch_fire.png", 0, 0, 2, 1);
+		hudPanelSwitchFireTexture.load();
 
 		
 		//############
