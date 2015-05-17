@@ -8,7 +8,7 @@ import org.andengine.entity.shape.RectangularShape;
 import com.callil.rotatingsentries.entityComponentSystem.components.DiamondComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SelfRotationComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
-import com.callil.rotatingsentries.entityComponentSystem.components.skills.SkillComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.skills.AbstractSkillComponent;
 import com.callil.rotatingsentries.entityComponentSystem.entities.Entity;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityManager;
 
@@ -80,9 +80,9 @@ public class RenderSystem extends System {
     		}
 		}
 		//Attach skill icons
-		entities = this.entityManager.getAllEntitiesPosessingComponentOfClass(SkillComponent.class);
+		entities = this.entityManager.getAllEntitiesPosessingComponentOfClass(AbstractSkillComponent.class);
 		for (Entity entity : entities) {
-			SkillComponent skillComponent = this.entityManager.getComponent(SkillComponent.class, entity);
+			AbstractSkillComponent skillComponent = this.entityManager.getComponent(AbstractSkillComponent.class, entity);
 			if (skillComponent != null && !skillComponent.getIconSprite().hasParent()) {
 				this.scene.attachChild(skillComponent.getIconSprite());
 				this.scene.attachChild(skillComponent.getCooldownRectangle());

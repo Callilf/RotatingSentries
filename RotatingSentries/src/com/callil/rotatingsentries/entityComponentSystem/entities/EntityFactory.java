@@ -15,12 +15,13 @@ import com.callil.rotatingsentries.entityComponentSystem.components.DiamondCompo
 import com.callil.rotatingsentries.entityComponentSystem.components.EnemyRobberComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.MoveTowardsComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SelfRotationComponent;
-import com.callil.rotatingsentries.entityComponentSystem.components.ShootingComponent;
-import com.callil.rotatingsentries.entityComponentSystem.components.ShootingComponent.ProjectileType;
 import com.callil.rotatingsentries.entityComponentSystem.components.SolidComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.attackDefense.AttackComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.attackDefense.DefenseComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.shooting.PrimaryShootingComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.shooting.PrimaryShootingComponent.ProjectileType;
+import com.callil.rotatingsentries.entityComponentSystem.components.shooting.SecondaryShootingComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.skills.AOEAttackComponent;
 import com.callil.rotatingsentries.enums.SpriteAnimationEnum;
 import com.callil.rotatingsentries.util.SpriteLoader;
@@ -150,7 +151,10 @@ public class EntityFactory {
 		SpriteComponent spriteComponent = new SpriteComponent(sSentry, true).defineRectangularHitbox(108, 10, 55, 70);
 		this.em.addComponentToEntity(spriteComponent, sentry);
 		this.em.addComponentToEntity(new SelfRotationComponent(3, 0.8f, 0.2f, rotation, true, true), sentry);
-		this.em.addComponentToEntity(new ShootingComponent(ProjectileType.STANDARD, 0.5f, 
+		this.em.addComponentToEntity(new PrimaryShootingComponent(ProjectileType.STANDARD, 0.5f, 
+				SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrames(), 
+				SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrameDurations()), sentry);
+		this.em.addComponentToEntity(new SecondaryShootingComponent(50, ProjectileType.PIERCING, 0.5f, 
 				SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrames(), 
 				SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrameDurations()), sentry);
 		
@@ -186,18 +190,30 @@ public class EntityFactory {
 		
 		switch (projectileType) {
 		case STANDARD:
-			TextureRegion projectileTexture = spriteLoader.getProjStdTextureRegion();
-			final Sprite sProjectile = new Sprite(gameArea.getWidth()/2 + startX * rayonSentry - projectileTexture.getWidth()/2f, 
-					gameArea.getHeight()/2 + startY * rayonSentry - projectileTexture.getHeight()/2f, projectileTexture, this.vertextBufferObjectManager);
-			sProjectile.setRotation(rotationDegre);
-			Entity projectile = this.em.createEntity();
-			SpriteComponent scProj = new SpriteComponent(sProjectile, true);
-			this.em.addComponentToEntity(scProj, projectile);
-			this.em.addComponentToEntity(new MoveTowardsComponent(15, startX, startY), projectile);
-			this.em.addComponentToEntity(new DefenseComponent(1, 2, false), projectile);
-			gameArea.attachChild(sProjectile);
-			scProj.setAttached(true);
-			return projectile;
+			TextureRegion standardTexture = spriteLoader.getProjStdTextureRegion();
+			final Sprite sStandardProjectile = new Sprite(gameArea.getWidth()/2 + startX * rayonSentry - standardTexture.getWidth()/2f, 
+					gameArea.getHeight()/2 + startY * rayonSentry - standardTexture.getHeight()/2f, standardTexture, this.vertextBufferObjectManager);
+			Entity standardProjectile = this.em.createEntity();
+			SpriteComponent scStdProj = new SpriteComponent(sStandardProjectile, true);
+			this.em.addComponentToEntity(scStdProj, standardProjectile);
+			this.em.addComponentToEntity(new MoveTowardsComponent(15, startX, startY), standardProjectile);
+			this.em.addComponentToEntity(new DefenseComponent(1, 2, false), standardProjectile);
+			gameArea.attachChild(sStandardProjectile);
+			scStdProj.setAttached(true);
+			return standardProjectile;
+		case PIERCING:
+			TextureRegion piercingProjectileTexture = spriteLoader.getProjPiercingTextureRegion();
+			final Sprite sPiercingProjectile = new Sprite(gameArea.getWidth()/2 + startX * rayonSentry - piercingProjectileTexture.getWidth()/2f, 
+					gameArea.getHeight()/2 + startY * rayonSentry - piercingProjectileTexture.getHeight()/2f, piercingProjectileTexture, this.vertextBufferObjectManager);
+			sPiercingProjectile.setRotation(rotationDegre);
+			Entity piercingProjectile = this.em.createEntity();
+			SpriteComponent scPiercingProj = new SpriteComponent(sPiercingProjectile, true);
+			this.em.addComponentToEntity(scPiercingProj, piercingProjectile);
+			this.em.addComponentToEntity(new MoveTowardsComponent(25, startX, startY), piercingProjectile);
+			this.em.addComponentToEntity(new DefenseComponent(5, 2, false), piercingProjectile);
+			gameArea.attachChild(sPiercingProjectile);
+			scPiercingProj.setAttached(true);
+			return piercingProjectile;
 		default:
 			throw new IllegalArgumentException("Undefined projectile " + projectileType);
 		}

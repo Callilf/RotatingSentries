@@ -5,7 +5,7 @@ package com.callil.rotatingsentries.entityComponentSystem.components.attackDefen
  * 
  * @author Thomas
  */
-public class DefenseComponent extends AttDefComponent {
+public class DefenseComponent extends AbstractAttDefComponent {
 
 	/** Whether the entity bounces against solid objects. */
 	private boolean bounce;

@@ -1,9 +1,11 @@
-package com.callil.rotatingsentries.entityComponentSystem.components;
+package com.callil.rotatingsentries.entityComponentSystem.components.shooting;
 
-public class ShootingComponent extends Component {
+
+public class PrimaryShootingComponent extends AbstractPrimaryAttackComponent {
 
 	public enum ProjectileType {
-		STANDARD;
+		STANDARD,
+		PIERCING;
 	}
 	
 	/** number of generate projectile per seconds */
@@ -25,7 +27,7 @@ public class ShootingComponent extends Component {
 	 * @param projectileType the type of projectile
 	 * @param frequency the frequency of generation per seconds
 	 */
-	public ShootingComponent(ProjectileType projectileType, float frequency) {
+	public PrimaryShootingComponent(ProjectileType projectileType, float frequency) {
 		this.frequency = frequency;
 		this.projectileType = projectileType;
 		lastGenerateTime = 0;
@@ -36,7 +38,7 @@ public class ShootingComponent extends Component {
 	 * @param projectileType the type of projectile
 	 * @param frequency the frequency of generation per seconds
 	 */
-	public ShootingComponent(ProjectileType projectileType, float frequency, int[] shootAnimFrames, long[] shootAnimDurations) {
+	public PrimaryShootingComponent(ProjectileType projectileType, float frequency, int[] shootAnimFrames, long[] shootAnimDurations) {
 		this(projectileType, frequency);
 		this.shootAnimFrames = shootAnimFrames;
 		this.shootAnimDurations = shootAnimDurations;

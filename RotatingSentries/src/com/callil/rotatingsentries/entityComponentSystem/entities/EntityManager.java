@@ -232,12 +232,23 @@ public class EntityManager {
 	 * of component.
 	 */
 	public List<Entity> getAllEntitiesPosessingComponentOfClass(Class<? extends Component> componentClass) {
+		return getAllEntitiesPosessingComponentOfClass(componentClass, false);
+	}
+	
+	/**
+	 * For a given component class name, retrieve all entities that have a component of this class.
+	 * @param componentClass the class of the component
+	 * @param ignoreActiveConstraint true if the active attribute of the component does not need to be true .
+	 * @return A list of entities that have a component of this class. An empty list if no entity has this type
+	 * of component.
+	 */
+	public List<Entity> getAllEntitiesPosessingComponentOfClass(Class<? extends Component> componentClass, boolean ignoreActiveConstraint) {
 		List<Entity> results = new ArrayList<Entity>();
 		SparseArray<List<Component>> components = this.getComponentsByClass().get(componentClass);
 		if (components != null) {
 			for(int i = 0; i < components.size(); i++) {
 				for (Component component : components.valueAt(i)) {
-					if (component.isActive()) {
+					if (ignoreActiveConstraint || component.isActive()) {
 				    	results.add(new Entity(components.keyAt(i)));
 				    	break;
 				    }

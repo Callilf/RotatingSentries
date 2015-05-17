@@ -96,6 +96,12 @@ public class SpriteLoader {
 		return mProjStdTextureRegion;
 	}
 	
+	/** PROJECTILE : Piercing */
+	protected TextureRegion mProjPiercingTextureRegion;
+	public TextureRegion getProjPiercingTextureRegion() {
+		return mProjPiercingTextureRegion;
+	}
+	
 	
 	
 	//##############
@@ -292,10 +298,14 @@ public class SpriteLoader {
 		sentryElectricAttackTexture.load();
 
 		//Standard projectile
-		BitmapTextureAtlas projStdTexture = new BitmapTextureAtlas(tm, 4, 12, TextureOptions.NEAREST);
-		mProjStdTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(projStdTexture, context, "projectile_std.png", 0, 0);
+		BitmapTextureAtlas projStdTexture = new BitmapTextureAtlas(tm, 8, 8, TextureOptions.NEAREST);
+		mProjStdTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(projStdTexture, context, "projectile_standard.png", 0, 0);
 		projStdTexture.load();
-		
+
+		//Piercing projectile
+		BitmapTextureAtlas projPiercingTexture = new BitmapTextureAtlas(tm, 6, 14, TextureOptions.NEAREST);
+		mProjPiercingTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(projPiercingTexture, context, "projectile_piercing.png", 0, 0);
+		projPiercingTexture.load();
 		
 		//############
 		// HUD

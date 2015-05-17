@@ -14,7 +14,7 @@ import com.callil.rotatingsentries.singleton.GameSingleton;
  * @author Callil
  * Defines that the entity can generate an area of effect attack.
  */
-public class SkillComponent extends Component {
+public abstract class AbstractSkillComponent extends Component {
 
 	/** The sprite of the icon to display to the upper left of the HUD. */
 	private Sprite iconSprite;
@@ -40,7 +40,7 @@ public class SkillComponent extends Component {
 	 * @param sprite the animation sprite
 	 * @param cooldown the cooldown of the attack
 	 */
-	public SkillComponent(Sprite sprite, Sprite frame, float cooldown, VertexBufferObjectManager vb) {
+	public AbstractSkillComponent(Sprite sprite, Sprite frame, float cooldown, VertexBufferObjectManager vb) {
 		this.iconSprite = sprite;
 		this.iconSprite.setZIndex(10);
 		this.iconFrame = frame;

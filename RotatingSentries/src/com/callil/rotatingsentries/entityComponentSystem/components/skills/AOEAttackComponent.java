@@ -14,7 +14,7 @@ import com.callil.rotatingsentries.enums.SpriteAnimationEnum;
  * @author Callil
  * Defines that the entity can generate an area of effect attack.
  */
-public class AOEAttackComponent extends SkillComponent {
+public class AOEAttackComponent extends AbstractSkillComponent {
 
 	/** The trigger of the attack, which means the area that will trigger the attack when an enemy collide with it. */
 	private IShape trigger;

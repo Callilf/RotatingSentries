@@ -18,8 +18,8 @@ import org.andengine.util.HorizontalAlign;
 import android.util.Log;
 
 import com.callil.rotatingsentries.entityComponentSystem.components.SelfRotationComponent;
-import com.callil.rotatingsentries.entityComponentSystem.components.ShootingComponent;
-import com.callil.rotatingsentries.entityComponentSystem.components.ShootingComponent.ProjectileType;
+import com.callil.rotatingsentries.entityComponentSystem.components.shooting.PrimaryShootingComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.shooting.PrimaryShootingComponent.ProjectileType;
 import com.callil.rotatingsentries.entityComponentSystem.entities.Entity;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityFactory;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityManager;
@@ -126,31 +126,31 @@ public class GameActivity extends ParentGameActivity {
 				//######################
 				// TESTS
 				
-				ShootingComponent shooter1 = new ShootingComponent(ProjectileType.STANDARD, 0.9f, 
-						SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrames(), 
-						SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrameDurations());
-				ShootingComponent shooter2 = new ShootingComponent(ProjectileType.STANDARD, 0.05f, 
-				SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrames(), 
-				SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrameDurations());
-				
-				//Change sentry every 5 seconds
-				if (instance.getTotalTime() - lastSentryChange > 5.0f) {
-					Log.w("RS", "5 seconds");
-					lastSentryChange = instance.getTotalTime();
-					List<Entity> sentries = entityMgr.getAllEntitiesPosessingComponentOfClass(ShootingComponent.class);
-					for (Entity sentry : sentries) {
-						if (testSentry1) {
-							Log.w("RS", "Set shooter 1");
-							entityMgr.replaceComponentForEntity(shooter1, sentry);
-							testSentry1 = false;
-						} else {
-							Log.w("RS", "Set shooter 2");
-							entityMgr.replaceComponentForEntity(shooter2, sentry);
-							testSentry1 = true;
-						}
-					}
-				}
-				
+//				PrimaryShootingComponent shooter1 = new PrimaryShootingComponent(ProjectileType.STANDARD, 0.9f, 
+//						SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrames(), 
+//						SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrameDurations());
+//				PrimaryShootingComponent shooter2 = new PrimaryShootingComponent(ProjectileType.STANDARD, 0.05f, 
+//				SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrames(), 
+//				SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrameDurations());
+//				
+//				//Change sentry every 5 seconds
+//				if (instance.getTotalTime() - lastSentryChange > 5.0f) {
+//					Log.w("RS", "5 seconds");
+//					lastSentryChange = instance.getTotalTime();
+//					List<Entity> sentries = entityMgr.getAllEntitiesPosessingComponentOfClass(PrimaryShootingComponent.class);
+//					for (Entity sentry : sentries) {
+//						if (testSentry1) {
+//							Log.w("RS", "Set shooter 1");
+//							entityMgr.replaceComponentForEntity(shooter1, sentry);
+//							testSentry1 = false;
+//						} else {
+//							Log.w("RS", "Set shooter 2");
+//							entityMgr.replaceComponentForEntity(shooter2, sentry);
+//							testSentry1 = true;
+//						}
+//					}
+//				}
+//				
 				
 				
 				
@@ -242,7 +242,9 @@ public class GameActivity extends ParentGameActivity {
 				case TouchEvent.ACTION_OUTSIDE:
 				case TouchEvent.ACTION_CANCEL:
 					//TODO
-					this.stopAnimation(this.getCurrentTileIndex() == 0 ? 1 : 0);
+					GenerationSystem.isPrimaryFireActive = !GenerationSystem.isPrimaryFireActive;
+					GenerationSystem.hasFireBeenSwitched = true;
+					this.stopAnimation(GenerationSystem.isPrimaryFireActive ? 0 : 1);
 					break;
 				case TouchEvent.ACTION_MOVE:
 				case TouchEvent.ACTION_DOWN:

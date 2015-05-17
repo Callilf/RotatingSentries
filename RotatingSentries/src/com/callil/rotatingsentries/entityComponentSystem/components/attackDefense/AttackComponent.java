@@ -5,7 +5,7 @@ package com.callil.rotatingsentries.entityComponentSystem.components.attackDefen
  * 
  * @author Thomas
  */
-public class AttackComponent extends AttDefComponent {
+public class AttackComponent extends AbstractAttDefComponent {
 
 	/**
 	 * Constructor

@@ -8,8 +8,11 @@ import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 
 import com.callil.rotatingsentries.entityComponentSystem.components.DiamondComponent;
-import com.callil.rotatingsentries.entityComponentSystem.components.ShootingComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.shooting.AbstractPrimaryAttackComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.shooting.AbstractSecondaryAttackComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.shooting.PrimaryShootingComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.shooting.SecondaryShootingComponent;
 import com.callil.rotatingsentries.entityComponentSystem.entities.Entity;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityFactory;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityManager;
@@ -17,6 +20,11 @@ import com.callil.rotatingsentries.singleton.GameSingleton;
 
 public class GenerationSystem extends System {
 
+	/** Whether the fire type (primary, secondary) has been switched during this frame. */
+	public static boolean hasFireBeenSwitched = true;
+	/** Represents the state of the primary/secondary fire button. */
+	public static boolean isPrimaryFireActive = true;
+	
 	private EntityFactory entityFactory;
 	
 	private RectangularShape gameArea;
@@ -77,10 +85,30 @@ public class GenerationSystem extends System {
 	    	}
 	    }
 	    
+	    
+	    //TODO: maybe move to another system
+	    //Handle switch of fire
+	    if (hasFireBeenSwitched) {
+	    	entities = this.entityManager.getAllEntitiesPosessingComponentOfClass(AbstractPrimaryAttackComponent.class, true);
+	    	for (Entity entity : entities) {
+	    		AbstractPrimaryAttackComponent primaryAttackComponent = this.entityManager.getComponent(AbstractPrimaryAttackComponent.class, entity);
+	    		primaryAttackComponent.setActive(isPrimaryFireActive);
+	    	}
+	    	entities = this.entityManager.getAllEntitiesPosessingComponentOfClass(AbstractSecondaryAttackComponent.class, true);
+	    	for (Entity entity : entities) {
+	    		AbstractSecondaryAttackComponent secondaryAttackComponent = this.entityManager.getComponent(AbstractSecondaryAttackComponent.class, entity);
+	    		secondaryAttackComponent.setActive(!isPrimaryFireActive);
+	    	}
+	    	hasFireBeenSwitched = false;
+	    }
+	    
+	    
+	    
 	    // MANAGE GENERATION OF PROJECTILES
-		entities = this.entityManager.getAllEntitiesPosessingComponentOfClass(ShootingComponent.class);
+	    // 1 - Primary components
+		entities = this.entityManager.getAllEntitiesPosessingComponentOfClass(PrimaryShootingComponent.class);
 	    for (Entity entity : entities) {
-	    	ShootingComponent shootingComponent = this.entityManager.getComponent(ShootingComponent.class, entity);
+	    	PrimaryShootingComponent shootingComponent = this.entityManager.getComponent(PrimaryShootingComponent.class, entity);
 	    	float nextGeneratingTime = shootingComponent.getFrequency() + shootingComponent.getLastGenerateTime();
 	    	float currentDuration = GameSingleton.getInstance().getTotalTime();
 	    	if (nextGeneratingTime < currentDuration) {
@@ -93,6 +121,29 @@ public class GenerationSystem extends System {
 	    		if (spriteComponent.getSprite() instanceof AnimatedSprite && shootingComponent.getShootAnimFrames() != null) {
 	    			((AnimatedSprite)sprite).animate(shootingComponent.getShootAnimDurations(), shootingComponent.getShootAnimFrames(), false);
 	    		}
+	    	}
+	    }
+	    
+	    // 2 - Secondary Components
+		entities = this.entityManager.getAllEntitiesPosessingComponentOfClass(SecondaryShootingComponent.class);
+	    for (Entity entity : entities) {
+	    	SecondaryShootingComponent secondaryShootingComponent = this.entityManager.getComponent(SecondaryShootingComponent.class, entity);
+	    	// Check the remaining number of ammo
+	    	if (secondaryShootingComponent.getCurrentAmmo() > 0) {
+		    	float nextGeneratingTime = secondaryShootingComponent.getFrequency() + secondaryShootingComponent.getLastGenerateTime();
+		    	float currentDuration = GameSingleton.getInstance().getTotalTime();
+		    	if (nextGeneratingTime < currentDuration) {
+		    		secondaryShootingComponent.setLastGenerateTime(currentDuration);
+		    		secondaryShootingComponent.setCurrentAmmo(secondaryShootingComponent.getCurrentAmmo() - 1);
+		    		SpriteComponent spriteComponent = this.entityManager.getComponent(SpriteComponent.class, entity);
+		    		Sprite sprite = spriteComponent.getSprite();
+		    		entityFactory.generateProjectile(secondaryShootingComponent.getProjectileType(), spriteComponent.getSprite());
+		    		
+		    		//If the shooter sprite is animated and an animation is registered in shootingComponent, PLAY IT
+		    		if (spriteComponent.getSprite() instanceof AnimatedSprite && secondaryShootingComponent.getShootAnimFrames() != null) {
+		    			((AnimatedSprite)sprite).animate(secondaryShootingComponent.getShootAnimDurations(), secondaryShootingComponent.getShootAnimFrames(), false);
+		    		}
+		    	}
 	    	}
 	    }
 

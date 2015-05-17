@@ -7,7 +7,7 @@ import com.callil.rotatingsentries.entityComponentSystem.components.Component;
  * 
  * @author Thomas
  */
-public class AttDefComponent extends Component {
+public abstract class AbstractAttDefComponent extends Component {
 
 	/** hit points */
 	protected int hp;
@@ -20,7 +20,7 @@ public class AttDefComponent extends Component {
 	 * @param hp initial hp.
 	 * @param damage damage on hit
 	 */
-	public AttDefComponent(int hp, int damage) {
+	public AbstractAttDefComponent(int hp, int damage) {
 		this.hp = hp;
 		this.damage = damage;
 	}
