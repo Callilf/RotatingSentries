@@ -5,7 +5,6 @@ package com.callil.rotatingsentries.entityComponentSystem.components;
 
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.text.Text;
-import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 /**
  * @author Callil

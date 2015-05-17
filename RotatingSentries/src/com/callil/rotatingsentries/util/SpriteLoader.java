@@ -114,14 +114,14 @@ public class SpriteLoader {
 	}
 	
 	/** ARROW : left */
-	protected TextureRegion mArrowLeftTextureRegion;
-	public TextureRegion getArrowLeftTextureRegion() {
+	protected TiledTextureRegion mArrowLeftTextureRegion;
+	public TiledTextureRegion getArrowLeftTextureRegion() {
 		return mArrowLeftTextureRegion;
 	}
 	
 	/** ARROW : right */
-	protected TextureRegion mArrowRightTextureRegion;
-	public TextureRegion getArrowRightTextureRegion() {
+	protected TiledTextureRegion mArrowRightTextureRegion;
+	public TiledTextureRegion getArrowRightTextureRegion() {
 		return mArrowRightTextureRegion;
 	}
 	
@@ -312,32 +312,32 @@ public class SpriteLoader {
 		
 		//Side gray
 		BitmapTextureAtlas sideGrayButtonTexture = new BitmapTextureAtlas(tm, 420, 1080);
-		mSideGrayTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(sideGrayButtonTexture, context, "side_gray.png", 0, 0);
+		mSideGrayTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(sideGrayButtonTexture, context, "hud/side_gray.png", 0, 0);
 		sideGrayButtonTexture.load();
 		
 		//Left button
-		BitmapTextureAtlas leftButtonTexture = new BitmapTextureAtlas(tm, 401, 533);
-		mArrowLeftTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(leftButtonTexture, context, "left_button2.png", 0, 0);
+		BitmapTextureAtlas leftButtonTexture = new BitmapTextureAtlas(tm, 802, 533);
+		mArrowLeftTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(leftButtonTexture, context, "hud/left_button.png", 0, 0, 2, 1);
 		leftButtonTexture.load();
 		
 		//Right button
-		BitmapTextureAtlas rightButtonTexture = new BitmapTextureAtlas(tm, 401, 533);
-		mArrowRightTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(rightButtonTexture, context, "right_button2.png", 0, 0);
+		BitmapTextureAtlas rightButtonTexture = new BitmapTextureAtlas(tm, 802, 533);
+		mArrowRightTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(rightButtonTexture, context, "hud/right_button.png", 0, 0, 2, 1);
 		rightButtonTexture.load();
 		
 		//Time panel
 		BitmapTextureAtlas hudPanelTimerTexture = new BitmapTextureAtlas(tm, 401, 157);
-		mHudPanelTimerTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(hudPanelTimerTexture, context, "hud_panel_timer.png", 0, 0);
+		mHudPanelTimerTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(hudPanelTimerTexture, context, "hud/hud_panel_timer.png", 0, 0);
 		hudPanelTimerTexture.load();
 		
 		//Health panel
 		BitmapTextureAtlas hudPanelHealthTexture = new BitmapTextureAtlas(tm, 401, 157);
-		mHudPanelHealthTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(hudPanelHealthTexture, context, "hud_panel_health.png", 0, 0);
+		mHudPanelHealthTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(hudPanelHealthTexture, context, "hud/hud_panel_health.png", 0, 0);
 		hudPanelHealthTexture.load();
 		
 		//Switch fire panel
-		BitmapTextureAtlas hudPanelSwitchFireTexture = new BitmapTextureAtlas(tm, 802, 189, TextureOptions.NEAREST);
-		mHudPanelSwitchFireTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(hudPanelSwitchFireTexture, context, "hud_panel_switch_fire.png", 0, 0, 2, 1);
+		BitmapTextureAtlas hudPanelSwitchFireTexture = new BitmapTextureAtlas(tm, 802, 378, TextureOptions.NEAREST);
+		mHudPanelSwitchFireTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(hudPanelSwitchFireTexture, context, "hud/hud_panel_switch_fire.png", 0, 0, 2, 2);
 		hudPanelSwitchFireTexture.load();
 
 		

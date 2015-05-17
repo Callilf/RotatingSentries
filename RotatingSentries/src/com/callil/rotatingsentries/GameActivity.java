@@ -13,14 +13,12 @@ import org.andengine.entity.text.Text;
 import org.andengine.entity.text.TextOptions;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.region.TextureRegion;
+import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.util.HorizontalAlign;
 
 import android.util.Log;
 
 import com.callil.rotatingsentries.entityComponentSystem.components.SelfRotationComponent;
-import com.callil.rotatingsentries.entityComponentSystem.components.shooting.PrimaryShootingComponent;
-import com.callil.rotatingsentries.entityComponentSystem.components.shooting.PrimaryShootingComponent.ProjectileType;
-import com.callil.rotatingsentries.entityComponentSystem.entities.Entity;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityFactory;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityManager;
 import com.callil.rotatingsentries.entityComponentSystem.systems.AOEAttackSystem;
@@ -31,7 +29,6 @@ import com.callil.rotatingsentries.entityComponentSystem.systems.GenerationSyste
 import com.callil.rotatingsentries.entityComponentSystem.systems.MoveSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.RenderSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.System;
-import com.callil.rotatingsentries.enums.SpriteAnimationEnum;
 import com.callil.rotatingsentries.singleton.GameSingleton;
 
 public class GameActivity extends ParentGameActivity {
@@ -56,8 +53,7 @@ public class GameActivity extends ParentGameActivity {
 	
 	
 	// TEST Fields
-	private float lastSentryChange = -5.0f;
-	private boolean testSentry1 = true;
+
 	
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -126,32 +122,7 @@ public class GameActivity extends ParentGameActivity {
 				//######################
 				// TESTS
 				
-//				PrimaryShootingComponent shooter1 = new PrimaryShootingComponent(ProjectileType.STANDARD, 0.9f, 
-//						SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrames(), 
-//						SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrameDurations());
-//				PrimaryShootingComponent shooter2 = new PrimaryShootingComponent(ProjectileType.STANDARD, 0.05f, 
-//				SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrames(), 
-//				SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrameDurations());
-//				
-//				//Change sentry every 5 seconds
-//				if (instance.getTotalTime() - lastSentryChange > 5.0f) {
-//					Log.w("RS", "5 seconds");
-//					lastSentryChange = instance.getTotalTime();
-//					List<Entity> sentries = entityMgr.getAllEntitiesPosessingComponentOfClass(PrimaryShootingComponent.class);
-//					for (Entity sentry : sentries) {
-//						if (testSentry1) {
-//							Log.w("RS", "Set shooter 1");
-//							entityMgr.replaceComponentForEntity(shooter1, sentry);
-//							testSentry1 = false;
-//						} else {
-//							Log.w("RS", "Set shooter 2");
-//							entityMgr.replaceComponentForEntity(shooter2, sentry);
-//							testSentry1 = true;
-//						}
-//					}
-//				}
-//				
-				
+			
 				
 				
 				
@@ -241,13 +212,15 @@ public class GameActivity extends ParentGameActivity {
 				case TouchEvent.ACTION_UP:
 				case TouchEvent.ACTION_OUTSIDE:
 				case TouchEvent.ACTION_CANCEL:
-					//TODO
 					GenerationSystem.isPrimaryFireActive = !GenerationSystem.isPrimaryFireActive;
 					GenerationSystem.hasFireBeenSwitched = true;
-					this.stopAnimation(GenerationSystem.isPrimaryFireActive ? 0 : 1);
+					this.stopAnimation(GenerationSystem.isPrimaryFireActive ? 0 : 2);
 					break;
 				case TouchEvent.ACTION_MOVE:
+					break;
 				case TouchEvent.ACTION_DOWN:
+					this.stopAnimation(GenerationSystem.isPrimaryFireActive ? 1 : 3);
+					break;
 				default:
 					break;
 				}
@@ -260,7 +233,7 @@ public class GameActivity extends ParentGameActivity {
 		this.mScene.attachChild(switchFirePanel);
 		
 		// CREATE ARROW BUTTONS
-		final Sprite arrowLeft = new Sprite(8, CAMERA_HEIGHT/2, spriteLoader.getArrowLeftTextureRegion(), this.mEngine.getVertexBufferObjectManager()) {
+		final AnimatedSprite arrowLeft = new AnimatedSprite(8, CAMERA_HEIGHT/2, spriteLoader.getArrowLeftTextureRegion(), this.mEngine.getVertexBufferObjectManager()) {
 			@Override
 			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
 				switch (pSceneTouchEvent.getAction()) {
@@ -268,11 +241,13 @@ public class GameActivity extends ParentGameActivity {
 				case TouchEvent.ACTION_OUTSIDE:
 				case TouchEvent.ACTION_CANCEL:
 					SelfRotationComponent.leftPressed = 0;
+					this.stopAnimation(0);
 					break;
 				case TouchEvent.ACTION_MOVE:
 					if (SelfRotationComponent.leftPressed > 0) break;
 				case TouchEvent.ACTION_DOWN:
 					SelfRotationComponent.leftPressed = SelfRotationComponent.rightPressed + 1;
+					this.stopAnimation(1);
 					break;
 				default:
 					break;
@@ -280,8 +255,8 @@ public class GameActivity extends ParentGameActivity {
 				return true;
 			}
 		};
-		TextureRegion trArrowRight = spriteLoader.getArrowRightTextureRegion();
-		final Sprite arrowRight = new Sprite(CAMERA_WIDTH - trArrowRight.getWidth() - 8, CAMERA_HEIGHT/2, trArrowRight, this.mEngine.getVertexBufferObjectManager()) {
+		TiledTextureRegion trArrowRight = spriteLoader.getArrowRightTextureRegion();
+		final AnimatedSprite arrowRight = new AnimatedSprite(CAMERA_WIDTH - trArrowRight.getWidth(0) - 8, CAMERA_HEIGHT/2, trArrowRight, this.mEngine.getVertexBufferObjectManager()) {
 			@Override
 			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
 				switch (pSceneTouchEvent.getAction()) {
@@ -289,11 +264,13 @@ public class GameActivity extends ParentGameActivity {
 				case TouchEvent.ACTION_OUTSIDE:
 				case TouchEvent.ACTION_CANCEL:
 					SelfRotationComponent.rightPressed = 0;
+					this.stopAnimation(0);
 					break;
 				case TouchEvent.ACTION_MOVE:
 					if (SelfRotationComponent.rightPressed > 0) break;
 				case TouchEvent.ACTION_DOWN:
 					SelfRotationComponent.rightPressed = SelfRotationComponent.leftPressed + 1;
+					this.stopAnimation(1);
 					break;
 				default:
 					break;
@@ -301,7 +278,9 @@ public class GameActivity extends ParentGameActivity {
 				return true;
 			}
 		};
+		arrowLeft.stopAnimation(0);
 		arrowLeft.setZIndex(10);
+		arrowRight.stopAnimation(0);
 		arrowRight.setZIndex(10);
 		this.mScene.registerTouchArea(arrowLeft);
 		this.mScene.registerTouchArea(arrowRight);
