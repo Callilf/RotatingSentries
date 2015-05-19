@@ -7,9 +7,12 @@ import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.shape.RectangularShape;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.text.Text;
+import org.andengine.entity.text.TextOptions;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
+import org.andengine.util.HorizontalAlign;
 
 import com.callil.rotatingsentries.entityComponentSystem.components.DiamondComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.EnemyRobberComponent;
@@ -154,7 +157,9 @@ public class EntityFactory {
 		this.em.addComponentToEntity(new PrimaryShootingComponent(ProjectileType.STANDARD, 0.5f, 
 				SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrames(), 
 				SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrameDurations()), sentry);
-		this.em.addComponentToEntity(new SecondaryShootingComponent(50, ProjectileType.PIERCING, 0.5f, 
+		
+		Text ammoText = new Text(1844, 484, spriteLoader.getSecondaryAmmoFont(), "999", new TextOptions(HorizontalAlign.RIGHT), this.vertextBufferObjectManager);
+		this.em.addComponentToEntity(new SecondaryShootingComponent(50, ammoText, ProjectileType.PIERCING, 0.5f, 
 				SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrames(), 
 				SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrameDurations()), sentry);
 		

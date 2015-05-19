@@ -107,7 +107,6 @@ public class GameActivity extends ParentGameActivity {
 		systems.add(aoeAttackSystem);
 		
 		//Set the game time in the singleton
-		final EntityManager entityMgr = this.entityManager;
 		this.mScene.registerUpdateHandler(new IUpdateHandler() {
 			@Override
 			public void reset() {}
@@ -195,14 +194,24 @@ public class GameActivity extends ParentGameActivity {
 		final Sprite timerPanel = new Sprite(8, 8, spriteLoader.getHUDPanelTimerTextureRegion(), this.mEngine.getVertexBufferObjectManager());
 		timerPanel.setZIndex(10);
 		this.mScene.attachChild(timerPanel);
-		timerText = new Text(140, 75, spriteLoader.getPlayerHPFont(), "0123456789", new TextOptions(HorizontalAlign.CENTER), getVertexBufferObjectManager());
+		timerText = new Text(140, 75, spriteLoader.getTimerFont(), "0123456789", new TextOptions(HorizontalAlign.CENTER), getVertexBufferObjectManager());
 		timerText.setZIndex(11);
-		this.mScene.attachChild(timerText);  
+		this.mScene.attachChild(timerText);
 		
 		// Create Health Panel
 		final Sprite healthPanel = new Sprite(8, 174, spriteLoader.getHUDPanelHealthTextureRegion(), this.mEngine.getVertexBufferObjectManager());
 		healthPanel.setZIndex(10);
 		this.mScene.attachChild(healthPanel);
+		
+		// Create Primary Fire Panel
+		final Sprite primaryFirePanel = new Sprite(1508, 274, spriteLoader.getHUDPrimaryFireTextureRegion(), this.mEngine.getVertexBufferObjectManager());
+		primaryFirePanel.setZIndex(10);
+		this.mScene.attachChild(primaryFirePanel);
+		
+		// Create Primary Fire Panel
+		final Sprite secondaryFirePanel = new Sprite(1711, 274, spriteLoader.getHUDSecondaryFireTextureRegion(), this.mEngine.getVertexBufferObjectManager());
+		secondaryFirePanel.setZIndex(10);
+		this.mScene.attachChild(secondaryFirePanel);
 		
 		// Create Switch Fire Panel
 		final AnimatedSprite switchFirePanel = new AnimatedSprite(8, 342, spriteLoader.getHUDPanelSwitchFireTextureRegion(), this.mEngine.getVertexBufferObjectManager()) {

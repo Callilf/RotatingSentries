@@ -134,7 +134,7 @@ public class GenerationSystem extends System {
 		    	float currentDuration = GameSingleton.getInstance().getTotalTime();
 		    	if (nextGeneratingTime < currentDuration) {
 		    		secondaryShootingComponent.setLastGenerateTime(currentDuration);
-		    		secondaryShootingComponent.setCurrentAmmo(secondaryShootingComponent.getCurrentAmmo() - 1);
+		    		secondaryShootingComponent.shoot();
 		    		SpriteComponent spriteComponent = this.entityManager.getComponent(SpriteComponent.class, entity);
 		    		Sprite sprite = spriteComponent.getSprite();
 		    		entityFactory.generateProjectile(secondaryShootingComponent.getProjectileType(), spriteComponent.getSprite());

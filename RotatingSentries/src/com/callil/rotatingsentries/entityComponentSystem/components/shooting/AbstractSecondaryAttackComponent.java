@@ -3,6 +3,8 @@
  */
 package com.callil.rotatingsentries.entityComponentSystem.components.shooting;
 
+import org.andengine.entity.text.Text;
+
 import com.callil.rotatingsentries.entityComponentSystem.components.Component;
 
 /**
@@ -16,12 +18,17 @@ public abstract class AbstractSecondaryAttackComponent extends Component {
 	/** The current number of ammunitions. */
 	private int currentAmmo;
 	
+	/** The text to display the number of ammunitions. */
+	private Text ammoText;
+	
 	/**
 	 * @param maxAmmo the max number of ammunitions
 	 */
-	public AbstractSecondaryAttackComponent(int maxAmmo) {
+	public AbstractSecondaryAttackComponent(int maxAmmo, Text ammoText) {
 		this.maxAmmo = maxAmmo;
 		this.currentAmmo = maxAmmo;
+		this.ammoText = ammoText;
+		updateAmmoText();
 	}
 
 	/**
@@ -30,6 +37,25 @@ public abstract class AbstractSecondaryAttackComponent extends Component {
 	public AbstractSecondaryAttackComponent(String name) {
 		super(name);
 	}
+	
+	
+	/**
+	 * Shoot one ammo.
+	 */
+	public void shoot() {
+		this.currentAmmo -= 1;
+		updateAmmoText();
+	}
+	
+	private void updateAmmoText() {
+		ammoText.setText(String.valueOf(this.currentAmmo));
+		if (this.currentAmmo == 0) {
+			ammoText.setColor(0.8f, 0.2f, 0.2f);
+		} else {
+			ammoText.setColor(1f, 1f, 1f);
+		}
+	}
+	
 	
 	
 	
@@ -49,6 +75,14 @@ public abstract class AbstractSecondaryAttackComponent extends Component {
 
 	public void setCurrentAmmo(int currentAmmo) {
 		this.currentAmmo = currentAmmo;
+	}
+
+	public Text getAmmoText() {
+		return ammoText;
+	}
+
+	public void setAmmoText(Text ammoText) {
+		this.ammoText = ammoText;
 	}
 
 }

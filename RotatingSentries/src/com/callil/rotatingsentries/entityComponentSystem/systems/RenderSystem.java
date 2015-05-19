@@ -8,6 +8,7 @@ import org.andengine.entity.shape.RectangularShape;
 import com.callil.rotatingsentries.entityComponentSystem.components.DiamondComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SelfRotationComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.shooting.AbstractSecondaryAttackComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.skills.AbstractSkillComponent;
 import com.callil.rotatingsentries.entityComponentSystem.entities.Entity;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityManager;
@@ -67,15 +68,19 @@ public class RenderSystem extends System {
 			
 			//Attach diamond's life
 			DiamondComponent diamondComponent = this.entityManager.getComponent(DiamondComponent.class, entity);
-//    		if (diamondComponent != null && diamondComponent.getLifeText() != null && !diamondComponent.getLifeText().hasParent()) {
-//    			this.gameArea.attachChild(diamondComponent.getLifeText());
-//    			diamondComponent.getLifeText().setPosition(-200, 20);
-//    		}
     		if (diamondComponent != null && diamondComponent.getLifeBar() != null && !diamondComponent.getLifeBar().hasParent()) {
     			this.getScene().attachChild(diamondComponent.getLifeBarMax());
     			diamondComponent.getLifeBarMax().setZIndex(8);
     			this.getScene().attachChild(diamondComponent.getLifeBar());
     			diamondComponent.getLifeBar().setZIndex(9);
+    			this.getScene().sortChildren();
+    		}
+    		
+			//Attach secondary fire ammo
+    		AbstractSecondaryAttackComponent secFireComponent = this.entityManager.getComponent(AbstractSecondaryAttackComponent.class, entity);
+    		if (secFireComponent != null && secFireComponent.getAmmoText() != null && !secFireComponent.getAmmoText().hasParent()) {
+    			this.getScene().attachChild(secFireComponent.getAmmoText());
+    			secFireComponent.getAmmoText().setZIndex(11);
     			this.getScene().sortChildren();
     		}
 		}

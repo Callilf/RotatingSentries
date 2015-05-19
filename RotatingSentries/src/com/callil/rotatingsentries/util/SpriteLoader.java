@@ -143,6 +143,17 @@ public class SpriteLoader {
 		return mHudPanelSwitchFireTextureRegion;
 	}
 	
+	/** PRIMARY FIRE PANEL. */
+	protected TextureRegion mHudPrimaryFireTextureRegion;
+	public TextureRegion getHUDPrimaryFireTextureRegion() {
+		return mHudPrimaryFireTextureRegion;
+	}
+	
+	/** SECONDARY FIRE PANEL. */
+	protected TextureRegion mHudSecondaryFireTextureRegion;
+	public TextureRegion getHUDSecondaryFireTextureRegion() {
+		return mHudSecondaryFireTextureRegion;
+	}
 	
 	
 	//##############
@@ -233,10 +244,16 @@ public class SpriteLoader {
 	
 
 
-	/** The hp font for the player. */
-	private Font mPlayerHPFont;
-	public Font getPlayerHPFont() {
-		return mPlayerHPFont;
+	/** The font for the timer. */
+	private Font mTimerHPFont;
+	public Font getTimerFont() {
+		return mTimerHPFont;
+	}
+	
+	/** The font for the secondary fire ammo. */
+	private Font mSecondaryAmmoFont;
+	public Font getSecondaryAmmoFont() {
+		return mSecondaryAmmoFont;
 	}
 	
 	/** The font for the pause menu. */
@@ -339,6 +356,16 @@ public class SpriteLoader {
 		BitmapTextureAtlas hudPanelSwitchFireTexture = new BitmapTextureAtlas(tm, 802, 378, TextureOptions.NEAREST);
 		mHudPanelSwitchFireTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(hudPanelSwitchFireTexture, context, "hud/hud_panel_switch_fire.png", 0, 0, 2, 2);
 		hudPanelSwitchFireTexture.load();
+		
+		//Primary fire panel
+		BitmapTextureAtlas hudPrimaryFireTexture = new BitmapTextureAtlas(tm, 196, 259);
+		mHudPrimaryFireTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(hudPrimaryFireTexture, context, "hud/hud_primary_fire_frame.png", 0, 0);
+		hudPrimaryFireTexture.load();
+		
+		//Primary fire panel
+		BitmapTextureAtlas hudSecondaryFireTexture = new BitmapTextureAtlas(tm, 196, 259);
+		mHudSecondaryFireTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(hudSecondaryFireTexture, context, "hud/hud_secondary_fire_frame.png", 0, 0);
+		hudSecondaryFireTexture.load();
 
 		
 		//############
@@ -382,9 +409,13 @@ public class SpriteLoader {
 		//############
 		// Fonts
 		
-		//Font for player HPs
-		this.mPlayerHPFont = FontFactory.create(fm, tm, 256, 256, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 64);
-		this.mPlayerHPFont.load();
+		//Font for timer
+		this.mTimerHPFont = FontFactory.create(fm, tm, 256, 256, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 64);
+		this.mTimerHPFont.load();
+		
+		//Font for ammos
+		this.mSecondaryAmmoFont = FontFactory.create(fm, tm, 256, 256, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 32, Color.WHITE);
+		this.mSecondaryAmmoFont.load();
 		
 		//Font for enemy HPs
 		this.menuFont = FontFactory.create(fm, tm, 256, 256, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 72, Color.BLACK);
