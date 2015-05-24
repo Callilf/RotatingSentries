@@ -144,17 +144,31 @@ public class SpriteLoader {
 	}
 	
 	/** PRIMARY FIRE PANEL. */
-	protected TextureRegion mHudPrimaryFireTextureRegion;
-	public TextureRegion getHUDPrimaryFireTextureRegion() {
+	protected TiledTextureRegion mHudPrimaryFireTextureRegion;
+	public TiledTextureRegion getHUDPrimaryFireTextureRegion() {
 		return mHudPrimaryFireTextureRegion;
 	}
 	
 	/** SECONDARY FIRE PANEL. */
-	protected TextureRegion mHudSecondaryFireTextureRegion;
-	public TextureRegion getHUDSecondaryFireTextureRegion() {
+	protected TiledTextureRegion mHudSecondaryFireTextureRegion;
+	public TiledTextureRegion getHUDSecondaryFireTextureRegion() {
 		return mHudSecondaryFireTextureRegion;
 	}
 	
+	//############
+	// Fires
+	
+	/** Primary Standard. */
+	protected TextureRegion mFirePrimaryStandardTextureRegion;
+	public TextureRegion getFireIconPrimaryStandardTextureRegion() {
+		return mFirePrimaryStandardTextureRegion;
+	}
+	
+	/** Primary Standard. */
+	protected TextureRegion mFireSecondaryPiercingTextureRegion;
+	public TextureRegion getFireIconSecondaryPiercingTextureRegion() {
+		return mFireSecondaryPiercingTextureRegion;
+	}
 	
 	//##############
 	// Skills
@@ -358,15 +372,29 @@ public class SpriteLoader {
 		hudPanelSwitchFireTexture.load();
 		
 		//Primary fire panel
-		BitmapTextureAtlas hudPrimaryFireTexture = new BitmapTextureAtlas(tm, 196, 259);
-		mHudPrimaryFireTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(hudPrimaryFireTexture, context, "hud/hud_primary_fire_frame.png", 0, 0);
+		BitmapTextureAtlas hudPrimaryFireTexture = new BitmapTextureAtlas(tm, 392, 259);
+		mHudPrimaryFireTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(hudPrimaryFireTexture, context, "hud/hud_primary_fire_frame.png", 0, 0, 2, 1);
 		hudPrimaryFireTexture.load();
 		
 		//Primary fire panel
-		BitmapTextureAtlas hudSecondaryFireTexture = new BitmapTextureAtlas(tm, 196, 259);
-		mHudSecondaryFireTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(hudSecondaryFireTexture, context, "hud/hud_secondary_fire_frame.png", 0, 0);
+		BitmapTextureAtlas hudSecondaryFireTexture = new BitmapTextureAtlas(tm, 392, 259);
+		mHudSecondaryFireTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(hudSecondaryFireTexture, context, "hud/hud_secondary_fire_frame.png", 0, 0, 2, 1);
 		hudSecondaryFireTexture.load();
 
+		
+		//############
+		// Fires
+		
+		//Primary standard
+		BitmapTextureAtlas hudFireIconPrimaryStandardTexture = new BitmapTextureAtlas(tm, 170, 184);
+		mFirePrimaryStandardTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(hudFireIconPrimaryStandardTexture, context, "fire_icons/primary_standard.png", 0, 0);
+		hudFireIconPrimaryStandardTexture.load();
+		
+		//Secondary piercing
+		BitmapTextureAtlas hudFireIconSecondaryPiercingTexture = new BitmapTextureAtlas(tm, 170, 184);
+		mFireSecondaryPiercingTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(hudFireIconSecondaryPiercingTexture, context, "fire_icons/secondary_piercing.png", 0, 0);
+		hudFireIconSecondaryPiercingTexture.load();
+		
 		
 		//############
 		// Skills
@@ -414,7 +442,7 @@ public class SpriteLoader {
 		this.mTimerHPFont.load();
 		
 		//Font for ammos
-		this.mSecondaryAmmoFont = FontFactory.create(fm, tm, 256, 256, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 32, Color.WHITE);
+		this.mSecondaryAmmoFont = FontFactory.create(fm, tm, 256, 256, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 50, Color.WHITE);
 		this.mSecondaryAmmoFont.load();
 		
 		//Font for enemy HPs

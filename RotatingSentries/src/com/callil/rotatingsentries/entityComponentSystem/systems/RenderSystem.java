@@ -8,6 +8,7 @@ import org.andengine.entity.shape.RectangularShape;
 import com.callil.rotatingsentries.entityComponentSystem.components.DiamondComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SelfRotationComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.shooting.AbstractPrimaryAttackComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.shooting.AbstractSecondaryAttackComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.skills.AbstractSkillComponent;
 import com.callil.rotatingsentries.entityComponentSystem.entities.Entity;
@@ -76,9 +77,28 @@ public class RenderSystem extends System {
     			this.getScene().sortChildren();
     		}
     		
-			//Attach secondary fire ammo
+			//Attach primary fire icon
+    		AbstractPrimaryAttackComponent primFireComponent = this.entityManager.getComponent(AbstractPrimaryAttackComponent.class, entity);
+    		if (primFireComponent != null && primFireComponent.getIcon() != null && !primFireComponent.getIcon().hasParent()) {
+    			primFireComponent.getIcon().setX(1524);
+    			primFireComponent.getIcon().setY(337);
+    			this.getScene().attachChild(primFireComponent.getIcon());
+    			primFireComponent.getIcon().setZIndex(9);
+    			this.getScene().sortChildren();
+    		}
+    		
+			//Attach secondary fire icon and ammo
     		AbstractSecondaryAttackComponent secFireComponent = this.entityManager.getComponent(AbstractSecondaryAttackComponent.class, entity);
+    		if (secFireComponent != null && secFireComponent.getIcon() != null && !secFireComponent.getIcon().hasParent()) {
+    			secFireComponent.getIcon().setX(1727);
+    			secFireComponent.getIcon().setY(337);
+    			this.getScene().attachChild(secFireComponent.getIcon());
+    			secFireComponent.getIcon().setZIndex(9);
+    			this.getScene().sortChildren();
+    		}
     		if (secFireComponent != null && secFireComponent.getAmmoText() != null && !secFireComponent.getAmmoText().hasParent()) {
+    			secFireComponent.getAmmoText().setX(1790);
+    			secFireComponent.getAmmoText().setY(456);
     			this.getScene().attachChild(secFireComponent.getAmmoText());
     			secFireComponent.getAmmoText().setZIndex(11);
     			this.getScene().sortChildren();

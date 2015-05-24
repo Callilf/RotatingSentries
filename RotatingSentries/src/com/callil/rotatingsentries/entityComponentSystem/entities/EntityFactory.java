@@ -154,12 +154,15 @@ public class EntityFactory {
 		SpriteComponent spriteComponent = new SpriteComponent(sSentry, true).defineRectangularHitbox(108, 10, 55, 70);
 		this.em.addComponentToEntity(spriteComponent, sentry);
 		this.em.addComponentToEntity(new SelfRotationComponent(3, 0.8f, 0.2f, rotation, true, true), sentry);
-		this.em.addComponentToEntity(new PrimaryShootingComponent(ProjectileType.STANDARD, 0.5f, 
+		
+		Sprite primaryFireIcon = new Sprite(0, 0, spriteLoader.getFireIconPrimaryStandardTextureRegion(), this.vertextBufferObjectManager);
+		this.em.addComponentToEntity(new PrimaryShootingComponent(primaryFireIcon, ProjectileType.STANDARD, 0.5f, 
 				SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrames(), 
 				SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrameDurations()), sentry);
 		
-		Text ammoText = new Text(1844, 484, spriteLoader.getSecondaryAmmoFont(), "999", new TextOptions(HorizontalAlign.RIGHT), this.vertextBufferObjectManager);
-		this.em.addComponentToEntity(new SecondaryShootingComponent(50, ammoText, ProjectileType.PIERCING, 0.5f, 
+		Sprite secondaryFireIcon = new Sprite(0, 0, spriteLoader.getFireIconSecondaryPiercingTextureRegion(), this.vertextBufferObjectManager);
+		Text ammoText = new Text(0, 0, spriteLoader.getSecondaryAmmoFont(), "999", new TextOptions(HorizontalAlign.RIGHT), this.vertextBufferObjectManager);
+		this.em.addComponentToEntity(new SecondaryShootingComponent(secondaryFireIcon, 50, ammoText, ProjectileType.PIERCING, 0.5f, 
 				SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrames(), 
 				SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrameDurations()), sentry);
 		

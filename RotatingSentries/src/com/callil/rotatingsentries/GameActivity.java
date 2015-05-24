@@ -204,13 +204,15 @@ public class GameActivity extends ParentGameActivity {
 		this.mScene.attachChild(healthPanel);
 		
 		// Create Primary Fire Panel
-		final Sprite primaryFirePanel = new Sprite(1508, 274, spriteLoader.getHUDPrimaryFireTextureRegion(), this.mEngine.getVertexBufferObjectManager());
+		final AnimatedSprite primaryFirePanel = new AnimatedSprite(1508, 274, spriteLoader.getHUDPrimaryFireTextureRegion(), this.mEngine.getVertexBufferObjectManager());
 		primaryFirePanel.setZIndex(10);
+		primaryFirePanel.stopAnimation(1);
 		this.mScene.attachChild(primaryFirePanel);
 		
 		// Create Primary Fire Panel
-		final Sprite secondaryFirePanel = new Sprite(1711, 274, spriteLoader.getHUDSecondaryFireTextureRegion(), this.mEngine.getVertexBufferObjectManager());
+		final AnimatedSprite secondaryFirePanel = new AnimatedSprite(1711, 274, spriteLoader.getHUDSecondaryFireTextureRegion(), this.mEngine.getVertexBufferObjectManager());
 		secondaryFirePanel.setZIndex(10);
+		secondaryFirePanel.stopAnimation(0);
 		this.mScene.attachChild(secondaryFirePanel);
 		
 		// Create Switch Fire Panel
@@ -224,6 +226,8 @@ public class GameActivity extends ParentGameActivity {
 					GenerationSystem.isPrimaryFireActive = !GenerationSystem.isPrimaryFireActive;
 					GenerationSystem.hasFireBeenSwitched = true;
 					this.stopAnimation(GenerationSystem.isPrimaryFireActive ? 0 : 2);
+					primaryFirePanel.stopAnimation(GenerationSystem.isPrimaryFireActive ? 1 : 0);
+					secondaryFirePanel.stopAnimation(GenerationSystem.isPrimaryFireActive ? 0 : 1);
 					break;
 				case TouchEvent.ACTION_MOVE:
 					break;

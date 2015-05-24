@@ -3,6 +3,7 @@
  */
 package com.callil.rotatingsentries.entityComponentSystem.components.shooting;
 
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 
 import com.callil.rotatingsentries.entityComponentSystem.components.Component;
@@ -13,6 +14,9 @@ import com.callil.rotatingsentries.entityComponentSystem.components.Component;
  */
 public abstract class AbstractSecondaryAttackComponent extends Component {
 
+	/** The fire icon. */
+	private Sprite icon;
+	
 	/** The max number of ammunitions. */
 	private int maxAmmo;
 	/** The current number of ammunitions. */
@@ -24,7 +28,8 @@ public abstract class AbstractSecondaryAttackComponent extends Component {
 	/**
 	 * @param maxAmmo the max number of ammunitions
 	 */
-	public AbstractSecondaryAttackComponent(int maxAmmo, Text ammoText) {
+	public AbstractSecondaryAttackComponent(Sprite icon, int maxAmmo, Text ammoText) {
+		this.icon = icon;
 		this.maxAmmo = maxAmmo;
 		this.currentAmmo = maxAmmo;
 		this.ammoText = ammoText;
@@ -34,8 +39,9 @@ public abstract class AbstractSecondaryAttackComponent extends Component {
 	/**
 	 * @param name
 	 */
-	public AbstractSecondaryAttackComponent(String name) {
+	public AbstractSecondaryAttackComponent(String name, Sprite icon) {
 		super(name);
+		this.icon = icon;
 	}
 	
 	
@@ -83,6 +89,14 @@ public abstract class AbstractSecondaryAttackComponent extends Component {
 
 	public void setAmmoText(Text ammoText) {
 		this.ammoText = ammoText;
+	}
+
+	public Sprite getIcon() {
+		return icon;
+	}
+
+	public void setIcon(Sprite icon) {
+		this.icon = icon;
 	}
 
 }

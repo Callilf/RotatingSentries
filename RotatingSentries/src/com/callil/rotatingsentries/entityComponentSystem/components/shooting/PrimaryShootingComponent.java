@@ -1,5 +1,7 @@
 package com.callil.rotatingsentries.entityComponentSystem.components.shooting;
 
+import org.andengine.entity.sprite.Sprite;
+
 
 public class PrimaryShootingComponent extends AbstractPrimaryAttackComponent {
 
@@ -27,7 +29,8 @@ public class PrimaryShootingComponent extends AbstractPrimaryAttackComponent {
 	 * @param projectileType the type of projectile
 	 * @param frequency the frequency of generation per seconds
 	 */
-	public PrimaryShootingComponent(ProjectileType projectileType, float frequency) {
+	public PrimaryShootingComponent(Sprite icon, ProjectileType projectileType, float frequency) {
+		super(icon);
 		this.frequency = frequency;
 		this.projectileType = projectileType;
 		lastGenerateTime = 0;
@@ -38,8 +41,8 @@ public class PrimaryShootingComponent extends AbstractPrimaryAttackComponent {
 	 * @param projectileType the type of projectile
 	 * @param frequency the frequency of generation per seconds
 	 */
-	public PrimaryShootingComponent(ProjectileType projectileType, float frequency, int[] shootAnimFrames, long[] shootAnimDurations) {
-		this(projectileType, frequency);
+	public PrimaryShootingComponent(Sprite icon, ProjectileType projectileType, float frequency, int[] shootAnimFrames, long[] shootAnimDurations) {
+		this(icon, projectileType, frequency);
 		this.shootAnimFrames = shootAnimFrames;
 		this.shootAnimDurations = shootAnimDurations;
 	}
