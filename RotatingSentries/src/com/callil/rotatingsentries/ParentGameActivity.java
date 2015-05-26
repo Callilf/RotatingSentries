@@ -34,7 +34,8 @@ public abstract class ParentGameActivity extends BaseGameActivity {
 	public static final int CAMERA_WIDTH = 1920;
 	public static final int CAMERA_HEIGHT = 1080;
 	
-	protected static final float FPS = 45f;
+	public static final float FPS = 45f;
+	public static final float NORMALIZE_FPS = 60f;
 
 	// ===========================================================
 	// Fields

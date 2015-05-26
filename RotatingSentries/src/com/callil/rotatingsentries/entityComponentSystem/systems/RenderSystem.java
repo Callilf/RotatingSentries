@@ -139,7 +139,7 @@ public class RenderSystem extends System {
 		    	SpriteComponent spriteComponent = this.entityManager.getComponent(SpriteComponent.class, entity);
 		    	float speed = rotationComponent.increaseSpeed() * (rotationComponent.isClockwise()? 1 : -1);
 		    	if (rotationComponent != null && spriteComponent != null) {
-		    		rotationComponent.setCurrentRotation( (rotationComponent.getCurrentRotation() + speed) % 360);
+		    		rotationComponent.setCurrentRotation( (rotationComponent.getCurrentRotation() + speed * MoveSystem.MOVE_FACTOR) % 360);
 		    		spriteComponent.getSprite().setRotation(rotationComponent.getCurrentRotation());
 		    	}
 	    	}

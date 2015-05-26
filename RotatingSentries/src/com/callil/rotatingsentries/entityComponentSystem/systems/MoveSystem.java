@@ -8,6 +8,7 @@ import java.util.List;
 import org.andengine.entity.shape.RectangularShape;
 import org.andengine.entity.sprite.Sprite;
 
+import com.callil.rotatingsentries.GameActivity;
 import com.callil.rotatingsentries.entityComponentSystem.components.MoveTowardsComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
 import com.callil.rotatingsentries.entityComponentSystem.entities.Entity;
@@ -25,6 +26,9 @@ public class MoveSystem extends System {
 	/** The gameArea. */
 	private RectangularShape gameArea;
 		
+	/** move factor depending of the FPS */
+	public static float MOVE_FACTOR = GameActivity.NORMALIZE_FPS / GameActivity.FPS;
+	
 	/**
 	 * @param em
 	 */
@@ -57,16 +61,16 @@ public class MoveSystem extends System {
 		    			
 		    			Couple<Float> directionalVector = MathUtil.computeDirectionalVector(spriteCenter, targetCenter);
 		    			if (directionalVector.getX() != 0 && directionalVector.getY() != 0) {
-		    				sprite.setX(sprite.getX() + (directionalVector.getX() * moveTowardsComponent.getSpeed()));
-			    			sprite.setY(sprite.getY() + (directionalVector.getY() * moveTowardsComponent.getSpeed()));
+		    				sprite.setX(sprite.getX() + (directionalVector.getX() * moveTowardsComponent.getSpeed() * MOVE_FACTOR));
+			    			sprite.setY(sprite.getY() + (directionalVector.getY() * moveTowardsComponent.getSpeed() * MOVE_FACTOR));
 			    			
 			    			float angle = MathUtil.computeOrientationAngleFromDirectionalVector(directionalVector);
 			    			sprite.setRotation(angle);
 		    			}
 		    		} else {
 		    			// Move straight in a specific DIRECTION
-			    		sprite.setX(sprite.getX() + (moveTowardsComponent.getDirectionX() * moveTowardsComponent.getSpeed()));
-			    		sprite.setY(sprite.getY() + (moveTowardsComponent.getDirectionY() * moveTowardsComponent.getSpeed()));
+			    		sprite.setX(sprite.getX() + (moveTowardsComponent.getDirectionX() * moveTowardsComponent.getSpeed() * MOVE_FACTOR));
+			    		sprite.setY(sprite.getY() + (moveTowardsComponent.getDirectionY() * moveTowardsComponent.getSpeed() * MOVE_FACTOR));
 			    		
 			    		// test if a straight forward entity is out of screen
 			    		if (sprite.getX() < 0 || sprite.getX() > gameArea.getWidth() + sprite.getWidth() ||
