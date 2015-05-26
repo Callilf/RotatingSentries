@@ -2,6 +2,8 @@ package com.callil.rotatingsentries;
 
 import java.util.Locale;
 
+import org.andengine.engine.Engine;
+import org.andengine.engine.LimitedFPSEngine;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
@@ -31,6 +33,8 @@ public abstract class ParentGameActivity extends BaseGameActivity {
 	
 	public static final int CAMERA_WIDTH = 1920;
 	public static final int CAMERA_HEIGHT = 1080;
+	
+	protected static final float FPS = 45f;
 
 	// ===========================================================
 	// Fields
@@ -51,6 +55,11 @@ public abstract class ParentGameActivity extends BaseGameActivity {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+	
+	@Override
+	public Engine onCreateEngine(final EngineOptions pEngineOptions) {
+		return new LimitedFPSEngine(pEngineOptions, (int)FPS);
+	}
 	
 	@Override
 	public EngineOptions onCreateEngineOptions() {

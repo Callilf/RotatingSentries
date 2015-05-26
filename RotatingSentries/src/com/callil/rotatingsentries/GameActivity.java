@@ -51,9 +51,11 @@ public class GameActivity extends ParentGameActivity {
 	
 	public Text timerText;
 	
-	
-	// TEST Fields
 
+	// TEST Fields
+	/** DEBUG frame duration */
+	private float dureeTenFrame = 0;
+	private long cptFrame = 0;
 	
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -113,22 +115,25 @@ public class GameActivity extends ParentGameActivity {
 			
 			@Override
 			public void onUpdate(float pSecondsElapsed) {
-				GameSingleton instance = GameSingleton.getInstance();
-				instance.setTotalTime(GameSingleton.getInstance().getTotalTime() + pSecondsElapsed);
-				setTimerText(instance.getTotalTime());
-				
 				
 				//######################
 				// TESTS
-				
-			
-				
-				
-				
-				
+				if (DEBUG_MODE || true) {
+					dureeTenFrame += pSecondsElapsed;
+					if (++cptFrame % 10 == 0) {
+						dureeTenFrame /= 10;
+						Log.d("RS", "Frame : " + dureeTenFrame + "ms, fps : " + (1/dureeTenFrame));
+						dureeTenFrame = 0;
+					}
+				}
 				// END OF TESTS
 				//######################
 				
+				pSecondsElapsed = 1/FPS;
+				
+				GameSingleton instance = GameSingleton.getInstance();
+				instance.setTotalTime(GameSingleton.getInstance().getTotalTime() + pSecondsElapsed);
+				setTimerText(instance.getTotalTime());			
 			}
 		});
 
