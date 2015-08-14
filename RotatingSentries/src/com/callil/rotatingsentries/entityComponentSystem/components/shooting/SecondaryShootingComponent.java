@@ -32,6 +32,9 @@ public class SecondaryShootingComponent extends AbstractSecondaryAttackComponent
 		this.frequency = frequency;
 		this.projectileType = projectileType;
 		lastGenerateTime = 0;
+		
+		//A secondary fire is never active by default. It's activated only when the user activates it on the HUD
+		this.setActive(false);
 	}
 	
 	/**

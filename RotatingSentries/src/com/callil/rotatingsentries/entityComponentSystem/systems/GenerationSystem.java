@@ -9,7 +9,6 @@ import org.andengine.entity.sprite.Sprite;
 
 import com.callil.rotatingsentries.entityComponentSystem.components.DiamondComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
-import com.callil.rotatingsentries.entityComponentSystem.components.shooting.AbstractPrimaryAttackComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.shooting.AbstractSecondaryAttackComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.shooting.PrimaryShootingComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.shooting.SecondaryShootingComponent;
@@ -20,10 +19,10 @@ import com.callil.rotatingsentries.singleton.GameSingleton;
 
 public class GenerationSystem extends System {
 
-	/** Whether the fire type (primary, secondary) has been switched during this frame. */
-	public static boolean hasFireBeenSwitched = true;
-	/** Represents the state of the primary/secondary fire button. */
-	public static boolean isPrimaryFireActive = true;
+	/** Whether the secondary fire has been release during this frame. */
+	public static boolean hasSecondaryFireBeenReleased = true;
+	/** Represents the state of the secondary fire button. */
+	public static boolean isSecondaryFireActive = false;
 	
 	private EntityFactory entityFactory;
 	
@@ -48,6 +47,8 @@ public class GenerationSystem extends System {
 	    	float currentDuration = GameSingleton.getInstance().getTotalTime();
 	    	if (nextGeneratingTime < currentDuration) {
 	    		diamondComponent.setLastGenerateTime(currentDuration);
+	    		
+	    		//Lower the frequency at each generation
 	    		diamondComponent.setFrequency(Math.max(diamondComponent.getFrequency() - 0.1f, 1.0f));
 	    		
 	    		// Generate a new enemy
@@ -80,26 +81,29 @@ public class GenerationSystem extends System {
 					break;
 					default:
 				}
-				this.entityFactory.generateRobber(generatedX, generatedY, 2, sprite, ropeAngle);
+				
+				//Generate robber or red robber
+				int robberType = rand.nextInt(4);
+				if (robberType < 3) {
+					this.entityFactory.generateRobber(generatedX, generatedY, 2, sprite, ropeAngle);
+				} else {
+					this.entityFactory.generateRobberRed(generatedX, generatedY, 2, sprite, ropeAngle);
+					//Since robberRed are stronger, re-increase the frequency when they appear
+					diamondComponent.setFrequency(diamondComponent.getFrequency() + 0.2f);
+				}
 				
 	    	}
 	    }
 	    
 	    
-	    //TODO: maybe move to another system
-	    //Handle switch of fire
-	    if (hasFireBeenSwitched) {
-	    	entities = this.entityManager.getAllEntitiesPosessingComponentOfClass(AbstractPrimaryAttackComponent.class, true);
-	    	for (Entity entity : entities) {
-	    		AbstractPrimaryAttackComponent primaryAttackComponent = this.entityManager.getComponent(AbstractPrimaryAttackComponent.class, entity);
-	    		primaryAttackComponent.setActive(isPrimaryFireActive);
-	    	}
+	    //Handle the alternate fire
+	    if (isSecondaryFireActive && hasSecondaryFireBeenReleased) {
 	    	entities = this.entityManager.getAllEntitiesPosessingComponentOfClass(AbstractSecondaryAttackComponent.class, true);
 	    	for (Entity entity : entities) {
 	    		AbstractSecondaryAttackComponent secondaryAttackComponent = this.entityManager.getComponent(AbstractSecondaryAttackComponent.class, entity);
-	    		secondaryAttackComponent.setActive(!isPrimaryFireActive);
+	    		secondaryAttackComponent.setActive(true);
 	    	}
-	    	hasFireBeenSwitched = false;
+	    	hasSecondaryFireBeenReleased = false;
 	    }
 	    
 	    
@@ -143,6 +147,8 @@ public class GenerationSystem extends System {
 		    		if (spriteComponent.getSprite() instanceof AnimatedSprite && secondaryShootingComponent.getShootAnimFrames() != null) {
 		    			((AnimatedSprite)sprite).animate(secondaryShootingComponent.getShootAnimDurations(), secondaryShootingComponent.getShootAnimFrames(), false);
 		    		}
+		    		//After 1 shot, the secondary weapon becomes inactive again
+		    		secondaryShootingComponent.setActive(false);
 		    	}
 	    	}
 	    }

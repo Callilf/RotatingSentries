@@ -141,6 +141,30 @@ public class EntityFactory {
 	}
 	
 	/**
+	 * Generate an strong red robber at the desired position.
+	 * @param x the x position
+	 * @param y the y position
+	 * @param speed the speed of the movement
+	 * @param target the target of the movement (the robber will go towards the center of it's target)
+	 * @return The entity corresponding to the created robber.
+	 */
+	public Entity generateRobberRed(float x, float y, float speed, Sprite target, float ropeRotation) {
+		final AnimatedSprite sRobber = new AnimatedSprite(x, y, this.spriteLoader.getEnemyRobberRedTextureRegion(), this.vertextBufferObjectManager);
+		Entity robber = this.em.createEntity();
+		
+		this.em.addComponentToEntity(new SpriteComponent(sRobber, true).defineRectangularHitboxDiff(10, 20, 10, 30), robber);
+		// BOARD MODE (the two following call are the same
+		//this.em.addComponentToEntity(new SpriteComponent(sRobber, true).defineRectangularHitboxDiff(-40, 40, -40, 40), robber);
+		//this.em.addComponentToEntity(new SpriteComponent(sRobber, true).defineRectangularHitbox(-40, 40, 176, 16), robber);
+		
+		final AnimatedSprite sRope = new AnimatedSprite(x, y, this.spriteLoader.getEnemyRobberRopeTextureRegion(), this.vertextBufferObjectManager);
+		this.em.addComponentToEntity(new EnemyRobberComponent(speed, target, sRope, ropeRotation), robber);
+		this.em.addComponentToEntity(new AttackComponent(2, 1), robber);
+		
+		return robber;
+	}
+	
+	/**
 	 * Generate a sentry at the middle of the screen.
 	 * @param rotation the start rotation of the sentry
 	 * @return The entity corresponding to the created sentry.
@@ -163,7 +187,7 @@ public class EntityFactory {
 		
 		Sprite secondaryFireIcon = new Sprite(0, 0, spriteLoader.getFireIconSecondaryPiercingTextureRegion(), this.vertextBufferObjectManager);
 		Text ammoText = new Text(0, 0, spriteLoader.getSecondaryAmmoFont(), "999", new TextOptions(HorizontalAlign.RIGHT), this.vertextBufferObjectManager);
-		this.em.addComponentToEntity(new SecondaryShootingComponent(secondaryFireIcon, 50, ammoText, ProjectileType.PIERCING, 0.5f, 
+		this.em.addComponentToEntity(new SecondaryShootingComponent(secondaryFireIcon, 50, ammoText, ProjectileType.PIERCING, 0.1f, 
 				SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrames(), 
 				SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrameDurations()), sentry);
 		
@@ -206,7 +230,7 @@ public class EntityFactory {
 			SpriteComponent scStdProj = new SpriteComponent(sStandardProjectile, true);
 			this.em.addComponentToEntity(scStdProj, standardProjectile);
 			this.em.addComponentToEntity(new MoveTowardsComponent(15, startX, startY), standardProjectile);
-			this.em.addComponentToEntity(new DefenseComponent(1, 2, false), standardProjectile);
+			this.em.addComponentToEntity(new DefenseComponent(1, 1, false), standardProjectile);
 			gameArea.attachChild(sStandardProjectile);
 			scStdProj.setAttached(true);
 			return standardProjectile;

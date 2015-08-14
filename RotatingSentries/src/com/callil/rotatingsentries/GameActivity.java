@@ -215,29 +215,22 @@ public class GameActivity extends ParentGameActivity {
 		this.mScene.attachChild(primaryFirePanel);
 		
 		// Create Primary Fire Panel
-		final AnimatedSprite secondaryFirePanel = new AnimatedSprite(1711, 274, spriteLoader.getHUDSecondaryFireTextureRegion(), this.mEngine.getVertexBufferObjectManager());
-		secondaryFirePanel.setZIndex(10);
-		secondaryFirePanel.stopAnimation(0);
-		this.mScene.attachChild(secondaryFirePanel);
-		
-		// Create Switch Fire Panel
-		final AnimatedSprite switchFirePanel = new AnimatedSprite(8, 342, spriteLoader.getHUDPanelSwitchFireTextureRegion(), this.mEngine.getVertexBufferObjectManager()) {
+		final AnimatedSprite secondaryFirePanel = new AnimatedSprite(1711, 274, spriteLoader.getHUDSecondaryFireTextureRegion(), this.mEngine.getVertexBufferObjectManager()) {
 			@Override
 			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
 				switch (pSceneTouchEvent.getAction()) {
 				case TouchEvent.ACTION_UP:
 				case TouchEvent.ACTION_OUTSIDE:
 				case TouchEvent.ACTION_CANCEL:
-					GenerationSystem.isPrimaryFireActive = !GenerationSystem.isPrimaryFireActive;
-					GenerationSystem.hasFireBeenSwitched = true;
-					this.stopAnimation(GenerationSystem.isPrimaryFireActive ? 0 : 2);
-					primaryFirePanel.stopAnimation(GenerationSystem.isPrimaryFireActive ? 1 : 0);
-					secondaryFirePanel.stopAnimation(GenerationSystem.isPrimaryFireActive ? 0 : 1);
+					GenerationSystem.isSecondaryFireActive = false;
+					GenerationSystem.hasSecondaryFireBeenReleased = true;
+					this.stopAnimation(0);
 					break;
 				case TouchEvent.ACTION_MOVE:
 					break;
 				case TouchEvent.ACTION_DOWN:
-					this.stopAnimation(GenerationSystem.isPrimaryFireActive ? 1 : 3);
+					this.stopAnimation(1);
+					GenerationSystem.isSecondaryFireActive = true;
 					break;
 				default:
 					break;
@@ -245,10 +238,40 @@ public class GameActivity extends ParentGameActivity {
 				return true;
 			}
 		};
-		switchFirePanel.setZIndex(10);
-		switchFirePanel.stopAnimation(0);
-		this.mScene.registerTouchArea(switchFirePanel);
-		this.mScene.attachChild(switchFirePanel);
+		secondaryFirePanel.setZIndex(10);
+		secondaryFirePanel.stopAnimation(0);
+		this.mScene.registerTouchArea(secondaryFirePanel);
+		this.mScene.attachChild(secondaryFirePanel);
+		
+		// Create Switch Fire Panel
+//		final AnimatedSprite switchFirePanel = new AnimatedSprite(8, 342, spriteLoader.getHUDPanelSwitchFireTextureRegion(), this.mEngine.getVertexBufferObjectManager()) {
+//			@Override
+//			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
+//				switch (pSceneTouchEvent.getAction()) {
+//				case TouchEvent.ACTION_UP:
+//				case TouchEvent.ACTION_OUTSIDE:
+//				case TouchEvent.ACTION_CANCEL:
+//					GenerationSystem.isPrimaryFireActive = !GenerationSystem.isPrimaryFireActive;
+//					GenerationSystem.hasFireBeenSwitched = true;
+//					this.stopAnimation(GenerationSystem.isPrimaryFireActive ? 0 : 2);
+//					primaryFirePanel.stopAnimation(GenerationSystem.isPrimaryFireActive ? 1 : 0);
+//					secondaryFirePanel.stopAnimation(GenerationSystem.isPrimaryFireActive ? 0 : 1);
+//					break;
+//				case TouchEvent.ACTION_MOVE:
+//					break;
+//				case TouchEvent.ACTION_DOWN:
+//					this.stopAnimation(GenerationSystem.isPrimaryFireActive ? 1 : 3);
+//					break;
+//				default:
+//					break;
+//				}
+//				return true;
+//			}
+//		};
+//		switchFirePanel.setZIndex(10);
+//		switchFirePanel.stopAnimation(0);
+//		this.mScene.registerTouchArea(switchFirePanel);
+//		this.mScene.attachChild(switchFirePanel);
 		
 		// CREATE ARROW BUTTONS
 		final AnimatedSprite arrowLeft = new AnimatedSprite(8, CAMERA_HEIGHT/2, spriteLoader.getArrowLeftTextureRegion(), this.mEngine.getVertexBufferObjectManager()) {
