@@ -42,14 +42,16 @@ public class AOEAttackComponent extends AbstractSkillComponent {
 	
 	
 	/**
-	 * Perform an attack.
+	 * Perform an attack. If an attack has already been performed, just return the amount of damages.
 	 * @return the amount of damages dealt.
 	 */
 	public int performAttack() {
-		super.performAction();
-		setAttacking(true);
-		sprite.setVisible(true);
-		sprite.animate(SpriteAnimationEnum.SENTRY_ELECTRIC_ATTACK.getFrameDurations(), SpriteAnimationEnum.SENTRY_ELECTRIC_ATTACK.getFrames(), false);
+		if (!this.isAttacking()) {
+			super.performAction();
+			setAttacking(true);
+			sprite.setVisible(true);
+			sprite.animate(SpriteAnimationEnum.SENTRY_ELECTRIC_ATTACK.getFrameDurations(), SpriteAnimationEnum.SENTRY_ELECTRIC_ATTACK.getFrames(), false);
+		}
 		return getDamage();
 	}
 	

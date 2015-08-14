@@ -51,6 +51,7 @@ public class DamageSystem extends System {
 						boolean hitterDead = cHitter.hit(cHittable.getDamage());
 						boolean hittableDead = cHittable.hit(cHitter.getDamage());
 						if (hittableDead) {
+							//TODO : externalize enemy death
 							entityManager.removeEntity(hittable);
 						}
 						if (hitterDead) {
@@ -98,39 +99,23 @@ public class DamageSystem extends System {
 			if (aoeAttackComponent.isReady() || aoeAttackComponent.isAttacking()) {
 				
 				List<Entity> hittables = this.entityManager.getAllEntitiesPosessingComponentOfClass(AttackComponent.class);
-				if (aoeAttackComponent.isReady()) {
-					//Perform a new attack
-					for (Entity hittable : hittables) {
-						SpriteComponent scHittable = this.entityManager.getComponent(SpriteComponent.class, hittable);
-						if (scHittable != null) { // in case the entity is already dead
-							IShape hHittable = this.entityManager.getComponent(SpriteComponent.class, hittable).getHitbox();
-							if (aoeAttackComponent.getTrigger().collidesWith(hHittable)) {
-								AttackComponent cHittable = this.entityManager.getComponent(AttackComponent.class, hittable);
-								// if dead should continue
-								boolean hittableDead = cHittable.hit(aoeAttackComponent.performAttack());
-								if (hittableDead) {
-									entityManager.removeEntity(hittable);
-								}
-							}
-						}
-					}
-				} else if (aoeAttackComponent.isAttacking()) {
-					//Deal damages with the current attack
-					for (Entity hittable : hittables) {
-						SpriteComponent scHittable = this.entityManager.getComponent(SpriteComponent.class, hittable);
-						if (scHittable != null) { // in case the entity is already dead
-							IShape hHittable = this.entityManager.getComponent(SpriteComponent.class, hittable).getHitbox();
-							if (aoeAttackComponent.getSprite().collidesWith(hHittable)) {
-								AttackComponent cHittable = this.entityManager.getComponent(AttackComponent.class, hittable);
-								// if dead should continue
-								boolean hittableDead = cHittable.hit(aoeAttackComponent.getDamage());
-								if (hittableDead) {
-									entityManager.removeEntity(hittable);
-								}
+				//Perform a new attack or get damages from the current attack
+				for (Entity hittable : hittables) {
+					SpriteComponent scHittable = this.entityManager.getComponent(SpriteComponent.class, hittable);
+					if (scHittable != null) { // in case the entity is already dead
+						IShape hHittable = this.entityManager.getComponent(SpriteComponent.class, hittable).getHitbox();
+						if (aoeAttackComponent.getTrigger().collidesWith(hHittable)) {
+							AttackComponent cHittable = this.entityManager.getComponent(AttackComponent.class, hittable);
+							// if dead should continue
+							boolean hittableDead = cHittable.hit(aoeAttackComponent.performAttack());
+							if (hittableDead) {
+								//TODO : externalize enemy death
+								entityManager.removeEntity(hittable);
 							}
 						}
 					}
 				}
+				
 			}
 		}
 

@@ -102,6 +102,11 @@ public class SpriteLoader {
 		return mProjPiercingTextureRegion;
 	}
 	
+	/** POWER-UP */
+	protected TextureRegion mPowerUpTextureRegion;
+	public TextureRegion getPowerUpTextureRegion() {
+		return mPowerUpTextureRegion;
+	}
 	
 	
 	//##############
@@ -337,6 +342,11 @@ public class SpriteLoader {
 		BitmapTextureAtlas projPiercingTexture = new BitmapTextureAtlas(tm, 6, 14, TextureOptions.NEAREST);
 		mProjPiercingTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(projPiercingTexture, context, "projectile_piercing.png", 0, 0);
 		projPiercingTexture.load();
+		
+		//Power up
+		BitmapTextureAtlas powerUpTexture = new BitmapTextureAtlas(tm, 57, 57, TextureOptions.NEAREST);
+		mPowerUpTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(powerUpTexture, context, "power-up.png", 0, 0);
+		powerUpTexture.load();
 		
 		//############
 		// HUD
