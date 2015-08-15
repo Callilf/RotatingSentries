@@ -3,7 +3,7 @@ package com.callil.rotatingsentries.entityComponentSystem.components.shooting;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 
-import com.callil.rotatingsentries.entityComponentSystem.components.shooting.PrimaryShootingComponent.ProjectileType;
+import com.callil.rotatingsentries.entityComponentSystem.components.shooting.AbstractPrimaryAttackComponent.ProjectileType;
 
 
 public class SecondaryShootingComponent extends AbstractSecondaryAttackComponent {
@@ -32,9 +32,6 @@ public class SecondaryShootingComponent extends AbstractSecondaryAttackComponent
 		this.frequency = frequency;
 		this.projectileType = projectileType;
 		lastGenerateTime = 0;
-		
-		//A secondary fire is never active by default. It's activated only when the user activates it on the HUD
-		this.setActive(false);
 	}
 	
 	/**

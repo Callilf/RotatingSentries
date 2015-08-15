@@ -26,6 +26,7 @@ import com.callil.rotatingsentries.entityComponentSystem.systems.DamageSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.EnemyRobberSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.GameSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.GenerationSystem;
+import com.callil.rotatingsentries.entityComponentSystem.systems.MineSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.MoveSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.RenderSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.System;
@@ -83,7 +84,33 @@ public class GameActivity extends ParentGameActivity {
 		
 		// Background : game area
 		TextureRegion backgroundTexture = spriteLoader.getBackgroundRegion();
-		Sprite background = new Sprite((CAMERA_WIDTH-backgroundTexture.getWidth())/2, (CAMERA_HEIGHT-backgroundTexture.getHeight())/2, backgroundTexture, this.mEngine.getVertexBufferObjectManager());
+		Sprite background = new Sprite((CAMERA_WIDTH-backgroundTexture.getWidth())/2, (CAMERA_HEIGHT-backgroundTexture.getHeight())/2, backgroundTexture, this.mEngine.getVertexBufferObjectManager()) {
+			//Handle touches on the game area
+			@Override
+			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
+				GameSingleton singleton = GameSingleton.getInstance();
+				switch (pSceneTouchEvent.getAction()) {
+				case TouchEvent.ACTION_UP:
+				case TouchEvent.ACTION_OUTSIDE:
+				case TouchEvent.ACTION_CANCEL:
+					singleton.isTouchingArea = false;
+					break;
+				case TouchEvent.ACTION_MOVE:
+					singleton.areaTouchX = pTouchAreaLocalX;
+					singleton.areaTouchY = pTouchAreaLocalY;
+					break;
+				case TouchEvent.ACTION_DOWN:
+					singleton.isTouchingArea = true;
+					singleton.areaTouchX = pTouchAreaLocalX;
+					singleton.areaTouchY = pTouchAreaLocalY;
+					break;
+				default:
+					break;
+				}
+				return true;
+			}
+		};
+		this.mScene.registerTouchArea(background);
 		this.gameArea = background;
 		
 		//EntityManager & systems
@@ -94,6 +121,7 @@ public class GameActivity extends ParentGameActivity {
 		RenderSystem renderSystem = new RenderSystem(this.entityManager, background, mScene);
 		MoveSystem moveSystem = new MoveSystem(this.entityManager, background);
 		DamageSystem damageSystem = new DamageSystem(this.entityManager);
+		MineSystem mineSystem = new MineSystem(this.entityManager, entityFactory, background);
 		EnemyRobberSystem enemyRobberSystem = new EnemyRobberSystem(this.entityManager, background);
 		GenerationSystem generationSystem = new GenerationSystem(entityManager, entityFactory, background);
 		AOEAttackSystem aoeAttackSystem = new AOEAttackSystem(this.entityManager);
@@ -104,6 +132,7 @@ public class GameActivity extends ParentGameActivity {
 		systems.add(renderSystem);
 		systems.add(moveSystem);
 		systems.add(damageSystem);
+		systems.add(mineSystem);
 		systems.add(enemyRobberSystem);
 		systems.add(generationSystem);
 		systems.add(aoeAttackSystem);

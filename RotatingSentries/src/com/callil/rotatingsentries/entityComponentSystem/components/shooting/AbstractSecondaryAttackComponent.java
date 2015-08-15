@@ -13,6 +13,11 @@ import com.callil.rotatingsentries.entityComponentSystem.components.Component;
  * Defines that the entity can shoot with a primary fire.
  */
 public abstract class AbstractSecondaryAttackComponent extends Component {
+	
+	public enum ExplosiveType {
+		GRENADE,
+		MINE;
+	}
 
 	/** The fire icon. */
 	private Sprite icon;
@@ -34,6 +39,9 @@ public abstract class AbstractSecondaryAttackComponent extends Component {
 		this.currentAmmo = maxAmmo;
 		this.ammoText = ammoText;
 		updateAmmoText();
+		
+		//A secondary fire is never active by default. It's activated only when the user activates it on the HUD
+		this.setActive(false);
 	}
 
 	/**
@@ -42,6 +50,9 @@ public abstract class AbstractSecondaryAttackComponent extends Component {
 	public AbstractSecondaryAttackComponent(String name, Sprite icon) {
 		super(name);
 		this.icon = icon;
+		
+		//A secondary fire is never active by default. It's activated only when the user activates it on the HUD
+		this.setActive(false);
 	}
 	
 	

@@ -13,6 +13,11 @@ import com.callil.rotatingsentries.entityComponentSystem.components.Component;
  */
 public abstract class AbstractPrimaryAttackComponent extends Component {
 
+	public enum ProjectileType {
+		STANDARD,
+		PIERCING;
+	}
+	
 	/** The fire icon. */
 	private Sprite icon;
 	

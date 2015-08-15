@@ -95,6 +95,12 @@ public class SpriteLoader {
 		return mSentryElectricAttackTextureRegion;
 	}
 	
+	/** TARGET. */
+	protected TextureRegion mTargetTextureRegion;
+	public TextureRegion getTargetTextureRegion() {
+		return mTargetTextureRegion;
+	}
+	
 	/** PROJECTILE : Standard */
 	protected TextureRegion mProjStdTextureRegion;
 	public TextureRegion getProjStdTextureRegion() {
@@ -105,6 +111,12 @@ public class SpriteLoader {
 	protected TextureRegion mProjPiercingTextureRegion;
 	public TextureRegion getProjPiercingTextureRegion() {
 		return mProjPiercingTextureRegion;
+	}
+	
+	/** PROJECTILE : Mine */
+	protected TiledTextureRegion mProjMineTextureRegion;
+	public TiledTextureRegion getProjMineTextureRegion() {
+		return mProjMineTextureRegion;
 	}
 	
 	/** POWER-UP */
@@ -174,11 +186,19 @@ public class SpriteLoader {
 		return mFirePrimaryStandardTextureRegion;
 	}
 	
-	/** Primary Standard. */
+	/** Secondary Piercing. */
 	protected TextureRegion mFireSecondaryPiercingTextureRegion;
 	public TextureRegion getFireIconSecondaryPiercingTextureRegion() {
 		return mFireSecondaryPiercingTextureRegion;
 	}
+	
+	/** Secondary Mine. */
+	protected TextureRegion mFireSecondaryMineTextureRegion;
+	public TextureRegion getFireIconSecondaryMineTextureRegion() {
+		return mFireSecondaryMineTextureRegion;
+	}
+	
+	
 	
 	//##############
 	// Skills
@@ -343,6 +363,11 @@ public class SpriteLoader {
 		mSentryElectricAttackTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(sentryElectricAttackTexture, context, "sentry_electric_attack.png", 0, 0, 7, 1);
 		sentryElectricAttackTexture.load();
 
+		//Target
+		BitmapTextureAtlas targetTexture = new BitmapTextureAtlas(tm, 150, 150, TextureOptions.NEAREST);
+		mTargetTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(targetTexture, context, "target.png", 0, 0);
+		targetTexture.load();
+		
 		//Standard projectile
 		BitmapTextureAtlas projStdTexture = new BitmapTextureAtlas(tm, 8, 8, TextureOptions.NEAREST);
 		mProjStdTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(projStdTexture, context, "projectile_standard.png", 0, 0);
@@ -352,6 +377,11 @@ public class SpriteLoader {
 		BitmapTextureAtlas projPiercingTexture = new BitmapTextureAtlas(tm, 6, 14, TextureOptions.NEAREST);
 		mProjPiercingTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(projPiercingTexture, context, "projectile_piercing.png", 0, 0);
 		projPiercingTexture.load();
+		
+		//Mine
+		BitmapTextureAtlas projMineTexture = new BitmapTextureAtlas(tm, 160, 80, TextureOptions.NEAREST);
+		mProjMineTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(projMineTexture, context, "projectile_landmine.png", 0, 0, 2, 1);
+		projMineTexture.load();
 		
 		//Power up
 		BitmapTextureAtlas powerUpTexture = new BitmapTextureAtlas(tm, 57, 57, TextureOptions.NEAREST);
@@ -414,6 +444,11 @@ public class SpriteLoader {
 		BitmapTextureAtlas hudFireIconSecondaryPiercingTexture = new BitmapTextureAtlas(tm, 170, 184);
 		mFireSecondaryPiercingTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(hudFireIconSecondaryPiercingTexture, context, "fire_icons/secondary_piercing.png", 0, 0);
 		hudFireIconSecondaryPiercingTexture.load();
+		
+		//Secondary mine
+		BitmapTextureAtlas hudFireIconSecondaryMineTexture = new BitmapTextureAtlas(tm, 170, 184);
+		mFireSecondaryMineTextureRegion =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(hudFireIconSecondaryMineTexture, context, "fire_icons/secondary_mine.png", 0, 0);
+		hudFireIconSecondaryMineTexture.load();
 		
 		
 		//############

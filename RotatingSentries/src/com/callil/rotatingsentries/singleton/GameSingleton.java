@@ -15,6 +15,12 @@ public class GameSingleton {
 	/** The total time elapsed. */
 	private float totalTime;
 	
+	// Area touch related attributes
+	/** If the user is touching during this frame. */
+	public boolean isTouchingArea;
+	public float areaTouchX;
+	public float areaTouchY;
+	
 	
 	/**
 	 * Constructor.

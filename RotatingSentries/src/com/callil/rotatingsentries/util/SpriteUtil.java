@@ -24,6 +24,17 @@ public class SpriteUtil {
 	}
 	
 	/**
+	 * Place the center of the given sprite at the desired position.
+	 * @param sprite the sprite to move
+	 * @param x the x pos
+	 * @param y the y pos
+	 */
+	public static void setCenter(Sprite sprite, float x, float y) {
+		sprite.setX(x - sprite.getWidth()/2);
+		sprite.setY(y - sprite.getHeight()/2);
+	}
+	
+	/**
 	 * Return the distance between the center of 2 sprites.
 	 * @param source the source sprite
 	 * @param dest the destination sprite

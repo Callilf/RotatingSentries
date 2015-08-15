@@ -4,11 +4,6 @@ import org.andengine.entity.sprite.Sprite;
 
 
 public class PrimaryShootingComponent extends AbstractPrimaryAttackComponent {
-
-	public enum ProjectileType {
-		STANDARD,
-		PIERCING;
-	}
 	
 	/** number of generate projectile per seconds */
 	private float frequency;

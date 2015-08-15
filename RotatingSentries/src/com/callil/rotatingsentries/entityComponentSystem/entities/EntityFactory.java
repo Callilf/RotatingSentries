@@ -23,12 +23,15 @@ import com.callil.rotatingsentries.entityComponentSystem.components.SolidCompone
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.attackDefense.AttackComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.attackDefense.DefenseComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.shooting.AbstractPrimaryAttackComponent.ProjectileType;
+import com.callil.rotatingsentries.entityComponentSystem.components.shooting.AbstractSecondaryAttackComponent.ExplosiveType;
 import com.callil.rotatingsentries.entityComponentSystem.components.shooting.PrimaryShootingComponent;
-import com.callil.rotatingsentries.entityComponentSystem.components.shooting.PrimaryShootingComponent.ProjectileType;
+import com.callil.rotatingsentries.entityComponentSystem.components.shooting.SecondaryMineComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.shooting.SecondaryShootingComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.skills.AOEAttackComponent;
 import com.callil.rotatingsentries.enums.SpriteAnimationEnum;
 import com.callil.rotatingsentries.util.SpriteLoader;
+import com.callil.rotatingsentries.util.SpriteUtil;
 
 /**
  * @author Callil
@@ -185,11 +188,19 @@ public class EntityFactory {
 				SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrames(), 
 				SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrameDurations()), sentry);
 		
-		Sprite secondaryFireIcon = new Sprite(0, 0, spriteLoader.getFireIconSecondaryPiercingTextureRegion(), this.vertextBufferObjectManager);
+		
+		//Secondary shooting test :
+//		Sprite secondaryFireIcon = new Sprite(0, 0, spriteLoader.getFireIconSecondaryPiercingTextureRegion(), this.vertextBufferObjectManager);
+//		Text ammoText = new Text(0, 0, spriteLoader.getSecondaryAmmoFont(), "999", new TextOptions(HorizontalAlign.RIGHT), this.vertextBufferObjectManager);
+//		this.em.addComponentToEntity(new SecondaryShootingComponent(secondaryFireIcon, 50, ammoText, ProjectileType.PIERCING, 0.1f, 
+//				SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrames(), 
+//				SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrameDurations()), sentry);
+		
+		//Secondary mine test :
+		Sprite secondaryMineIcon = new Sprite(0, 0, spriteLoader.getFireIconSecondaryMineTextureRegion(), this.vertextBufferObjectManager);
+		Sprite targetSprite = new Sprite(0, 0, spriteLoader.getTargetTextureRegion(), this.vertextBufferObjectManager);
 		Text ammoText = new Text(0, 0, spriteLoader.getSecondaryAmmoFont(), "999", new TextOptions(HorizontalAlign.RIGHT), this.vertextBufferObjectManager);
-		this.em.addComponentToEntity(new SecondaryShootingComponent(secondaryFireIcon, 50, ammoText, ProjectileType.PIERCING, 0.1f, 
-				SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrames(), 
-				SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrameDurations()), sentry);
+		this.em.addComponentToEntity(new SecondaryMineComponent(secondaryMineIcon, 3, ammoText, targetSprite), sentry);
 		
 		Rectangle hitbox = (Rectangle)spriteComponent.getHitbox();
 		final AnimatedSprite sElectricAttack = new AnimatedSprite(0, 0, this.spriteLoader.getSentryElectricAttackTextureRegion(), this.vertextBufferObjectManager);
@@ -199,7 +210,7 @@ public class EntityFactory {
 		sSentry.attachChild(sElectricAttack);
 		final Sprite sElectricAttackIcon = new Sprite(0, 0, this.spriteLoader.getSkillElectricityTextureRegion(), this.vertextBufferObjectManager);
 		final Sprite sElectricAttackIconFrame = new Sprite(0, 0, this.spriteLoader.getSkillFrameTextureRegion(), this.vertextBufferObjectManager);
-		//Temp :
+		//Temp : placing the icon on the top right of the HUD
 		sElectricAttackIconFrame.setX(1508);
 		sElectricAttackIconFrame.setY(10);
 		sElectricAttackIcon.setX(1508);
@@ -249,6 +260,30 @@ public class EntityFactory {
 			return piercingProjectile;
 		default:
 			throw new IllegalArgumentException("Undefined projectile " + projectileType);
+		}
+	}
+	
+	/**
+	 * Generate a projectile
+	 * @param explosiveType the type of projectile
+	 * @param sentry the sprite of the sentry which generate the projectile
+	 */
+	public Entity generateExplosive(ExplosiveType explosiveType, float x, float y) {
+		switch (explosiveType) {
+		case GRENADE:
+		case MINE:
+			final AnimatedSprite mineSprite = new AnimatedSprite(0, 0, spriteLoader.getProjMineTextureRegion(), this.vertextBufferObjectManager);
+			SpriteUtil.setCenter(mineSprite, x, y);
+			Entity mine = this.em.createEntity();
+			SpriteComponent mineSpriteCompo = new SpriteComponent(mineSprite, true);
+			this.em.addComponentToEntity(mineSpriteCompo, mine);
+			gameArea.attachChild(mineSprite);
+			mineSpriteCompo.setAttached(true);
+			
+			mineSprite.animate(SpriteAnimationEnum.MINE_BLINK.getFrameDurations(), SpriteAnimationEnum.MINE_BLINK.getFrames(), true);
+			return mine;
+		default:
+			throw new IllegalArgumentException("Undefined explosive " + explosiveType);
 		}
 	}
 
