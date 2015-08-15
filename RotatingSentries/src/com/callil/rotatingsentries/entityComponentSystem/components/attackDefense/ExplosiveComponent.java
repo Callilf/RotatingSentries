@@ -4,6 +4,7 @@
 package com.callil.rotatingsentries.entityComponentSystem.components.attackDefense;
 
 import org.andengine.entity.shape.RectangularShape;
+import org.andengine.entity.sprite.AnimatedSprite;
 
 import android.util.Log;
 
@@ -16,6 +17,9 @@ public class ExplosiveComponent extends AbstractAttDefComponent {
 
 	/** The radius of the blast. */
 	private RectangularShape blastArea;
+	
+	/** The sprite of the explosion. */
+	private AnimatedSprite explosion;
 	
 	
 	
@@ -35,10 +39,12 @@ public class ExplosiveComponent extends AbstractAttDefComponent {
 	 * @param hp
 	 * @param damage
 	 */
-	public ExplosiveComponent(int damage, RectangularShape blastArea) {
+	public ExplosiveComponent(int damage, RectangularShape blastArea, AnimatedSprite explosion) {
 		super(1, damage);
 		this.blastArea = blastArea;
 		this.blastArea.setVisible(false);
+		this.explosion = explosion;
+		this.explosion.setVisible(false);
 	}
 	
 	/**
@@ -46,8 +52,9 @@ public class ExplosiveComponent extends AbstractAttDefComponent {
 	 * @param trigger area that triggers the explosion
 	 * @param timeBeforeExplosion timme before explosion after triggered
 	 */
-	public ExplosiveComponent(int damage, RectangularShape blastArea, RectangularShape trigger, float timeBeforeExplosion) {
-		this(damage, blastArea);
+	public ExplosiveComponent(int damage, RectangularShape blastArea, RectangularShape trigger, 
+			float timeBeforeExplosion, AnimatedSprite explosion) {
+		this(damage, blastArea, explosion);
 		this.detectionArea = trigger;
 		this.detectionArea.setVisible(false);
 		this.timeBeforeExplosion = timeBeforeExplosion;
@@ -59,6 +66,7 @@ public class ExplosiveComponent extends AbstractAttDefComponent {
 	public void destroy() {
 		this.blastArea.detachSelf();
 		this.detectionArea.detachSelf();
+		this.explosion.detachSelf();
 	}
 	
 	
@@ -102,6 +110,14 @@ public class ExplosiveComponent extends AbstractAttDefComponent {
 
 	public void setTriggeredTime(float triggeredTime) {
 		this.triggeredTime = triggeredTime;
+	}
+
+	public AnimatedSprite getExplosion() {
+		return explosion;
+	}
+
+	public void setExplosion(AnimatedSprite explosion) {
+		this.explosion = explosion;
 	}
 
 }

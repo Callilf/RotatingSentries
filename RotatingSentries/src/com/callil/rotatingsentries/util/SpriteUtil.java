@@ -36,6 +36,17 @@ public class SpriteUtil {
 	}
 	
 	/**
+	 * Place the center of the given sprite at the desired position.
+	 * @param sprite the sprite to move
+	 * @param x the x pos
+	 * @param y the y pos
+	 */
+	public static void setCenter(RectangularShape sprite, Couple<Float> pos) {
+		sprite.setX(pos.getX() - sprite.getWidth()/2);
+		sprite.setY(pos.getY() - sprite.getHeight()/2);
+	}
+	
+	/**
 	 * Return the distance between the center of 2 sprites.
 	 * @param source the source sprite
 	 * @param dest the destination sprite

@@ -119,13 +119,50 @@ public class MineSystem extends System {
 	    				}
 	    			}
 	    			
+	    			//TODO: check detection of the sentry
+	    			
 	    		} else {
 	    			//Has been triggered
-	    			if (GameSingleton.getInstance().getTotalTime() > 
+	    			AnimatedSprite explosion = explosiveComponent.getExplosion();
+	    			
+	    			if (!explosion.isVisible() && GameSingleton.getInstance().getTotalTime() > 
 	    				explosiveComponent.getTriggeredTime() + explosiveComponent.getTimeBeforeExplosion()) {
 	    				// EXPLOSIOOOOOON
 	    				Log.i("RS", "Mine : BAAOOOOOMMMMMMMMMMMM");
-	    				entityManager.removeEntity(entity);
+	    				
+	    				spriteComponent.getSprite().setVisible(false);
+	    				explosion.setVisible(true);
+	    				explosion.animate(SpriteAnimationEnum.EXPLOSION.getFrameDurations(), SpriteAnimationEnum.EXPLOSION.getFrames(), false);
+	    				
+	    				// /!\ DAMAGES are dealt only at this frame
+	    				IShape blastArea = explosiveComponent.getBlastArea();
+	    				//Deal damages to attackers
+		    			List<Entity> attackers = this.entityManager.getAllEntitiesPosessingComponentOfClass(AttackComponent.class);
+		    			for (Entity attacker : attackers) {
+		    				SpriteComponent scAttacker = this.entityManager.getComponent(SpriteComponent.class, attacker);
+		    				if (scAttacker != null) { // in case the entity is already dead
+		    					IShape attackerHitbox = this.entityManager.getComponent(SpriteComponent.class, attacker).getHitbox();
+		    					if (blastArea.collidesWith(attackerHitbox)) {
+		    						// Attacker is caught in the blast
+		    						Log.i("RS", "Attacker killed by explosion !");
+		    						AttackComponent attackerAttackCompo = this.entityManager.getComponent(AttackComponent.class, attacker);
+		    						boolean isAttackerDead = attackerAttackCompo.hit(explosiveComponent.getDamage());
+		    						if (isAttackerDead) {
+		    							//TODO : externalize enemy death
+		    							entityManager.removeEntity(attacker);
+		    						}
+		    					}
+		    				}
+		    			}
+	    				
+	    			}
+	    			
+	    			if (explosion.isVisible()) {
+	    				//Explosion animation is playing
+	    				if (!explosion.isAnimationRunning()) {
+	    					//Animation over, remove the mine entity
+	    					entityManager.removeEntity(entity);
+	    				}
 	    			}
 	    		}
 	    		

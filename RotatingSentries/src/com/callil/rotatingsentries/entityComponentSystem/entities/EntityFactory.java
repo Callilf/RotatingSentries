@@ -201,7 +201,7 @@ public class EntityFactory {
 		Sprite secondaryMineIcon = new Sprite(0, 0, spriteLoader.getFireIconSecondaryMineTextureRegion(), this.vertextBufferObjectManager);
 		Sprite targetSprite = new Sprite(0, 0, spriteLoader.getTargetTextureRegion(), this.vertextBufferObjectManager);
 		Text ammoText = new Text(0, 0, spriteLoader.getSecondaryAmmoFont(), "999", new TextOptions(HorizontalAlign.RIGHT), this.vertextBufferObjectManager);
-		this.em.addComponentToEntity(new SecondaryMineComponent(secondaryMineIcon, 3, ammoText, targetSprite), sentry);
+		this.em.addComponentToEntity(new SecondaryMineComponent(secondaryMineIcon, 10, ammoText, targetSprite), sentry);
 		
 		Rectangle hitbox = (Rectangle)spriteComponent.getHitbox();
 		final AnimatedSprite sElectricAttack = new AnimatedSprite(0, 0, this.spriteLoader.getSentryElectricAttackTextureRegion(), this.vertextBufferObjectManager);
@@ -285,13 +285,15 @@ public class EntityFactory {
 			
 			//Explosive
 			Rectangle blastArea = new Rectangle(0, 0, 200, 200, this.vertextBufferObjectManager);
-			SpriteUtil.setCenter(blastArea, mineSprite.getX(), mineSprite.getY());
+			SpriteUtil.setCenter(blastArea, SpriteUtil.getCenter(mineSprite));
 			gameArea.attachChild(blastArea);
 			Rectangle triggerArea = new Rectangle(0, 0, 150, 150, this.vertextBufferObjectManager);
-			SpriteUtil.setCenter(triggerArea, mineSprite.getX(), mineSprite.getY());
+			SpriteUtil.setCenter(triggerArea, SpriteUtil.getCenter(mineSprite));
 			gameArea.attachChild(triggerArea);
-			this.em.addComponentToEntity(new ExplosiveComponent(5, blastArea, triggerArea, 1.5f), mine);
-			
+			AnimatedSprite explosion = new AnimatedSprite(0, 0, spriteLoader.getExplosionTextureRegion(), this.vertextBufferObjectManager);
+			SpriteUtil.setCenter(explosion,SpriteUtil.getCenter(mineSprite));
+			gameArea.attachChild(explosion);
+			this.em.addComponentToEntity(new ExplosiveComponent(5, blastArea, triggerArea, 1.5f, explosion), mine);
 			
 			return mine;
 		default:

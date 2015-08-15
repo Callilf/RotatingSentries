@@ -119,6 +119,12 @@ public class SpriteLoader {
 		return mProjMineTextureRegion;
 	}
 	
+	/** EXPLOSION */
+	protected TiledTextureRegion mExplosionTextureRegion;
+	public TiledTextureRegion getExplosionTextureRegion() {
+		return mExplosionTextureRegion;
+	}
+	
 	/** POWER-UP */
 	protected TextureRegion mPowerUpTextureRegion;
 	public TextureRegion getPowerUpTextureRegion() {
@@ -382,6 +388,11 @@ public class SpriteLoader {
 		BitmapTextureAtlas projMineTexture = new BitmapTextureAtlas(tm, 160, 80, TextureOptions.NEAREST);
 		mProjMineTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(projMineTexture, context, "projectile_landmine.png", 0, 0, 2, 1);
 		projMineTexture.load();
+		
+		//Explosion
+		BitmapTextureAtlas explosionTexture = new BitmapTextureAtlas(tm, 1000, 200, TextureOptions.NEAREST);
+		mExplosionTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(explosionTexture, context, "explosion.png", 0, 0, 5, 1);
+		explosionTexture.load();
 		
 		//Power up
 		BitmapTextureAtlas powerUpTexture = new BitmapTextureAtlas(tm, 57, 57, TextureOptions.NEAREST);
