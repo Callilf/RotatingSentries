@@ -2,15 +2,23 @@ package com.callil.rotatingsentries.entityComponentSystem.systems;
 
 import java.util.List;
 
+import org.andengine.entity.shape.IShape;
 import org.andengine.entity.shape.RectangularShape;
+import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 
-import com.callil.rotatingsentries.entityComponentSystem.components.shooting.SecondaryMineComponent;
+import android.util.Log;
+
+import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.attackDefense.AttackComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.attackDefense.ExplosiveComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.shooting.AbstractSecondaryAttackComponent.ExplosiveType;
+import com.callil.rotatingsentries.entityComponentSystem.components.shooting.SecondaryMineComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.shooting.SecondaryMineComponent.SecondaryMineState;
 import com.callil.rotatingsentries.entityComponentSystem.entities.Entity;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityFactory;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityManager;
+import com.callil.rotatingsentries.enums.SpriteAnimationEnum;
 import com.callil.rotatingsentries.singleton.GameSingleton;
 import com.callil.rotatingsentries.util.Couple;
 import com.callil.rotatingsentries.util.SpriteUtil;
@@ -74,8 +82,55 @@ public class MineSystem extends System {
 	    }
 		
 		
-		//Handle mines
-
+		//Handle explosives
+		entities = this.entityManager.getAllEntitiesPosessingComponentOfClass(ExplosiveComponent.class);
+		for (Entity entity : entities) {
+			ExplosiveComponent explosiveComponent = this.entityManager.getComponent(ExplosiveComponent.class, entity);
+			SpriteComponent spriteComponent = this.entityManager.getComponent(SpriteComponent.class, entity);
+	    	RectangularShape detectionArea = explosiveComponent.getDetectionArea();
+	    	if (detectionArea != null) {
+	    		//Proximity mine
+	    		
+	    		if (!explosiveComponent.isTriggered()) {
+	    			//Still waiting
+	    			
+	    			//Check detection of attackers
+	    			List<Entity> attackers = this.entityManager.getAllEntitiesPosessingComponentOfClass(AttackComponent.class);
+	    			for (Entity hittable : attackers) {
+	    				SpriteComponent scHittable = this.entityManager.getComponent(SpriteComponent.class, hittable);
+	    				if (scHittable != null) { // in case the entity is already dead
+	    					IShape hHittable = this.entityManager.getComponent(SpriteComponent.class, hittable).getHitbox();
+	    					if (detectionArea.collidesWith(hHittable)) {
+	    						// DETECTED !!!
+	    						Log.i("RS", "INTRUDER DETECTED - Activate proximity mine !");
+	    						explosiveComponent.setTriggered(true);
+	    						explosiveComponent.setTriggeredTime(GameSingleton.getInstance().getTotalTime());
+	    						
+	    						//If animated sprite, animate it
+	    						if (spriteComponent != null && spriteComponent.getSprite() != null 
+	    								&& spriteComponent.getSprite() instanceof AnimatedSprite) {
+	    							AnimatedSprite as = (AnimatedSprite)spriteComponent.getSprite();
+	    							as.animate(SpriteAnimationEnum.MINE_BLINK_FAST.getFrameDurations(), 
+	    									SpriteAnimationEnum.MINE_BLINK_FAST.getFrames());
+	    						}
+	    						
+	    						break;
+	    					}
+	    				}
+	    			}
+	    			
+	    		} else {
+	    			//Has been triggered
+	    			if (GameSingleton.getInstance().getTotalTime() > 
+	    				explosiveComponent.getTriggeredTime() + explosiveComponent.getTimeBeforeExplosion()) {
+	    				// EXPLOSIOOOOOON
+	    				Log.i("RS", "Mine : BAAOOOOOMMMMMMMMMMMM");
+	    				entityManager.removeEntity(entity);
+	    			}
+	    		}
+	    		
+	    	}
+		}
 	}
 
 	@Override

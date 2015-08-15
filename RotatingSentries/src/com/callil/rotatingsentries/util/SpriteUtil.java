@@ -3,6 +3,7 @@
  */
 package com.callil.rotatingsentries.util;
 
+import org.andengine.entity.shape.RectangularShape;
 import org.andengine.entity.sprite.Sprite;
 
 /**
@@ -19,7 +20,7 @@ public class SpriteUtil {
 	 * @param sprite the sprite
 	 * @return the center of the sprite
 	 */
-	public static Couple<Float> getCenter(Sprite sprite) {
+	public static Couple<Float> getCenter(RectangularShape sprite) {
 		return new Couple<Float>(sprite.getX() + sprite.getWidth()/2, sprite.getY() + sprite.getHeight()/2);	
 	}
 	
@@ -29,7 +30,7 @@ public class SpriteUtil {
 	 * @param x the x pos
 	 * @param y the y pos
 	 */
-	public static void setCenter(Sprite sprite, float x, float y) {
+	public static void setCenter(RectangularShape sprite, float x, float y) {
 		sprite.setX(x - sprite.getWidth()/2);
 		sprite.setY(y - sprite.getHeight()/2);
 	}

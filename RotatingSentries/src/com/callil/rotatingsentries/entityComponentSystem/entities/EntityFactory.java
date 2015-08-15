@@ -23,6 +23,7 @@ import com.callil.rotatingsentries.entityComponentSystem.components.SolidCompone
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.attackDefense.AttackComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.attackDefense.DefenseComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.attackDefense.ExplosiveComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.shooting.AbstractPrimaryAttackComponent.ProjectileType;
 import com.callil.rotatingsentries.entityComponentSystem.components.shooting.AbstractSecondaryAttackComponent.ExplosiveType;
 import com.callil.rotatingsentries.entityComponentSystem.components.shooting.PrimaryShootingComponent;
@@ -272,6 +273,7 @@ public class EntityFactory {
 		switch (explosiveType) {
 		case GRENADE:
 		case MINE:
+			//Sprite
 			final AnimatedSprite mineSprite = new AnimatedSprite(0, 0, spriteLoader.getProjMineTextureRegion(), this.vertextBufferObjectManager);
 			SpriteUtil.setCenter(mineSprite, x, y);
 			Entity mine = this.em.createEntity();
@@ -279,8 +281,18 @@ public class EntityFactory {
 			this.em.addComponentToEntity(mineSpriteCompo, mine);
 			gameArea.attachChild(mineSprite);
 			mineSpriteCompo.setAttached(true);
-			
 			mineSprite.animate(SpriteAnimationEnum.MINE_BLINK.getFrameDurations(), SpriteAnimationEnum.MINE_BLINK.getFrames(), true);
+			
+			//Explosive
+			Rectangle blastArea = new Rectangle(0, 0, 200, 200, this.vertextBufferObjectManager);
+			SpriteUtil.setCenter(blastArea, mineSprite.getX(), mineSprite.getY());
+			gameArea.attachChild(blastArea);
+			Rectangle triggerArea = new Rectangle(0, 0, 150, 150, this.vertextBufferObjectManager);
+			SpriteUtil.setCenter(triggerArea, mineSprite.getX(), mineSprite.getY());
+			gameArea.attachChild(triggerArea);
+			this.em.addComponentToEntity(new ExplosiveComponent(5, blastArea, triggerArea, 1.5f), mine);
+			
+			
 			return mine;
 		default:
 			throw new IllegalArgumentException("Undefined explosive " + explosiveType);
