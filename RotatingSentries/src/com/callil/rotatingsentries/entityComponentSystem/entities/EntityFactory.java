@@ -130,6 +130,7 @@ public class EntityFactory {
 	 */
 	public Entity generateRobber(float x, float y, float speed, Sprite target, float ropeRotation) {
 		final AnimatedSprite sRobber = new AnimatedSprite(x, y, this.spriteLoader.getEnemyRobberTextureRegion(), this.vertextBufferObjectManager);
+		sRobber.setZIndex(10);
 		Entity robber = this.em.createEntity();
 		
 		this.em.addComponentToEntity(new SpriteComponent(sRobber, true).defineRectangularHitboxDiff(10, 20, 10, 30), robber);
@@ -154,6 +155,7 @@ public class EntityFactory {
 	 */
 	public Entity generateRobberRed(float x, float y, float speed, Sprite target, float ropeRotation) {
 		final AnimatedSprite sRobber = new AnimatedSprite(x, y, this.spriteLoader.getEnemyRobberRedTextureRegion(), this.vertextBufferObjectManager);
+		sRobber.setZIndex(10);
 		Entity robber = this.em.createEntity();
 		
 		this.em.addComponentToEntity(new SpriteComponent(sRobber, true).defineRectangularHitboxDiff(10, 20, 10, 30), robber);
@@ -177,6 +179,7 @@ public class EntityFactory {
 		TiledTextureRegion sentryTexture = spriteLoader.getSentryTextureRegion();
 		final AnimatedSprite sSentry = new AnimatedSprite(gameArea.getWidth()/2 - sentryTexture.getWidth()/2, gameArea.getHeight()/2 - sentryTexture.getHeight()/2, 
 				sentryTexture, this.vertextBufferObjectManager);
+		sSentry.setZIndex(11);
 		sSentry.setRotation(rotation);
 		sSentry.stopAnimation(0);
 		Entity sentry = this.em.createEntity();
@@ -238,6 +241,7 @@ public class EntityFactory {
 			TextureRegion standardTexture = spriteLoader.getProjStdTextureRegion();
 			final Sprite sStandardProjectile = new Sprite(gameArea.getWidth()/2 + startX * rayonSentry - standardTexture.getWidth()/2f, 
 					gameArea.getHeight()/2 + startY * rayonSentry - standardTexture.getHeight()/2f, standardTexture, this.vertextBufferObjectManager);
+			sStandardProjectile.setZIndex(13);
 			Entity standardProjectile = this.em.createEntity();
 			SpriteComponent scStdProj = new SpriteComponent(sStandardProjectile, true);
 			this.em.addComponentToEntity(scStdProj, standardProjectile);
@@ -250,6 +254,7 @@ public class EntityFactory {
 			TextureRegion piercingProjectileTexture = spriteLoader.getProjPiercingTextureRegion();
 			final Sprite sPiercingProjectile = new Sprite(gameArea.getWidth()/2 + startX * rayonSentry - piercingProjectileTexture.getWidth()/2f, 
 					gameArea.getHeight()/2 + startY * rayonSentry - piercingProjectileTexture.getHeight()/2f, piercingProjectileTexture, this.vertextBufferObjectManager);
+			sPiercingProjectile.setZIndex(13);
 			sPiercingProjectile.setRotation(rotationDegre);
 			Entity piercingProjectile = this.em.createEntity();
 			SpriteComponent scPiercingProj = new SpriteComponent(sPiercingProjectile, true);
@@ -280,6 +285,7 @@ public class EntityFactory {
 			SpriteComponent mineSpriteCompo = new SpriteComponent(mineSprite, true);
 			this.em.addComponentToEntity(mineSpriteCompo, mine);
 			gameArea.attachChild(mineSprite);
+			mineSprite.setZIndex(1);
 			mineSpriteCompo.setAttached(true);
 			mineSprite.animate(SpriteAnimationEnum.MINE_BLINK.getFrameDurations(), SpriteAnimationEnum.MINE_BLINK.getFrames(), true);
 			
