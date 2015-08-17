@@ -15,16 +15,6 @@ public class AttackComponent extends AbstractAttDefComponent {
 	public AttackComponent(int hp, int damage) {
 		super(hp,damage);
 	}
-	
-	/**
-	 * The entity is hit.
-	 * @param damage the damages
-	 * @return true if the entity is dead, false otherwise
-	 */
-	public boolean hit(int damage) {
-		this.hp -= damage;
-		return this.hp <= 0;
-	}
 
 	// GETTER & SETTER
 	

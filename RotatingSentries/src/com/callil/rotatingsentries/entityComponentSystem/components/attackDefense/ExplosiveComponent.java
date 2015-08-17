@@ -5,6 +5,9 @@ package com.callil.rotatingsentries.entityComponentSystem.components.attackDefen
 
 import org.andengine.entity.shape.RectangularShape;
 import org.andengine.entity.sprite.AnimatedSprite;
+import org.andengine.util.color.Color;
+
+import com.callil.rotatingsentries.GameActivity;
 
 import android.util.Log;
 
@@ -42,9 +45,15 @@ public class ExplosiveComponent extends AbstractAttDefComponent {
 	public ExplosiveComponent(int damage, RectangularShape blastArea, AnimatedSprite explosion) {
 		super(1, damage);
 		this.blastArea = blastArea;
-		this.blastArea.setVisible(false);
+		this.blastArea.setVisible(false);		
 		this.explosion = explosion;
 		this.explosion.setVisible(false);
+		
+		if (GameActivity.DEBUG_MODE) {
+			this.blastArea.setVisible(true); // to set to false
+			this.blastArea.setAlpha(10); // DOESN'T WORK
+			this.blastArea.setColor(Color.BLUE);
+		}
 	}
 	
 	/**
@@ -59,6 +68,12 @@ public class ExplosiveComponent extends AbstractAttDefComponent {
 		this.detectionArea.setVisible(false);
 		this.timeBeforeExplosion = timeBeforeExplosion;
 		Log.d("RS", "ExplosiveComponent created.");
+		
+		if (GameActivity.DEBUG_MODE) {
+			this.detectionArea.setVisible(true); // to set to false
+			this.detectionArea.setAlpha(10); // DOESN'T WORK
+			this.detectionArea.setColor(Color.PINK);
+		}
 	}
 	
 	

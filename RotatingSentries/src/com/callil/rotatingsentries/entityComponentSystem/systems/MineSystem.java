@@ -9,10 +9,14 @@ import org.andengine.entity.sprite.Sprite;
 
 import android.util.Log;
 
+import com.callil.rotatingsentries.entityComponentSystem.components.DiamondComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.attackDefense.AbstractAttDefComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.attackDefense.AttackComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.attackDefense.DetectableComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.attackDefense.ExplosiveComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.shooting.AbstractSecondaryAttackComponent.ExplosiveType;
+import com.callil.rotatingsentries.entityComponentSystem.components.shooting.PrimaryShootingComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.shooting.SecondaryMineComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.shooting.SecondaryMineComponent.SecondaryMineState;
 import com.callil.rotatingsentries.entityComponentSystem.entities.Entity;
@@ -94,32 +98,20 @@ public class MineSystem extends System {
 	    		if (!explosiveComponent.isTriggered()) {
 	    			//Still waiting
 	    			
-	    			//Check detection of attackers
-	    			List<Entity> attackers = this.entityManager.getAllEntitiesPosessingComponentOfClass(AttackComponent.class);
-	    			for (Entity hittable : attackers) {
-	    				SpriteComponent scHittable = this.entityManager.getComponent(SpriteComponent.class, hittable);
-	    				if (scHittable != null) { // in case the entity is already dead
-	    					IShape hHittable = this.entityManager.getComponent(SpriteComponent.class, hittable).getHitbox();
-	    					if (detectionArea.collidesWith(hHittable)) {
+	    			//Check detection of attackers, sentries....
+	    			List<Entity> detectables = this.entityManager.getAllEntitiesPosessingComponentOfClass(DetectableComponent.class);
+	    			for (Entity detectable : detectables) {
+	    				SpriteComponent detectableSpriteComponent = this.entityManager.getComponent(SpriteComponent.class, detectable);
+	    				if (detectableSpriteComponent != null) { // in case the entity is already dead
+	    					IShape detectableHitbox = this.entityManager.getComponent(SpriteComponent.class, detectable).getHitbox();
+	    					if (detectionArea.collidesWith(detectableHitbox)) {
 	    						// DETECTED !!!
 	    						Log.i("RS", "INTRUDER DETECTED - Activate proximity mine !");
-	    						explosiveComponent.setTriggered(true);
-	    						explosiveComponent.setTriggeredTime(GameSingleton.getInstance().getTotalTime());
-	    						
-	    						//If animated sprite, animate it
-	    						if (spriteComponent != null && spriteComponent.getSprite() != null 
-	    								&& spriteComponent.getSprite() instanceof AnimatedSprite) {
-	    							AnimatedSprite as = (AnimatedSprite)spriteComponent.getSprite();
-	    							as.animate(SpriteAnimationEnum.MINE_BLINK_FAST.getFrameDurations(), 
-	    									SpriteAnimationEnum.MINE_BLINK_FAST.getFrames());
-	    						}
-	    						
+	    						triggerMine(explosiveComponent, spriteComponent);
 	    						break;
 	    					}
 	    				}
 	    			}
-	    			
-	    			//TODO: check detection of the sentry
 	    			
 	    		} else {
 	    			//Has been triggered
@@ -136,22 +128,39 @@ public class MineSystem extends System {
 	    				
 	    				// /!\ DAMAGES are dealt only at this frame
 	    				IShape blastArea = explosiveComponent.getBlastArea();
-	    				//Deal damages to attackers
-		    			List<Entity> attackers = this.entityManager.getAllEntitiesPosessingComponentOfClass(AttackComponent.class);
-		    			for (Entity attacker : attackers) {
-		    				SpriteComponent scAttacker = this.entityManager.getComponent(SpriteComponent.class, attacker);
-		    				if (scAttacker != null) { // in case the entity is already dead
-		    					IShape attackerHitbox = this.entityManager.getComponent(SpriteComponent.class, attacker).getHitbox();
-		    					if (blastArea.collidesWith(attackerHitbox)) {
-		    						// Attacker is caught in the blast
-		    						Log.i("RS", "Attacker killed by explosion !");
-		    						AttackComponent attackerAttackCompo = this.entityManager.getComponent(AttackComponent.class, attacker);
-		    						boolean isAttackerDead = attackerAttackCompo.hit(explosiveComponent.getDamage());
-		    						if (isAttackerDead) {
+	    				//Deal damages to attackers or projectiles
+		    			List<Entity> hitables = this.entityManager.getAllEntitiesPosessingComponentOfClass(AbstractAttDefComponent.class);
+		    			for (Entity hitable : hitables) {
+		    				if (hitable.getEid() == entity.getEid()) {
+		    					//Do not destroy the mine by it's own explosion...
+		    					continue;
+		    				}
+		    				
+		    				SpriteComponent hitableSpriteCompo = this.entityManager.getComponent(SpriteComponent.class, hitable);
+		    				if (hitableSpriteCompo != null) { // in case the entity is already dead
+		    					IShape hitableHitbox = this.entityManager.getComponent(SpriteComponent.class, hitable).getHitbox();
+		    					if (blastArea.collidesWith(hitableHitbox)) {
+		    						// Attacker or projectile is caught in the blast
+		    						Log.i("RS", "Something was caught in the blast of the explosion !");
+		    						AbstractAttDefComponent attDefCompo = this.entityManager.getComponent(AbstractAttDefComponent.class, hitable);
+		    						boolean isEntityDead = attDefCompo.hit(explosiveComponent.getDamage());
+		    						if (isEntityDead) {
 		    							//TODO : externalize enemy death
-		    							entityManager.removeEntity(attacker);
+		    							entityManager.removeEntity(hitable);
 		    						}
 		    					}
+		    				}
+		    			}
+		    			// Deal damage to the diamond
+		    			List<Entity> diamondEntities = this.entityManager.getAllEntitiesPosessingComponentOfClass(DiamondComponent.class);
+		    			if (diamondEntities != null && diamondEntities.size() > 0) {
+		    				for (Entity diamond : diamondEntities) {
+			    				SpriteComponent diamondSpriteCompo = this.entityManager.getComponent(SpriteComponent.class, diamond);
+			    				if (blastArea.collidesWith(diamondSpriteCompo.getHitbox())) {
+			    					Log.i("RS", "DIAMOND DAMAGED BY THE EXPLOSION !");
+				    				DiamondComponent diamondComponent = this.entityManager.getComponent(DiamondComponent.class, diamond);
+				    				diamondComponent.takeDamage(explosiveComponent.getDamage());
+			    				}
 		    				}
 		    			}
 	    				
@@ -167,6 +176,24 @@ public class MineSystem extends System {
 	    		}
 	    		
 	    	}
+		}
+	}
+
+	/**
+	 * @param explosiveComponent
+	 * @param spriteComponent
+	 */
+	private void triggerMine(ExplosiveComponent explosiveComponent,
+			SpriteComponent spriteComponent) {
+		explosiveComponent.setTriggered(true);
+		explosiveComponent.setTriggeredTime(GameSingleton.getInstance().getTotalTime());
+		
+		//If animated sprite, animate it
+		if (spriteComponent != null && spriteComponent.getSprite() != null 
+				&& spriteComponent.getSprite() instanceof AnimatedSprite) {
+			AnimatedSprite as = (AnimatedSprite)spriteComponent.getSprite();
+			as.animate(SpriteAnimationEnum.MINE_BLINK_FAST.getFrameDurations(), 
+					SpriteAnimationEnum.MINE_BLINK_FAST.getFrames());
 		}
 	}
 

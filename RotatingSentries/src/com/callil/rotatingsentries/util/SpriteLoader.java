@@ -385,7 +385,7 @@ public class SpriteLoader {
 		projPiercingTexture.load();
 		
 		//Mine
-		BitmapTextureAtlas projMineTexture = new BitmapTextureAtlas(tm, 276, 138, TextureOptions.NEAREST);
+		BitmapTextureAtlas projMineTexture = new BitmapTextureAtlas(tm, 192, 96, TextureOptions.NEAREST);
 		mProjMineTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(projMineTexture, context, "projectile_landmine.png", 0, 0, 2, 1);
 		projMineTexture.load();
 		

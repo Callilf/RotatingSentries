@@ -23,6 +23,7 @@ import com.callil.rotatingsentries.entityComponentSystem.components.SolidCompone
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.attackDefense.AttackComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.attackDefense.DefenseComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.attackDefense.DetectableComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.attackDefense.ExplosiveComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.shooting.AbstractPrimaryAttackComponent.ProjectileType;
 import com.callil.rotatingsentries.entityComponentSystem.components.shooting.AbstractSecondaryAttackComponent.ExplosiveType;
@@ -142,6 +143,8 @@ public class EntityFactory {
 		this.em.addComponentToEntity(new EnemyRobberComponent(speed, target, sRope, ropeRotation), robber);
 		this.em.addComponentToEntity(new AttackComponent(1, 1), robber);
 		
+		//Detectable compo
+		this.em.addComponentToEntity(new DetectableComponent(), robber);
 		return robber;
 	}
 	
@@ -167,6 +170,8 @@ public class EntityFactory {
 		this.em.addComponentToEntity(new EnemyRobberComponent(speed, target, sRope, ropeRotation), robber);
 		this.em.addComponentToEntity(new AttackComponent(2, 1), robber);
 		
+		//Detectable compo
+		this.em.addComponentToEntity(new DetectableComponent(), robber);
 		return robber;
 	}
 	
@@ -176,6 +181,7 @@ public class EntityFactory {
 	 * @return The entity corresponding to the created sentry.
 	 */
 	public Entity generateSentry(int rotation) {
+		// Sprite compo
 		TiledTextureRegion sentryTexture = spriteLoader.getSentryTextureRegion();
 		final AnimatedSprite sSentry = new AnimatedSprite(gameArea.getWidth()/2 - sentryTexture.getWidth()/2, gameArea.getHeight()/2 - sentryTexture.getHeight()/2, 
 				sentryTexture, this.vertextBufferObjectManager);
@@ -187,12 +193,14 @@ public class EntityFactory {
 		this.em.addComponentToEntity(spriteComponent, sentry);
 		this.em.addComponentToEntity(new SelfRotationComponent(3, 0.8f, 0.2f, rotation, true, true), sentry);
 		
+		//Primary fire compo
 		Sprite primaryFireIcon = new Sprite(0, 0, spriteLoader.getFireIconPrimaryStandardTextureRegion(), this.vertextBufferObjectManager);
 		this.em.addComponentToEntity(new PrimaryShootingComponent(primaryFireIcon, ProjectileType.STANDARD, 0.5f, 
 				SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrames(), 
 				SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrameDurations()), sentry);
 		
 		
+		//Secondary fire compo
 		//Secondary shooting test :
 //		Sprite secondaryFireIcon = new Sprite(0, 0, spriteLoader.getFireIconSecondaryPiercingTextureRegion(), this.vertextBufferObjectManager);
 //		Text ammoText = new Text(0, 0, spriteLoader.getSecondaryAmmoFont(), "999", new TextOptions(HorizontalAlign.RIGHT), this.vertextBufferObjectManager);
@@ -206,6 +214,7 @@ public class EntityFactory {
 		Text ammoText = new Text(0, 0, spriteLoader.getSecondaryAmmoFont(), "999", new TextOptions(HorizontalAlign.RIGHT), this.vertextBufferObjectManager);
 		this.em.addComponentToEntity(new SecondaryMineComponent(secondaryMineIcon, 10, ammoText, targetSprite), sentry);
 		
+		//AOE attack compo
 		Rectangle hitbox = (Rectangle)spriteComponent.getHitbox();
 		final AnimatedSprite sElectricAttack = new AnimatedSprite(0, 0, this.spriteLoader.getSentryElectricAttackTextureRegion(), this.vertextBufferObjectManager);
 		sElectricAttack.setX(hitbox.getX() + hitbox.getWidth()/2 - sElectricAttack.getWidth()/2);
@@ -221,6 +230,8 @@ public class EntityFactory {
 		sElectricAttackIcon.setY(10);
 		this.em.addComponentToEntity(new AOEAttackComponent(sElectricAttack, sElectricAttackIcon, sElectricAttackIconFrame, hitbox, 5, 2, this.vertextBufferObjectManager), sentry);
 		
+		//Detectable compo
+		this.em.addComponentToEntity(new DetectableComponent(), sentry);
 		return sentry;
 	}
 	
