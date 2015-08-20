@@ -1,8 +1,9 @@
 /**
  * 
  */
-package com.callil.rotatingsentries.entityComponentSystem.components;
+package com.callil.rotatingsentries.entityComponentSystem.components.powerups;
 
+import com.callil.rotatingsentries.entityComponentSystem.components.Component;
 import com.callil.rotatingsentries.singleton.GameSingleton;
 
 /**

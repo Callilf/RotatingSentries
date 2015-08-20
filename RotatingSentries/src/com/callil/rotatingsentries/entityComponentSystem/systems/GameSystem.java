@@ -2,10 +2,7 @@ package com.callil.rotatingsentries.entityComponentSystem.systems;
 
 import java.util.List;
 
-import android.util.SparseArray;
-
 import com.callil.rotatingsentries.GameActivity;
-import com.callil.rotatingsentries.entityComponentSystem.components.Component;
 import com.callil.rotatingsentries.entityComponentSystem.components.DiamondComponent;
 import com.callil.rotatingsentries.entityComponentSystem.entities.Entity;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityManager;

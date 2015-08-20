@@ -17,7 +17,6 @@ import org.andengine.util.HorizontalAlign;
 import com.callil.rotatingsentries.entityComponentSystem.components.DiamondComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.EnemyRobberComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.MoveTowardsComponent;
-import com.callil.rotatingsentries.entityComponentSystem.components.PowerUpComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SelfRotationComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SolidComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
@@ -25,11 +24,11 @@ import com.callil.rotatingsentries.entityComponentSystem.components.attackDefens
 import com.callil.rotatingsentries.entityComponentSystem.components.attackDefense.DefenseComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.attackDefense.DetectableComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.attackDefense.ExplosiveComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.powerups.PowerUpComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.shooting.AbstractPrimaryAttackComponent.ProjectileType;
 import com.callil.rotatingsentries.entityComponentSystem.components.shooting.AbstractSecondaryAttackComponent.ExplosiveType;
 import com.callil.rotatingsentries.entityComponentSystem.components.shooting.PrimaryShootingComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.shooting.SecondaryMineComponent;
-import com.callil.rotatingsentries.entityComponentSystem.components.shooting.SecondaryShootingComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.skills.AOEAttackComponent;
 import com.callil.rotatingsentries.enums.SpriteAnimationEnum;
 import com.callil.rotatingsentries.util.SpriteLoader;
@@ -324,8 +323,10 @@ public class EntityFactory {
 	 * @param y the y pos
 	 * @return the generated power up
 	 */
-	public Entity generatePowerUp(float x, float y) {
-		final Sprite sPowerUp = new Sprite(x, y, spriteLoader.getPowerUpTextureRegion(), this.vertextBufferObjectManager);
+	public Entity generatePowerUp(float centerX, float centerY) {
+		final Sprite sPowerUp = new Sprite(0, 0, spriteLoader.getPowerUpTextureRegion(), this.vertextBufferObjectManager);
+		sPowerUp.setZIndex(9);
+		SpriteUtil.setCenter(sPowerUp, centerX, centerY);
 		Entity powerUp = this.em.createEntity();
 		this.em.addComponentToEntity(new SpriteComponent(sPowerUp, false), powerUp);
 		this.em.addComponentToEntity(new PowerUpComponent(7), powerUp);

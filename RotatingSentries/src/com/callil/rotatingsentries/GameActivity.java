@@ -28,6 +28,7 @@ import com.callil.rotatingsentries.entityComponentSystem.systems.GameSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.GenerationSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.MineSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.MoveSystem;
+import com.callil.rotatingsentries.entityComponentSystem.systems.PowerUpSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.RenderSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.System;
 import com.callil.rotatingsentries.singleton.GameSingleton;
@@ -125,6 +126,7 @@ public class GameActivity extends ParentGameActivity {
 		EnemyRobberSystem enemyRobberSystem = new EnemyRobberSystem(this.entityManager, background);
 		GenerationSystem generationSystem = new GenerationSystem(entityManager, entityFactory, background);
 		AOEAttackSystem aoeAttackSystem = new AOEAttackSystem(this.entityManager);
+		PowerUpSystem powerUpSystem = new PowerUpSystem(this.entityManager, entityFactory, background);
 
 		// /!\ System : the latest added system will be the first one to be updated
 		systems = new ArrayList<System>();
@@ -136,6 +138,7 @@ public class GameActivity extends ParentGameActivity {
 		systems.add(enemyRobberSystem);
 		systems.add(generationSystem);
 		systems.add(aoeAttackSystem);
+		systems.add(powerUpSystem);
 		
 		//Set the game time in the singleton
 		this.mScene.registerUpdateHandler(new IUpdateHandler() {
@@ -147,14 +150,14 @@ public class GameActivity extends ParentGameActivity {
 				
 				//######################
 				// TESTS
-				if (DEBUG_MODE || true) {
-					dureeTenFrame += pSecondsElapsed;
-					if (++cptFrame % 10 == 0) {
-						dureeTenFrame /= 10;
-						Log.d("RS", "Frame : " + dureeTenFrame + "ms, fps : " + (1/dureeTenFrame));
-						dureeTenFrame = 0;
-					}
-				}
+//				if (DEBUG_MODE || true) {
+//					dureeTenFrame += pSecondsElapsed;
+//					if (++cptFrame % 10 == 0) {
+//						dureeTenFrame /= 10;
+//						Log.d("RS", "Frame : " + dureeTenFrame + "ms, fps : " + (1/dureeTenFrame));
+//						dureeTenFrame = 0;
+//					}
+//				}
 				// END OF TESTS
 				//######################
 				
