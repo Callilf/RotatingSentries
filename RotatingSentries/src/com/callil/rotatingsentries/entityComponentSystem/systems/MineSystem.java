@@ -88,6 +88,10 @@ public class MineSystem extends System {
 		entities = this.entityManager.getAllEntitiesPosessingComponentOfClass(ExplosiveComponent.class);
 		for (Entity entity : entities) {
 			ExplosiveComponent explosiveComponent = this.entityManager.getComponent(ExplosiveComponent.class, entity);
+			if (explosiveComponent == null) {
+				continue;
+			}
+			
 			SpriteComponent spriteComponent = this.entityManager.getComponent(SpriteComponent.class, entity);
 	    	RectangularShape detectionArea = explosiveComponent.getDetectionArea();
 	    	if (detectionArea != null) {
@@ -133,6 +137,8 @@ public class MineSystem extends System {
 		    					//Do not destroy the mine by it's own explosion...
 		    					continue;
 		    				}
+		    				
+		    				//TODO : if another mine is in the field of explosion, make it explode too. Right now, they just disappear.
 		    				
 		    				SpriteComponent hitableSpriteCompo = this.entityManager.getComponent(SpriteComponent.class, hitable);
 		    				if (hitableSpriteCompo != null) { // in case the entity is already dead

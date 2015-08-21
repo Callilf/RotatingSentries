@@ -3,6 +3,11 @@
  */
 package com.callil.rotatingsentries.singleton;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import com.callil.rotatingsentries.enums.PowerUpTypeEnum;
+
 /**
  * @author Callil
  *
@@ -21,6 +26,8 @@ public class GameSingleton {
 	public float areaTouchX;
 	public float areaTouchY;
 	
+	/** Set of known power ups. */
+	private Set<PowerUpTypeEnum> knownPowerUps = new HashSet<PowerUpTypeEnum>();
 	
 	/**
 	 * Constructor.
@@ -33,6 +40,12 @@ public class GameSingleton {
 			instance = new GameSingleton();
 		}
 		return instance;
+	}
+	
+	/** Reinit for the start of a new game. */
+	public void reinit() {
+		knownPowerUps.clear();
+		totalTime = 0;
 	}
 
 	
@@ -50,5 +63,13 @@ public class GameSingleton {
 	 */
 	public void setTotalTime(float totalTime) {
 		this.totalTime = totalTime;
+	}
+
+	public Set<PowerUpTypeEnum> getKnownPowerUps() {
+		return knownPowerUps;
+	}
+
+	public void setKnownPowerUps(Set<PowerUpTypeEnum> knownPowerUps) {
+		this.knownPowerUps = knownPowerUps;
 	}
 }

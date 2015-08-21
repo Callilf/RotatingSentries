@@ -82,6 +82,7 @@ public class GameActivity extends ParentGameActivity {
 	public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback)
 			throws Exception {
 		super.onCreateScene(pOnCreateSceneCallback);
+		GameSingleton.getInstance().reinit();
 		
 		// Background : game area
 		TextureRegion backgroundTexture = spriteLoader.getBackgroundRegion();

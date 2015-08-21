@@ -7,6 +7,7 @@ import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.shape.RectangularShape;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.text.AutoWrap;
 import org.andengine.entity.text.Text;
 import org.andengine.entity.text.TextOptions;
 import org.andengine.opengl.texture.region.TextureRegion;
@@ -30,6 +31,7 @@ import com.callil.rotatingsentries.entityComponentSystem.components.shooting.Abs
 import com.callil.rotatingsentries.entityComponentSystem.components.shooting.PrimaryShootingComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.shooting.SecondaryMineComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.skills.AOEAttackComponent;
+import com.callil.rotatingsentries.enums.PowerUpTypeEnum;
 import com.callil.rotatingsentries.enums.SpriteAnimationEnum;
 import com.callil.rotatingsentries.util.SpriteLoader;
 import com.callil.rotatingsentries.util.SpriteUtil;
@@ -323,13 +325,18 @@ public class EntityFactory {
 	 * @param y the y pos
 	 * @return the generated power up
 	 */
-	public Entity generatePowerUp(float centerX, float centerY) {
+	public Entity generatePowerUp(float centerX, float centerY, PowerUpTypeEnum type) {
 		final Sprite sPowerUp = new Sprite(0, 0, spriteLoader.getPowerUpTextureRegion(), this.vertextBufferObjectManager);
 		sPowerUp.setZIndex(9);
 		SpriteUtil.setCenter(sPowerUp, centerX, centerY);
 		Entity powerUp = this.em.createEntity();
 		this.em.addComponentToEntity(new SpriteComponent(sPowerUp, false), powerUp);
-		this.em.addComponentToEntity(new PowerUpComponent(4), powerUp);
+		
+		Text puText = new Text(0, 0, spriteLoader.getPowerUpFont(), "azertyuiop azertyuiop azertyuiop", new TextOptions(AutoWrap.WORDS, 74, HorizontalAlign.CENTER), this.vertextBufferObjectManager);
+		puText.setPosition(43 - puText.getWidth()/2f, 43 - puText.getHeight()/2f);
+
+		sPowerUp.attachChild(puText);
+		this.em.addComponentToEntity(new PowerUpComponent(type, 4, puText), powerUp);
 		return powerUp;
 	}
 

@@ -11,13 +11,16 @@ import org.andengine.entity.shape.RectangularShape;
 
 import android.util.Log;
 
+import com.callil.rotatingsentries.entityComponentSystem.components.SelfRotationComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.attackDefense.DefenseComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.powerups.PowerUpComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.shooting.AbstractSecondaryAttackComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.shooting.PrimaryShootingComponent;
 import com.callil.rotatingsentries.entityComponentSystem.entities.Entity;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityFactory;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityManager;
+import com.callil.rotatingsentries.enums.PowerUpTypeEnum;
 import com.callil.rotatingsentries.singleton.GameSingleton;
 import com.callil.rotatingsentries.util.SpriteLoader;
 
@@ -32,7 +35,7 @@ public class PowerUpSystem extends System {
 	private RectangularShape gameArea;
 
 	/** How frequently power ups will spawn in SECONDS. */
-	public float powerUpSpawnPeriod = 30;
+	public float powerUpSpawnPeriod = 5;
 	
 	/** The last spawn time. */
 	public float lastPowerUpSpawn = 0;
@@ -93,7 +96,25 @@ public class PowerUpSystem extends System {
 
 			}
 
-			this.entityFactory.generatePowerUp(randX, randY);
+			PowerUpTypeEnum typeToGenerate = null;
+			switch(r.nextInt(5)) {
+			case 0:
+				typeToGenerate = PowerUpTypeEnum.SENTRY_SPEED_UP;
+				break;
+			case 1:
+				typeToGenerate = PowerUpTypeEnum.SENTRY_SPEED_DOWN;
+				break;
+			case 2:
+				typeToGenerate = PowerUpTypeEnum.SHOOT_SPEED_UP;
+				break;
+			case 3:
+				typeToGenerate = PowerUpTypeEnum.SHOOT_SPEED_DOWN;
+				break;
+				default:
+					typeToGenerate = PowerUpTypeEnum.SECONDARY_FIRE_AMMO;
+			}
+			
+			this.entityFactory.generatePowerUp(randX, randY, typeToGenerate);
 			lastPowerUpSpawn = singleton.getTotalTime();
 		}
 		
@@ -112,17 +133,15 @@ public class PowerUpSystem extends System {
 				if (powerUpSprite != null) { // in case the entity is already dead
 					IShape powerUpHitbox = this.entityManager.getComponent(SpriteComponent.class, powerUp).getHitbox();
 					if (projHitbox.collidesWith(powerUpHitbox)) {
+						
+						//TODO: handle reward
+						giveReward(this.entityManager.getComponent(PowerUpComponent.class, powerUp));
+						
+						
 						//TODO: right now, hitting a power up always destroys the projectile
 						entityManager.removeEntity(powerUp);
 						entityManager.removeEntity(projectile);
 						
-						//TODO: handle reward
-						List<Entity> sentries = this.entityManager.getAllEntitiesPosessingComponentOfClass(PrimaryShootingComponent.class);
-						for(Entity sentry : sentries) {
-							PrimaryShootingComponent psCompo = this.entityManager.getComponent(PrimaryShootingComponent.class, sentry);
-							Log.i("RS", "Increase periodicity by 0.05f");
-							psCompo.setPeriodOfSpawn(psCompo.getPeriodOfSpawn() - 0.05f);
-						}
 
 						
 						break foreachPowerUp;
@@ -140,6 +159,64 @@ public class PowerUpSystem extends System {
 		
 		
 		
+	}
+
+	
+	/**
+	 * Handle the reward of a power up.
+	 */
+	private void giveReward(PowerUpComponent powerUpCompo) {
+		//Add the power up type to the set of KNOWN types
+		GameSingleton.getInstance().getKnownPowerUps().add(powerUpCompo.getType());
+		
+		List<Entity> sentries = this.entityManager.getAllEntitiesPosessingComponentOfClass(PrimaryShootingComponent.class);
+		switch (powerUpCompo.getType()) {
+		
+		case SHOOT_SPEED_UP:
+			for(Entity sentry : sentries) {
+				PrimaryShootingComponent psCompo = this.entityManager.getComponent(PrimaryShootingComponent.class, sentry);
+				Log.i("RS", "Increase periodicity by 0.05f");
+				psCompo.setPeriodOfSpawn(psCompo.getPeriodOfSpawn() - 0.05f);
+			}
+			break;
+			
+		case SHOOT_SPEED_DOWN:
+			for(Entity sentry : sentries) {
+				PrimaryShootingComponent psCompo = this.entityManager.getComponent(PrimaryShootingComponent.class, sentry);
+				Log.i("RS", "Reduced periodicity by 0.05f");
+				psCompo.setPeriodOfSpawn(psCompo.getPeriodOfSpawn() + 0.05f);
+			}
+			break;
+			
+		case SENTRY_SPEED_UP:
+			for(Entity sentry : sentries) {
+				SelfRotationComponent rotationCompo = this.entityManager.getComponent(SelfRotationComponent.class, sentry);
+				Log.i("RS", "Increased sentry speed by 0.05f");
+				rotationCompo.setMaxRotationSpeed(rotationCompo.getMaxRotationSpeed() + 0.1f);
+			}
+			break;
+			
+		case SENTRY_SPEED_DOWN:
+			for(Entity sentry : sentries) {
+				SelfRotationComponent rotationCompo = this.entityManager.getComponent(SelfRotationComponent.class, sentry);
+				Log.i("RS", "Reduced sentry speed by 0.05f");
+				rotationCompo.setMaxRotationSpeed(rotationCompo.getMaxRotationSpeed() - 0.1f);
+			}
+			break;
+			
+		case SECONDARY_FIRE_AMMO:
+			for(Entity sentry : sentries) {
+				AbstractSecondaryAttackComponent secAttackCompo = this.entityManager.getComponent(AbstractSecondaryAttackComponent.class, sentry);
+				int ammoToAdd = (int) Math.ceil(secAttackCompo.getMaxAmmo()/4);
+				Log.i("RS", "Increased secondary fire ammo by " + ammoToAdd);
+				secAttackCompo.addAmmos(ammoToAdd);
+			}
+			break;
+
+			default:
+				Log.e("RS", ".giveReward: ENTERED IN SWITCH DEFAULTS... Do nothing.");
+				break;
+		}
 	}
 
 	

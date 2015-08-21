@@ -312,6 +312,12 @@ public class SpriteLoader {
 		return menuFont;
 	}
 	
+	/** The font for the secondary fire ammo. */
+	private Font mPowerUpFont;
+	public Font getPowerUpFont() {
+		return mPowerUpFont;
+	}
+	
 	/**
 	 * @param context
 	 */
@@ -395,8 +401,8 @@ public class SpriteLoader {
 		explosionTexture.load();
 		
 		//Power up
-		BitmapTextureAtlas powerUpTexture = new BitmapTextureAtlas(tm, 57, 57, TextureOptions.NEAREST);
-		mPowerUpTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(powerUpTexture, context, "power-up.png", 0, 0);
+		BitmapTextureAtlas powerUpTexture = new BitmapTextureAtlas(tm, 86, 86, TextureOptions.NEAREST);
+		mPowerUpTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(powerUpTexture, context, "power-up_empty.png", 0, 0);
 		powerUpTexture.load();
 		
 		//############
@@ -514,6 +520,10 @@ public class SpriteLoader {
 		//Font for enemy HPs
 		this.menuFont = FontFactory.create(fm, tm, 256, 256, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 72, Color.BLACK);
 		this.menuFont.load();
+		
+		//Font for power ups
+		this.mPowerUpFont = FontFactory.create(fm, tm, 256, 256, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 20, Color.WHITE);
+		this.mPowerUpFont.load();
 		
 	}
 	

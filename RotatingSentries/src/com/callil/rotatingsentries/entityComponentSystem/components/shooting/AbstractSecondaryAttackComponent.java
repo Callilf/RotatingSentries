@@ -64,10 +64,18 @@ public abstract class AbstractSecondaryAttackComponent extends Component {
 		updateAmmoText();
 	}
 	
+	/** Add a certain amount of ammos. */
+	public void addAmmos(int nbOfAmmosToAdd) {
+		this.currentAmmo += Math.min(nbOfAmmosToAdd, this.maxAmmo);
+		updateAmmoText();
+	}
+	
 	private void updateAmmoText() {
 		ammoText.setText(String.valueOf(this.currentAmmo));
 		if (this.currentAmmo == 0) {
 			ammoText.setColor(0.8f, 0.2f, 0.2f);
+		} else if(this.currentAmmo == this.maxAmmo) {
+			ammoText.setColor(0.2f, 0.8f, 0.2f);
 		} else {
 			ammoText.setColor(1f, 1f, 1f);
 		}
