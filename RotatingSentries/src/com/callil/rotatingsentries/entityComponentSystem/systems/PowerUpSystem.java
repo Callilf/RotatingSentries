@@ -14,6 +14,7 @@ import android.util.Log;
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.attackDefense.DefenseComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.powerups.PowerUpComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.shooting.PrimaryShootingComponent;
 import com.callil.rotatingsentries.entityComponentSystem.entities.Entity;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityFactory;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityManager;
@@ -51,7 +52,7 @@ public class PowerUpSystem extends System {
 	@Override
 	public void onUpdate(float pSecondsElapsed) {
 
-		//Spawn of power ups
+		//AUTO SPAWN of power ups (each X seconds)
 		GameSingleton singleton = GameSingleton.getInstance();
 		if (singleton.getTotalTime() > lastPowerUpSpawn + powerUpSpawnPeriod) {
 			
@@ -96,15 +97,17 @@ public class PowerUpSystem extends System {
 			lastPowerUpSpawn = singleton.getTotalTime();
 		}
 		
-		// COLLISION WITH PROJECTILES
-		// MANAGE COLLISIONS OF PROJECTILES
-		List<Entity> projectiles = this.entityManager.getAllEntitiesPosessingComponentOfClass(DefenseComponent.class);
-		for (Entity projectile : projectiles) {
-			IShape projHitbox = this.entityManager.getComponent(SpriteComponent.class, projectile).getHitbox();
+		
+		
+		List<Entity> powerUps = this.entityManager.getAllEntitiesPosessingComponentOfClass(PowerUpComponent.class);
+		foreachPowerUp:
+		for (Entity powerUp : powerUps) {
+			
+			// COLLISION WITH PROJECTILES
+			List<Entity> projectiles = this.entityManager.getAllEntitiesPosessingComponentOfClass(DefenseComponent.class);
+			for (Entity projectile : projectiles) {
+				IShape projHitbox = this.entityManager.getComponent(SpriteComponent.class, projectile).getHitbox();
 
-			// With enemies
-			List<Entity> powerUps = this.entityManager.getAllEntitiesPosessingComponentOfClass(PowerUpComponent.class);
-			for (Entity powerUp : powerUps) {
 				SpriteComponent powerUpSprite = this.entityManager.getComponent(SpriteComponent.class, powerUp);
 				if (powerUpSprite != null) { // in case the entity is already dead
 					IShape powerUpHitbox = this.entityManager.getComponent(SpriteComponent.class, powerUp).getHitbox();
@@ -112,11 +115,31 @@ public class PowerUpSystem extends System {
 						//TODO: right now, hitting a power up always destroys the projectile
 						entityManager.removeEntity(powerUp);
 						entityManager.removeEntity(projectile);
-						break;
+						
+						//TODO: handle reward
+						List<Entity> sentries = this.entityManager.getAllEntitiesPosessingComponentOfClass(PrimaryShootingComponent.class);
+						for(Entity sentry : sentries) {
+							PrimaryShootingComponent psCompo = this.entityManager.getComponent(PrimaryShootingComponent.class, sentry);
+							Log.i("RS", "Increase periodicity by 0.05f");
+							psCompo.setPeriodOfSpawn(psCompo.getPeriodOfSpawn() - 0.05f);
+						}
+
+						
+						break foreachPowerUp;
 					}
 				}
 			}
+			
+			
+			//DESPAWN of power ups after ttl is reached
+			PowerUpComponent powerUpCompo = this.entityManager.getComponent(PowerUpComponent.class, powerUp);
+			if(singleton.getTotalTime() > powerUpCompo.getSpawnTime() + powerUpCompo.getTimeToLive()) {
+				this.entityManager.removeEntity(powerUp);
+			}
 		}
+		
+		
+		
 	}
 
 	

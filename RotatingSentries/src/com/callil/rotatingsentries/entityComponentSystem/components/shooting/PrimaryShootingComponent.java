@@ -5,8 +5,8 @@ import org.andengine.entity.sprite.Sprite;
 
 public class PrimaryShootingComponent extends AbstractPrimaryAttackComponent {
 	
-	/** number of generate projectile per seconds */
-	private float frequency;
+	/** The period of spawn of projectiles. */
+	private float periodOfSpawn;
 	
 	/** time the last projectile was generate */
 	private float lastGenerateTime;
@@ -26,7 +26,7 @@ public class PrimaryShootingComponent extends AbstractPrimaryAttackComponent {
 	 */
 	public PrimaryShootingComponent(Sprite icon, ProjectileType projectileType, float frequency) {
 		super(icon);
-		this.frequency = frequency;
+		this.periodOfSpawn = frequency;
 		this.projectileType = projectileType;
 		lastGenerateTime = 0;
 	}
@@ -49,12 +49,12 @@ public class PrimaryShootingComponent extends AbstractPrimaryAttackComponent {
 
 	/// GETTERS & SETTERS
 	
-	public float getFrequency() {
-		return frequency;
+	public float getPeriodOfSpawn() {
+		return periodOfSpawn;
 	}
 
-	public void setFrequency(float frequency) {
-		this.frequency = frequency;
+	public void setPeriodOfSpawn(float spawnPeriod) {
+		this.periodOfSpawn = Math.max(spawnPeriod, 0.1f);
 	}
 
 	public float getLastGenerateTime() {

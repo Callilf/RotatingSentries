@@ -329,7 +329,7 @@ public class EntityFactory {
 		SpriteUtil.setCenter(sPowerUp, centerX, centerY);
 		Entity powerUp = this.em.createEntity();
 		this.em.addComponentToEntity(new SpriteComponent(sPowerUp, false), powerUp);
-		this.em.addComponentToEntity(new PowerUpComponent(7), powerUp);
+		this.em.addComponentToEntity(new PowerUpComponent(4), powerUp);
 		return powerUp;
 	}
 

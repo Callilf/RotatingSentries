@@ -113,7 +113,7 @@ public class GenerationSystem extends System {
 		entities = this.entityManager.getAllEntitiesPosessingComponentOfClass(PrimaryShootingComponent.class);
 	    for (Entity entity : entities) {
 	    	PrimaryShootingComponent shootingComponent = this.entityManager.getComponent(PrimaryShootingComponent.class, entity);
-	    	float nextGeneratingTime = shootingComponent.getFrequency() + shootingComponent.getLastGenerateTime();
+	    	float nextGeneratingTime = shootingComponent.getPeriodOfSpawn() + shootingComponent.getLastGenerateTime();
 	    	float currentDuration = GameSingleton.getInstance().getTotalTime();
 	    	if (nextGeneratingTime < currentDuration) {
 	    		shootingComponent.setLastGenerateTime(currentDuration);
