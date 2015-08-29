@@ -56,9 +56,14 @@ public class MineSystem extends System {
 				if (secondaryMineComponent.getCurrentAmmo() <= 0) {
 					break;
 				}
-				if (GenerationSystem.isSecondaryFireActive) {
+				if (singleton.isTouchingArea || GenerationSystem.isSecondaryFireActive) {
+					if (singleton.isTouchingArea) {
+						SpriteUtil.setCenter(targetSprite, singleton.areaTouchX, singleton.areaTouchY);
+					}
+					else {
+						SpriteUtil.setCenter(targetSprite, gameArea.getWidth()/2, gameArea.getHeight()/4);
+					}
 					targetSprite.setVisible(true);
-					SpriteUtil.setCenter(targetSprite, gameArea.getWidth()/2, gameArea.getHeight()/4);
 					secondaryMineComponent.setState(SecondaryMineState.INIT_PLACING);
 				}
 				break; 

@@ -247,7 +247,7 @@ public class GameActivity extends ParentGameActivity {
 		primaryFirePanel.stopAnimation(1);
 		this.mScene.attachChild(primaryFirePanel);
 		
-		// Create Primary Fire Panel
+		// Create Secondary Fire Panel
 		final AnimatedSprite secondaryFirePanel = new AnimatedSprite(1711, 274, spriteLoader.getHUDSecondaryFireTextureRegion(), this.mEngine.getVertexBufferObjectManager()) {
 			@Override
 			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
