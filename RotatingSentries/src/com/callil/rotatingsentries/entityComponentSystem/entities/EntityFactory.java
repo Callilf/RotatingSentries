@@ -30,6 +30,7 @@ import com.callil.rotatingsentries.entityComponentSystem.components.shooting.Abs
 import com.callil.rotatingsentries.entityComponentSystem.components.shooting.AbstractSecondaryAttackComponent.ExplosiveType;
 import com.callil.rotatingsentries.entityComponentSystem.components.shooting.PrimaryShootingComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.shooting.SecondaryMineComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.shooting.SecondaryShootingComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.skills.AOEAttackComponent;
 import com.callil.rotatingsentries.enums.PowerUpTypeEnum;
 import com.callil.rotatingsentries.enums.SpriteAnimationEnum;
@@ -201,8 +202,8 @@ public class EntityFactory {
 				SpriteAnimationEnum.SENTRY_STANDARD_SHOOT.getFrameDurations()), sentry);
 		
 		
-		//Secondary fire compo
-		//Secondary shooting test :
+//		//Secondary fire compo
+//		//Secondary shooting test :
 //		Sprite secondaryFireIcon = new Sprite(0, 0, spriteLoader.getFireIconSecondaryPiercingTextureRegion(), this.vertextBufferObjectManager);
 //		Text ammoText = new Text(0, 0, spriteLoader.getSecondaryAmmoFont(), "999", new TextOptions(HorizontalAlign.RIGHT), this.vertextBufferObjectManager);
 //		this.em.addComponentToEntity(new SecondaryShootingComponent(secondaryFireIcon, 50, ammoText, ProjectileType.PIERCING, 0.1f, 

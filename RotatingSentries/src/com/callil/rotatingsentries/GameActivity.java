@@ -96,6 +96,7 @@ public class GameActivity extends ParentGameActivity {
 				case TouchEvent.ACTION_OUTSIDE:
 				case TouchEvent.ACTION_CANCEL:
 					singleton.isTouchingArea = false;
+					singleton.hasReleasedArea = true;
 					break;
 				case TouchEvent.ACTION_MOVE:
 					singleton.areaTouchX = pTouchAreaLocalX;
@@ -248,32 +249,9 @@ public class GameActivity extends ParentGameActivity {
 		this.mScene.attachChild(primaryFirePanel);
 		
 		// Create Secondary Fire Panel
-		final AnimatedSprite secondaryFirePanel = new AnimatedSprite(1711, 274, spriteLoader.getHUDSecondaryFireTextureRegion(), this.mEngine.getVertexBufferObjectManager()) {
-			@Override
-			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-				switch (pSceneTouchEvent.getAction()) {
-				case TouchEvent.ACTION_UP:
-				case TouchEvent.ACTION_OUTSIDE:
-				case TouchEvent.ACTION_CANCEL:
-					GenerationSystem.isSecondaryFireActive = false;
-					GenerationSystem.hasSecondaryFireBeenReleased = true;
-					this.stopAnimation(0);
-					break;
-				case TouchEvent.ACTION_MOVE:
-					break;
-				case TouchEvent.ACTION_DOWN:
-					this.stopAnimation(1);
-					GenerationSystem.isSecondaryFireActive = true;
-					break;
-				default:
-					break;
-				}
-				return true;
-			}
-		};
+		final AnimatedSprite secondaryFirePanel = new AnimatedSprite(1711, 274, spriteLoader.getHUDSecondaryFireTextureRegion(), this.mEngine.getVertexBufferObjectManager());
 		secondaryFirePanel.setZIndex(10);
 		secondaryFirePanel.stopAnimation(0);
-		this.mScene.registerTouchArea(secondaryFirePanel);
 		this.mScene.attachChild(secondaryFirePanel);
 		
 		// Create Switch Fire Panel

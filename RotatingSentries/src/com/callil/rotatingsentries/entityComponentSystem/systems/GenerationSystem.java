@@ -19,11 +19,6 @@ import com.callil.rotatingsentries.singleton.GameSingleton;
 
 public class GenerationSystem extends System {
 
-	/** Whether the secondary fire has been release during this frame. */
-	public static boolean hasSecondaryFireBeenReleased = true;
-	/** Represents the state of the secondary fire button. */
-	public static boolean isSecondaryFireActive = false;
-	
 	private EntityFactory entityFactory;
 	
 	private RectangularShape gameArea;
@@ -97,13 +92,14 @@ public class GenerationSystem extends System {
 	    
 	    
 	    //Handle the alternate fire
-	    if (isSecondaryFireActive && hasSecondaryFireBeenReleased) {
+	    GameSingleton singleton = GameSingleton.getInstance();
+	    if (singleton.isTouchingArea && singleton.hasReleasedArea) {
 	    	entities = this.entityManager.getAllEntitiesPosessingComponentOfClass(AbstractSecondaryAttackComponent.class, true);
 	    	for (Entity entity : entities) {
 	    		AbstractSecondaryAttackComponent secondaryAttackComponent = this.entityManager.getComponent(AbstractSecondaryAttackComponent.class, entity);
 	    		secondaryAttackComponent.setActive(true);
 	    	}
-	    	hasSecondaryFireBeenReleased = false;
+	    	singleton.hasReleasedArea = false;
 	    }
 	    
 	    

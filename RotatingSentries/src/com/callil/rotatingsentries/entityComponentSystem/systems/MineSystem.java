@@ -56,7 +56,7 @@ public class MineSystem extends System {
 				if (secondaryMineComponent.getCurrentAmmo() <= 0) {
 					break;
 				}
-				if (singleton.isTouchingArea || GenerationSystem.isSecondaryFireActive) {
+				if (singleton.isTouchingArea) {
 					if (singleton.isTouchingArea) {
 						SpriteUtil.setCenter(targetSprite, singleton.areaTouchX, singleton.areaTouchY);
 					}

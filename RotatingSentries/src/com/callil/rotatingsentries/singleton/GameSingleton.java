@@ -21,6 +21,8 @@ public class GameSingleton {
 	private float totalTime;
 	
 	// Area touch related attributes
+	/** Whether the game area has been release during this frame. */
+	public boolean hasReleasedArea = true;
 	/** If the user is touching during this frame. */
 	public boolean isTouchingArea;
 	public float areaTouchX;
