@@ -33,6 +33,7 @@ public class GenerationSystem extends System {
 	public void onUpdate(float pSecondsElapsed) {
 		
 	    // MANAGE THE SPAWNING OF ENEMIES
+		//TODO : probably move this, and handle the enemy generation in a better way than that :P
 		List<Entity> entities = this.entityManager.getAllEntitiesPosessingComponentOfClass(DiamondComponent.class);
 	    for (Entity entity : entities) {
 	    	SpriteComponent spriteComponent = this.entityManager.getComponent(SpriteComponent.class, entity);
@@ -78,13 +79,22 @@ public class GenerationSystem extends System {
 				}
 				
 				//Generate robber or red robber
-				int robberType = rand.nextInt(4);
+				int robberType = rand.nextInt(5);
 				if (robberType < 3) {
 					this.entityFactory.generateRobber(generatedX, generatedY, 2, sprite, ropeAngle);
-				} else {
+				} else if (robberType == 3) {
 					this.entityFactory.generateRobberRed(generatedX, generatedY, 2, sprite, ropeAngle);
 					//Since robberRed are stronger, re-increase the frequency when they appear
 					diamondComponent.setFrequency(diamondComponent.getFrequency() + 0.2f);
+				} else {
+					if (ropeAngle == 0) generatedY += 100;
+					if (ropeAngle == 90) generatedX -= 100;
+					if (ropeAngle == 180) generatedY -= 100;
+					if (ropeAngle == 270) generatedX += 100;
+					this.entityFactory.generateNinja(generatedX, generatedY, sprite, ropeAngle);
+
+					//Since robberRed are stronger, re-increase the frequency when they appear
+					diamondComponent.setFrequency(diamondComponent.getFrequency() + 0.1f);
 				}
 				
 	    	}

@@ -18,6 +18,11 @@ public enum SpriteAnimationEnum {
 	ENEMY_ROBBER_CLIMBING(new int[]{20,21,22,23}, 100),
 	ENEMY_ROBBER_ROPE(new int[]{0,1,2,3,4,5,6,7,8,9,8,7,6,10,11,12}, 75),
 	
+	ENEMY_NINJA_APPEAR(new int[]{0,1,2,3,4,4,4,4,4,4,4,4,4}, 100),
+	ENEMY_NINJA_APPEAR_END(new int[]{5,6,7,8,9,10}, 100),
+	ENEMY_NINJA_THROW(new int[]{11,12,13,14}, 75),
+	ENEMY_NINJA_THROW_RECOVERY(new int[]{15,7,8,9,10}, 100),
+	
 	MINE_BLINK(new int[]{0,1}, 500),
 	MINE_BLINK_FAST(new int[]{0,1}, 100),
 	

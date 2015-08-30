@@ -60,4 +60,17 @@ public class SpriteUtil {
 	            Math.pow(sourceCenter.getY() - destCenter.getY(), 2) ));
 		return dist;
 	}
+	
+	/**
+	 * Make the sprite look in the direction of the dest. 
+	 * @param sprite the sprite
+	 * @param dest the destination
+	 */
+	public static void setOrientation(Sprite sprite, Sprite dest) {
+		Couple<Float> directionalVector = MathUtil.computeDirectionalVector(getCenter(sprite), getCenter(dest));
+		if (directionalVector.getX() != 0 && directionalVector.getY() != 0) {
+			float angle = MathUtil.computeOrientationAngleFromDirectionalVector(directionalVector);
+			sprite.setRotation(angle);
+		}
+	}
 }

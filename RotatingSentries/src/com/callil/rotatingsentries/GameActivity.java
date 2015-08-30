@@ -23,6 +23,7 @@ import com.callil.rotatingsentries.entityComponentSystem.entities.EntityFactory;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityManager;
 import com.callil.rotatingsentries.entityComponentSystem.systems.AOEAttackSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.DamageSystem;
+import com.callil.rotatingsentries.entityComponentSystem.systems.EnemyNinjaSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.EnemyRobberSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.GameSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.GenerationSystem;
@@ -31,6 +32,7 @@ import com.callil.rotatingsentries.entityComponentSystem.systems.MoveSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.PowerUpSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.RenderSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.System;
+import com.callil.rotatingsentries.enums.SpriteAnimationEnum;
 import com.callil.rotatingsentries.singleton.GameSingleton;
 
 public class GameActivity extends ParentGameActivity {
@@ -126,6 +128,7 @@ public class GameActivity extends ParentGameActivity {
 		DamageSystem damageSystem = new DamageSystem(this.entityManager);
 		MineSystem mineSystem = new MineSystem(this.entityManager, entityFactory, background);
 		EnemyRobberSystem enemyRobberSystem = new EnemyRobberSystem(this.entityManager, background);
+		EnemyNinjaSystem enemyNinjaSystem = new EnemyNinjaSystem(this.entityManager, background);
 		GenerationSystem generationSystem = new GenerationSystem(entityManager, entityFactory, background);
 		AOEAttackSystem aoeAttackSystem = new AOEAttackSystem(this.entityManager);
 		PowerUpSystem powerUpSystem = new PowerUpSystem(this.entityManager, entityFactory, background);
@@ -137,6 +140,7 @@ public class GameActivity extends ParentGameActivity {
 		systems.add(moveSystem);
 		systems.add(damageSystem);
 		systems.add(mineSystem);
+		systems.add(enemyNinjaSystem);
 		systems.add(enemyRobberSystem);
 		systems.add(generationSystem);
 		systems.add(aoeAttackSystem);
@@ -201,8 +205,9 @@ public class GameActivity extends ParentGameActivity {
 		
 		createHUD();
 		
-//		AnimatedSprite electric = new AnimatedSprite(background.getX() + 200, background.getY() + 200, spriteLoader.getSentryElectricAttackTextureRegion(), this.getVertexBufferObjectManager());
-//		this.mScene.attachChild(electric);
+//		AnimatedSprite ninja = new AnimatedSprite(gameArea.getX() + 200, gameArea.getY() + 200, spriteLoader.getEnemyNinjaTextureRegion(), this.getVertexBufferObjectManager());
+//		this.mScene.attachChild(ninja);
+//		ninja.animate(SpriteAnimationEnum.ENEMY_NINJA_APPEAR.getFrameDurations(), SpriteAnimationEnum.ENEMY_NINJA_APPEAR.getFrames());
 		
 		for (System system : systems) {
 			system.onPopulateScene();

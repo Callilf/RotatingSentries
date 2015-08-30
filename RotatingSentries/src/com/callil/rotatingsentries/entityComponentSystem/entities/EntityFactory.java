@@ -16,6 +16,7 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.HorizontalAlign;
 
 import com.callil.rotatingsentries.entityComponentSystem.components.DiamondComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.EnemyNinjaComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.EnemyRobberComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.MoveTowardsComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.SelfRotationComponent;
@@ -175,6 +176,28 @@ public class EntityFactory {
 		//Detectable compo
 		this.em.addComponentToEntity(new DetectableComponent(), robber);
 		return robber;
+	}
+	
+	
+	/**
+	 * Generate an strong red robber at the desired position.
+	 * @param x the x position
+	 * @param y the y position
+	 * @param speed the speed of the movement
+	 * @param target the target of the movement (the robber will go towards the center of it's target)
+	 * @return The entity corresponding to the created robber.
+	 */
+	public Entity generateNinja(float x, float y, Sprite target, float rotation) {
+		final AnimatedSprite sNinja = new AnimatedSprite(x, y, this.spriteLoader.getEnemyNinjaTextureRegion(), this.vertextBufferObjectManager);
+		sNinja.setZIndex(10);
+		SpriteUtil.setOrientation(sNinja, target);
+		Entity ninja = this.em.createEntity();
+		
+		this.em.addComponentToEntity(new SpriteComponent(sNinja, true).defineRectangularHitboxDiff(25, 25, 40, 30), ninja);		
+		this.em.addComponentToEntity(new EnemyNinjaComponent(target, 1.0f, 2.0f), ninja);
+		this.em.addComponentToEntity(new AttackComponent(2, 1), ninja);
+		this.em.addComponentToEntity(new DetectableComponent(), ninja);
+		return ninja;
 	}
 	
 	/**
