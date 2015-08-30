@@ -31,7 +31,6 @@ import com.callil.rotatingsentries.entityComponentSystem.components.shooting.Abs
 import com.callil.rotatingsentries.entityComponentSystem.components.shooting.AbstractSecondaryAttackComponent.ExplosiveType;
 import com.callil.rotatingsentries.entityComponentSystem.components.shooting.PrimaryShootingComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.shooting.SecondaryMineComponent;
-import com.callil.rotatingsentries.entityComponentSystem.components.shooting.SecondaryShootingComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.skills.AOEAttackComponent;
 import com.callil.rotatingsentries.enums.PowerUpTypeEnum;
 import com.callil.rotatingsentries.enums.SpriteAnimationEnum;
@@ -194,7 +193,7 @@ public class EntityFactory {
 		SpriteUtil.setOrientation(sNinja, target);
 		Entity ninja = this.em.createEntity();
 		
-		this.em.addComponentToEntity(new SpriteComponent(sNinja, true).defineRectangularHitboxDiff(25, 25, 40, 30), ninja);		
+		this.em.addComponentToEntity(new SpriteComponent(sNinja, true).defineRectangularHitboxDiff(25, 25, 30, 40), ninja);		
 		this.em.addComponentToEntity(new EnemyNinjaComponent(target, 1.0f, 2.0f), ninja);
 		this.em.addComponentToEntity(new AttackComponent(2, 1), ninja);
 		this.em.addComponentToEntity(new DetectableComponent(), ninja);
@@ -343,6 +342,7 @@ public class EntityFactory {
 		sShurikenProjectile.setRotation(rotationDegre);
 		Entity shurikenProjectile = this.em.createEntity();
 		SpriteComponent scShurikenProj = new SpriteComponent(sShurikenProjectile, true);
+		scShurikenProj.defineRectangularHitboxDiff(15, 5, 15, 20);
 		this.em.addComponentToEntity(scShurikenProj, shurikenProjectile);
 		this.em.addComponentToEntity(new SelfRotationComponent(15), shurikenProjectile);
 		this.em.addComponentToEntity(new MoveTowardsComponent(10, startX, startY), shurikenProjectile);

@@ -32,7 +32,6 @@ import com.callil.rotatingsentries.entityComponentSystem.systems.MoveSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.PowerUpSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.RenderSystem;
 import com.callil.rotatingsentries.entityComponentSystem.systems.System;
-import com.callil.rotatingsentries.enums.SpriteAnimationEnum;
 import com.callil.rotatingsentries.singleton.GameSingleton;
 
 public class GameActivity extends ParentGameActivity {
