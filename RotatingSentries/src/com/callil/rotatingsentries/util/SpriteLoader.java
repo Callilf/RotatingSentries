@@ -116,6 +116,12 @@ public class SpriteLoader {
 	protected TextureRegion mProjPiercingTextureRegion;
 	public TextureRegion getProjPiercingTextureRegion() {
 		return mProjPiercingTextureRegion;
+	}	
+	
+	/** PROJECTILE : Shuriken */
+	protected TextureRegion mProjShurikenTextureRegion;
+	public TextureRegion getProjShurikenTextureRegion() {
+		return mProjShurikenTextureRegion;
 	}
 	
 	/** PROJECTILE : Mine */
@@ -399,6 +405,11 @@ public class SpriteLoader {
 		BitmapTextureAtlas projPiercingTexture = new BitmapTextureAtlas(tm, 6, 14, TextureOptions.NEAREST);
 		mProjPiercingTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(projPiercingTexture, context, "projectile_piercing.png", 0, 0);
 		projPiercingTexture.load();
+		
+		//Shuriken projectile
+		BitmapTextureAtlas projShurikenTexture = new BitmapTextureAtlas(tm, 66, 66, TextureOptions.NEAREST);
+		mProjShurikenTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(projShurikenTexture, context, "projectile_shuriken.png", 0, 0);
+		projShurikenTexture.load();
 		
 		//Mine
 		BitmapTextureAtlas projMineTexture = new BitmapTextureAtlas(tm, 192, 96, TextureOptions.NEAREST);

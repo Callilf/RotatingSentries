@@ -15,7 +15,8 @@ public abstract class AbstractPrimaryAttackComponent extends Component {
 
 	public enum ProjectileType {
 		STANDARD,
-		PIERCING;
+		PIERCING,
+		SHURIKEN;
 	}
 	
 	/** The fire icon. */

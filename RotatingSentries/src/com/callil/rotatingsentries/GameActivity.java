@@ -128,7 +128,7 @@ public class GameActivity extends ParentGameActivity {
 		DamageSystem damageSystem = new DamageSystem(this.entityManager);
 		MineSystem mineSystem = new MineSystem(this.entityManager, entityFactory, background);
 		EnemyRobberSystem enemyRobberSystem = new EnemyRobberSystem(this.entityManager, background);
-		EnemyNinjaSystem enemyNinjaSystem = new EnemyNinjaSystem(this.entityManager, background);
+		EnemyNinjaSystem enemyNinjaSystem = new EnemyNinjaSystem(this.entityManager, entityFactory, background);
 		GenerationSystem generationSystem = new GenerationSystem(entityManager, entityFactory, background);
 		AOEAttackSystem aoeAttackSystem = new AOEAttackSystem(this.entityManager);
 		PowerUpSystem powerUpSystem = new PowerUpSystem(this.entityManager, entityFactory, background);

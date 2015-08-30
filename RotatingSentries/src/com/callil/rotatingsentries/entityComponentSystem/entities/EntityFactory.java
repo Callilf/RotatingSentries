@@ -35,6 +35,7 @@ import com.callil.rotatingsentries.entityComponentSystem.components.shooting.Sec
 import com.callil.rotatingsentries.entityComponentSystem.components.skills.AOEAttackComponent;
 import com.callil.rotatingsentries.enums.PowerUpTypeEnum;
 import com.callil.rotatingsentries.enums.SpriteAnimationEnum;
+import com.callil.rotatingsentries.util.Couple;
 import com.callil.rotatingsentries.util.SpriteLoader;
 import com.callil.rotatingsentries.util.SpriteUtil;
 
@@ -300,9 +301,55 @@ public class EntityFactory {
 			gameArea.attachChild(sPiercingProjectile);
 			scPiercingProj.setAttached(true);
 			return piercingProjectile;
+		case SHURIKEN:
+			TextureRegion shurikenProjectileTexture = spriteLoader.getProjShurikenTextureRegion();
+			final Sprite sShurikenProjectile = new Sprite(gameArea.getWidth()/2 + startX * rayonSentry - shurikenProjectileTexture.getWidth()/2f, 
+					gameArea.getHeight()/2 + startY * rayonSentry - shurikenProjectileTexture.getHeight()/2f, shurikenProjectileTexture, this.vertextBufferObjectManager);
+			sShurikenProjectile.setZIndex(13);
+			sShurikenProjectile.setRotation(rotationDegre);
+			Entity shurikenProjectile = this.em.createEntity();
+			SpriteComponent scShurikenProj = new SpriteComponent(sShurikenProjectile, true);
+			this.em.addComponentToEntity(scShurikenProj, shurikenProjectile);
+			this.em.addComponentToEntity(new SelfRotationComponent(10), shurikenProjectile);
+			this.em.addComponentToEntity(new MoveTowardsComponent(10, startX, startY), shurikenProjectile);
+			this.em.addComponentToEntity(new DefenseComponent(7, 2, false), shurikenProjectile);
+			gameArea.attachChild(sShurikenProjectile);
+			scShurikenProj.setAttached(true);
+			return shurikenProjectile;
 		default:
 			throw new IllegalArgumentException("Undefined projectile " + projectileType);
 		}
+	}
+	
+	/**
+	 * Generate a shuriken sent by an enemy.
+	 * @param enemySprite
+	 * @return
+	 */
+	public Entity generateEnemyShuriken(Sprite enemySprite) {
+		float rotationDegre = enemySprite.getRotation();
+		//Handle the fact the enemy sprites are oriented facing south.
+		rotationDegre = (rotationDegre + 180)%360;
+		double rotationRad = rotationDegre * Math.PI / 180d;
+		float startX = (float) Math.sin(rotationRad);
+		float startY = (float) Math.cos(rotationRad) * -1;
+		
+		TextureRegion shurikenProjectileTexture = spriteLoader.getProjShurikenTextureRegion();
+		Couple<Float> enemyCenter = SpriteUtil.getCenter(enemySprite);
+		final Sprite sShurikenProjectile = new Sprite(enemyCenter.getX() - shurikenProjectileTexture.getWidth() / 2f, 
+				enemyCenter.getY() - shurikenProjectileTexture.getHeight() / 2f,
+				shurikenProjectileTexture, this.vertextBufferObjectManager);
+		sShurikenProjectile.setZIndex(13);
+		sShurikenProjectile.setRotation(rotationDegre);
+		Entity shurikenProjectile = this.em.createEntity();
+		SpriteComponent scShurikenProj = new SpriteComponent(sShurikenProjectile, true);
+		this.em.addComponentToEntity(scShurikenProj, shurikenProjectile);
+		this.em.addComponentToEntity(new SelfRotationComponent(15), shurikenProjectile);
+		this.em.addComponentToEntity(new MoveTowardsComponent(10, startX, startY), shurikenProjectile);
+		this.em.addComponentToEntity(new AttackComponent(1, 2), shurikenProjectile);
+		gameArea.attachChild(sShurikenProjectile);
+		scShurikenProj.setAttached(true);
+		return shurikenProjectile;
 	}
 	
 	/**

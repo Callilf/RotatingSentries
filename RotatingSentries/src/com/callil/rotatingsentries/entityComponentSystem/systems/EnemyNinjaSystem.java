@@ -12,7 +12,9 @@ import com.callil.rotatingsentries.entityComponentSystem.components.EnemyNinjaCo
 import com.callil.rotatingsentries.entityComponentSystem.components.EnemyNinjaComponent.EnemyNinjaStateType;
 import com.callil.rotatingsentries.entityComponentSystem.components.SpriteComponent;
 import com.callil.rotatingsentries.entityComponentSystem.components.attackDefense.AttackComponent;
+import com.callil.rotatingsentries.entityComponentSystem.components.shooting.AbstractPrimaryAttackComponent.ProjectileType;
 import com.callil.rotatingsentries.entityComponentSystem.entities.Entity;
+import com.callil.rotatingsentries.entityComponentSystem.entities.EntityFactory;
 import com.callil.rotatingsentries.entityComponentSystem.entities.EntityManager;
 import com.callil.rotatingsentries.enums.SpriteAnimationEnum;
 
@@ -22,13 +24,15 @@ import com.callil.rotatingsentries.enums.SpriteAnimationEnum;
  */
 public class EnemyNinjaSystem extends System {
 	
+	private EntityFactory entityFactory;
 	private RectangularShape gameArea;
 
 	/**
 	 * @param em
 	 */
-	public EnemyNinjaSystem(EntityManager em, RectangularShape gameArea) {
+	public EnemyNinjaSystem(EntityManager em, EntityFactory entityFactory, RectangularShape gameArea) {
 		super(em);
+		this.entityFactory = entityFactory;
 		this.gameArea = gameArea;
 	}
 
@@ -64,7 +68,7 @@ public class EnemyNinjaSystem extends System {
 	    			enemyNinjaComponent.attack();
 	    			enemyNinjaComponent.setState(EnemyNinjaStateType.ATTACK_RECOVERING);
 	    			sprite.animate(SpriteAnimationEnum.ENEMY_NINJA_THROW.getFrameDurations(), SpriteAnimationEnum.ENEMY_NINJA_THROW.getFrames(), false);
-	    			//TODO: create shuriken
+	    			this.entityFactory.generateEnemyShuriken(sprite);
 	    		}
 	    		break;
 

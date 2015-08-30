@@ -42,6 +42,7 @@ public class SelfRotationComponent extends Component {
 	 */
 	public SelfRotationComponent(float maxRotationSpeed) {
 		this.maxRotationSpeed = maxRotationSpeed;
+		this.minRotationSpeed = maxRotationSpeed;
 		this.currentSpeed = 0;
 		this.currentRotation = 0;
 		this.clockwise = true;
