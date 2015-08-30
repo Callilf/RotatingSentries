@@ -8,6 +8,7 @@ import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.util.color.Color;
 
 import com.callil.rotatingsentries.GameActivity;
+import com.callil.rotatingsentries.singleton.GameSingleton;
 
 import android.util.Log;
 
@@ -82,6 +83,12 @@ public class ExplosiveComponent extends AbstractAttDefComponent {
 		this.blastArea.detachSelf();
 		this.detectionArea.detachSelf();
 		this.explosion.detachSelf();
+	}
+	
+	/** Trigger the mine. */
+	public void trigger() {
+		this.triggered = true;
+		this.triggeredTime = GameSingleton.getInstance().getTotalTime();
 	}
 	
 	

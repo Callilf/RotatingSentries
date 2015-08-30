@@ -134,15 +134,11 @@ public class PowerUpSystem extends System {
 					IShape powerUpHitbox = this.entityManager.getComponent(SpriteComponent.class, powerUp).getHitbox();
 					if (projHitbox.collidesWith(powerUpHitbox)) {
 						
-						//TODO: handle reward
 						giveReward(this.entityManager.getComponent(PowerUpComponent.class, powerUp));
-						
-						
+
 						//TODO: right now, hitting a power up always destroys the projectile
 						entityManager.removeEntity(powerUp);
 						entityManager.removeEntity(projectile);
-						
-
 						
 						break foreachPowerUp;
 					}

@@ -142,13 +142,18 @@ public class MineSystem extends System {
 		    					//Do not destroy the mine by it's own explosion...
 		    					continue;
 		    				}
-		    				
-		    				//TODO : if another mine is in the field of explosion, make it explode too. Right now, they just disappear.
-		    				
+		    						    				
 		    				SpriteComponent hitableSpriteCompo = this.entityManager.getComponent(SpriteComponent.class, hitable);
 		    				if (hitableSpriteCompo != null) { // in case the entity is already dead
-		    					IShape hitableHitbox = this.entityManager.getComponent(SpriteComponent.class, hitable).getHitbox();
+		    					IShape hitableHitbox = hitableSpriteCompo.getHitbox();
 		    					if (blastArea.collidesWith(hitableHitbox)) {
+		    						//Handle special case of another mine caught in the blast
+		    						ExplosiveComponent hitableExploCompo = this.entityManager.getComponent(ExplosiveComponent.class, hitable);
+		    						if (hitableExploCompo != null) {
+		    							triggerMine(hitableExploCompo, hitableSpriteCompo);
+		    							continue;
+		    						}
+		    						
 		    						// Attacker or projectile is caught in the blast
 		    						Log.i("RS", "Something was caught in the blast of the explosion !");
 		    						AbstractAttDefComponent attDefCompo = this.entityManager.getComponent(AbstractAttDefComponent.class, hitable);
@@ -194,8 +199,7 @@ public class MineSystem extends System {
 	 */
 	private void triggerMine(ExplosiveComponent explosiveComponent,
 			SpriteComponent spriteComponent) {
-		explosiveComponent.setTriggered(true);
-		explosiveComponent.setTriggeredTime(GameSingleton.getInstance().getTotalTime());
+		explosiveComponent.trigger();
 		
 		//If animated sprite, animate it
 		if (spriteComponent != null && spriteComponent.getSprite() != null 
